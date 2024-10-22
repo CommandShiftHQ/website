@@ -28,6 +28,14 @@ const config = {
       {
         protocol: 'https',
         hostname: 'imgs.xkcd.com'
+      },
+      {
+        protocol: 'https',
+        hostname: 'i.imgur.com'
+      },
+      {
+        protocol: 'https',
+        hostname: 'www.hostinger.com'
       }
     ],
   },
