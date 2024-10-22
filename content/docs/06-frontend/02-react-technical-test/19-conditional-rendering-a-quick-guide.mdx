@@ -1,0 +1,37 @@
+---
+title: "Conditional Rendering - A Quick Guide"
+---
+
+If we want to render something conditionally within the body of our component we can do a couple of things in React. First, we can use a ternary operator:
+
+```jsx
+return (
+  {
+   state ? 
+    ( <ComponentOne /> ) : ( <ComponentTwo /> ) 
+  }
+)
+```
+This is rendering `ComponentOne` if our state is equal to `true`, so if `state` exists, render `ComponentOne`. If our `state` does not exist and equals `undefined` (`false`), then render `Component2`.
+
+Our other option is a conditional render:
+
+```jsx
+return (
+  {
+    state && ( <ComponentOne /> )
+  }
+)
+```
+This is a ternary operator with one condition. It will render `ComponentOne` if `state` is equal to `true`. If `state` does not exist, it will render nothing.
+
+We can also chain these conditions together:
+```jsx
+return (
+  {
+   state && state.length > 0 && ( <ComponentOne /> )
+  }
+)
+```
+
+So if `state` exists AND `state.length` is greater than the value of `0`, then render `ComponentOne`. This may seem slightly overkill as normally if `state` exists there would have to be a value in it, meaning its length would be greater than `0` and the other way around if it didn’t exist. We do this as an extra layer of condition checking as JavaScript can do some weird things sometimes which causes unintended behaviour. If we double up our condition like this we can ensure we don’t encounter any rouge renderings of this component. 

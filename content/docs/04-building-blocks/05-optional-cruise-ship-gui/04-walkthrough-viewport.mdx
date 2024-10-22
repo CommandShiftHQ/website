@@ -1,0 +1,81 @@
+---
+title: "Walkthrough: Viewport"
+---
+
+# Viewport - Walkthrough
+
+## Steps
+
+- Style your `html` and `body` elements so they have a height of `100%`.
+- Style your `body` so its background is black.
+- Set the `body` as a flex container and ensure any children are center aligned on both the horizontal and vertical axis.
+- Create a `main` tag inside your body with an id attribute of `viewport`.
+- Style the `main` element (using an ID CSS selector) so it has the following properties:
+    - a width of `640px`
+    - a height of `256px`
+    - a `position` of `relative`
+    - an `overflow-x` of `auto`
+    - a `background-image` which should be the `water0.png` image.
+
+## Style your `html` and `body` elements so they have a height of `100%`.
+
+In `css/style.css`:
+
+```css
+html, body {
+  height: 100%;
+}
+```
+
+This will ensure our viewport is able to be centered vertically inside the browser window, as by default `html` and `body` are 100% wide but wrap their height to their contents. By specififying a height of 100%, these elements will now be as tall as the browser window.
+
+## Style your `body` so its background is black. Set it as a flex container and ensure any children are center aligned on both the horizontal and vertical axis.
+
+In `css/style.css`:
+
+```css
+body {
+  background-color: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+```
+
+`justify-content` aligns the child elements horizontally, `align-items` vertically.
+
+* [freeCodeCamp: Learn CSS Flexbox in 5 Minutes](https://medium.freecodecamp.org/learn-css-flexbox-in-5-minutes-b941f0affc34)
+* [CSS-Tricks: align-items](https://css-tricks.com/almanac/properties/a/align-items/)
+
+## Create a `div` tag inside your body with an id attribute. Use `viewport` as the id.
+
+In between the opening and closing `body` tags in `index.html`:
+
+```html
+<div id="viewport">
+</div>
+```
+
+* [HTMLDog: class and ID selectors](http://www.htmldog.com/guides/css/intermediate/classid/)
+
+## Style the `div` (using an ID CSS selector) so it has a width of `640px`, a height of `256px`, a `position` of `relative`, an `overflow-x` of `auto`, and finally a background image which should be the `water0.png` image.
+
+In `css/style.css`:
+
+```css
+#viewport {
+  width: 640px;
+  height: 256px;
+  position: relative;
+  overflow-x: auto;
+  background-image: url('../images/water0.png');
+}
+```
+
+We specify `position: relative;` here because we want any items inside of the viewport to base their X/Y coordinates off of the top left of the viewport, not the browser window.
+
+* [W3Schools: CSS positioning](https://www.w3schools.com/css/css_positioning.asp)
+
+We specify `overflow-x: auto;` because we want the viewport to scroll horizontally if any of it's children exceed the width.
+
+* [W3Schools: overflow-x property](https://www.w3schools.com/cssref/css3_pr_overflow-x.asp)

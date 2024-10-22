@@ -1,0 +1,67 @@
+---
+title: "07 - Pseudo-Element Selectors"
+---
+
+#####Quick note - this is an advanced selector!  
+
+Pseudo-elements, as the name indicates, can be used to create an extra element, without having you write extra HTML for it. These are ideal to insert iconography into your project. To declare one, you use similar syntax to pseudo-classes, but **separate them with a double colon(::)** instead:
+
+```css
+selector::pseudo-element {}
+```
+
+We can also use these to specific fractions of the selected elements, like the first letter of a word, or first line of a paragraph:
+
+```css
+p::first-line {}
+```
+
+Have a look at some [documentation](https://developer.mozilla.org/en-US/docs/Web/CSS/pseudo-elements) to find out about all the different possibilities.
+
+---
+
+##This one can be tricky, so let's just try a few
+
+###Lets try `::first-letter` and have a quick look at `::after`  
+
+1. Using the html from our previous exercise, let's try make the first letter of our paragraph elements RED:      
+
+```css
+p::first-letter {
+   color: red;
+}
+```  
+See how this works? We can use pseudo classes like `::first-line` and `::marker` (selects the markers of a list item, like a bullet point or a number) to do something similar. Maybe give those a go too.  
+
+2. The ::after and ::before elements add an element in before or after any given element. They have a few specific requirements, for example they need a content property, even if you don't want any content in it.      
+
+```css
+a::after {
+   content: "→";
+}
+```  
+
+What do you think this does? Give it a go and see if you're right.  
+
+3. `::after` and `::before` can also be used for aesthetic purposes. Try adding the below code and see how it looks on your browser:      
+
+```css
+p {
+   position: relative;
+}
+/* the above code is to do with positioning, and allows us to use the z-index property below, we will get to positioning a bit later on */  
+
+p::after {
+   content: "";
+   background-color: palegoldenrod;
+   height: 20px;
+   width: 50%;
+   position: absolute;
+   left: 20px;
+   z-index: -1;
+}
+```  
+
+What we have done here, is create a pseudo element that is 20px high, 50% the width of the parent element (our p element), has a background colour of palegoldenrod, and is positioned 20px away from the left side of the parent element. It creates quite a cool effect. Try playing around with the properties and see what happens.
+
+

@@ -1,0 +1,27 @@
+---
+title: "Location Details"
+---
+
+## Overview
+
+In this step we are going to create the first component that we outlined in the last step - `<LocationDetails />`.
+
+### Forecast static data
+In order to do anything, we will need access to the forecast data, so let's load that in. Copy the contents of the [external `forecast.json`](https://s3.eu-west-2.amazonaws.com/mcrcodes/weather/forecast.json) file into a new file `src/data/forecast.json`.
+
+## Requirements
+
+We outlined this feature as follows:
+
+**Users should be able to see the name and country of the city the forecast is for.**
+
+## Technical task breakdown
+
+In order to complete this step, you should do the following tasks:
+
+1. Import static data and pass it to `<App />` as a prop.
+2. Create a new file `LocationDetails.js` in your components directory.
+3. Inside that file, create a component called `<LocationDetails />`, which uses JSX to render values stored in `props.city` and `props.country` inside of a `<h1>` tag. Give your `<h1>` tag an appropriate class name. Export the `<LocationDetails />` component from the file.
+4. Import the `<LocationDetails />` component into `App.js`.
+5. Update the `<App />` component, so that it renders `<LocationDetails />` using JSX.
+6. Pass `props.location.city` and `props.location.country` from `<App />` into `<LocationDetails />`.

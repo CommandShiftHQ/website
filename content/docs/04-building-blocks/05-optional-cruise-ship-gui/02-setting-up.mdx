@@ -1,0 +1,49 @@
+---
+title: "Setting Up"
+---
+
+# Setting up your project
+
+We're going to add a layer on top of our week 5/6 Cruise Ships project. If you haven't completed this up to step 6 then there is an example [here](https://github.com/MCRcodes/cruise-ships) which you can clone down and use.
+
+- Create a new repository on GitHub called `cruise-ships-gui` without a README. 
+
+- `cd` into your `cruise-ships` project folder from weeks 5-6 and open up VS Code. If you haven't completed the challenge, [clone our example repository](https://github.com/MCRcodes/cruise-ships)
+- Add a new remote to link your new Github repo to your prohject.
+- Create an `index.html` file in the project root, and populate the DOCTYPE (hint: type `!` followed by `Tab` in the file, and VS Code will do this for you):
+
+![DOCTYPE](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/cruise-ships-gui%2Fvscode-doctype.gif?alt=media&token=44a9069d-ca60-45d2-a616-eb6bd1a019be)
+
+- Create a `css` directory in your project root.
+- Download normalize.css from [here](https://necolas.github.io/normalize.css/) (right click and save into your `css/` folder).
+- Create a new `style.css` file inside your `css/` directory.
+- Create an `images` directory inside your project root.
+- Download the image files for this week from [here](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/cruise-ships-gui%2Fimages.zip?alt=media&token=d73afc8f-2e70-4c0e-9781-3423ab2af8b1) and extract them into your `images/` folder.
+- Use the [`link`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/link) tag to import these CSS files into your `index.html` file.
+ 
+N.B. `normalize.css` is a set of css rules which override or strip away some of the default stylings applied by the browser.
+The reason for this is that different browsers apply different default stylings to some elements, which can cause your page to get rendered differenly in different browsers.
+Normalize aims to solve this problem, so it's normally work including it in your projects that use css.
+
+If you have done everything correctly, your file tree should look like this:
+
+![File Tree](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/cruise-ships-gui%2Ffile_tree.png?alt=media&token=5e1ce877-221b-4788-84a4-ec41541d49f4)
+
+And your `index.html` file should look like this:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Cruise Ships</title>
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+</body>
+</html>
+```

@@ -1,0 +1,31 @@
+---
+title: "Sailing"
+---
+
+# Sailing
+
+We have a ship and some ports - lets sail away!!!
+
+![Set sail](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/cruise-ships-gui%2Fsail.png?alt=media&token=4a30fdc1-de8f-46d9-862d-ea40605dd4cf)
+
+## Challenge
+
+Create a new "Set Sail" button which, when clicked, will move the ship gradually over to the next port.
+
+## To complete this challenge, you will need to:
+
+- Add a button to `index.html` with an id of `#sailbutton`.
+- Style and position the button using CSS.
+- Modify the `Controller` constructor so it takes a parameter of `ship`. Set `this.ship` to `ship` and modify any other references to `ship` in `Controller` to come from `this.ship`, not method parameters.
+- Modify your constructor call in `index.html` so it also takes a ship.
+- Add a `click` event listener to the button inside the `Controller` constructor and set the callback function to an arrow function that calls `this.setSail`.
+- Add a `setSail` method to the `Controller.prototype`. 
+- Use the index of the next port in the ship's itinerary to find the corresponding DOM element
+- Set the ship's left position to the next port's `offsetLeft` - do so gradually using `setInterval`, adding 1px every n (you choose) milliseconds, so the boat moves along gradually. Be sure to use `clearInterval` when the ship reaches the port, and be sure to call `ship.dock` so our instance of `Ship` is updated.
+- Alert the user that they're at the end of their cruise if they attempt to go further than the itinerary.
+
+## Recommended Reading
+
+- [Event Listeners (Video)](https://www.youtube.com/watch?v=73VikwiXUrQ)
+- [The Final Countdown: Using JavaScript’s setInterval + clearInterval Methods](http://vaidehijoshi.github.io/blog/2015/01/06/the-final-countdown-using-javascripts-setinterval-plus-clearinterval-methods/)
+- [window.alert](https://developer.mozilla.org/en-US/docs/Web/API/Window/alert)

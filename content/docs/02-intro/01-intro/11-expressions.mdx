@@ -1,0 +1,112 @@
+---
+title: "Expressions"
+---
+
+## Learning Objectives
+
+- Understand what is meant by the term expression
+- Understand how expressions and statements are related
+- Understand that JavaScript will need to individually evaluate the expressions within a statement in order to process the whole statement
+- Understand how to use brackets to control how JavaScript interprets expressions within a statement
+
+## Expressions
+
+Up to this point, we have said that a statement is an individual task or instruction for the computer to complete.
+
+Two very simple statements would just be the evaluation of two literal number values:
+
+```js
+2;
+5;
+```
+
+We can also combine these two values in a new statement:
+
+```js
+2 + 5;
+```
+
+This statement has 3 parts to it - there is the number `2`, the number `5`, and the operation of adding the two numbers together.
+
+Every statement in JavaScript is actually made up of different parts like this, called **expressions**.
+
+An expression is anything that can be evaluated - it is any reference to a variable or value, or any instance when variables and values are combined using operators. Every expression can form a statement by itself - as we saw with the examples `2;` and `5;` - but normally we will combine expressions together to make more complex and more useful statements.
+
+Understanding expressions can help us to understand some of the more complex statements we have been writing, and how JavaScript figures out the value of the statement as a whole.
+
+Let's take a look at some examples:
+
+### Example - Ambiguous Statements
+
+When we do operations such as `+` or `*`, we have two values either side of the operator, on the left and on the right hand sides. It's important to know what the values on either side of the operation are to be able to do the sum.
+
+- `1 * 2;` has 1 on the left hand side, and 2 on the right hand side
+- `1 + 2;` has 1 on the left hand side, and 2 on the right hand side
+
+Sometimes we perform sums with more than one operation. In these cases, we can only perform 1 operation at a time. It's important to know what order to perform the operations in.
+
+`1 + 4 + 9;` - first we perform the first operation, adding 1 to 4 to give 5. Then sum then becomes `5 + 9`, and we can perform the second operation to evaluate the whole statement.
+
+With these things in mind, how do you think this statement should be evaluated?
+
+```js
+8 + 4 * 30;
+```
+
+What order should we perform the operations, and what are the values on the left and right for each operation we have to perform? There are two options:
+
+- Add 8 and 4, and then multiply the result by 30, to give **360**
+  - Here we are doing a multiplication sum with `8 + 4` as the left hand side, and `30` as the right hand side
+- Multiply 4 and 30, and then add 8 to the result, to give **128**
+  - Here we are doing an addition sum with `8` as the left hand side, and `4 * 30` as the right hand side
+
+With the statement written as it is, JavaScript will take the second option and evaluate the sum as `128`.
+
+But what if we had intended the other option?
+
+When we have ambiguous statements such as this one, we can use brackets to help JavaScript interpret the expressions in the order we wish:
+
+- `(8 + 4) * 30` - will evaluate to 360
+- `8 + (4 * 30)` - will evaluate to 128
+
+Using brackets in this way also makes the intention of the code clearer to you and any other developers who work on it.
+
+### Example - Non-literal expressions
+
+In the above statement, the values `8`, `4`, and `30` were all expressed literally - the values were explicitly stated in the code.
+
+What if we now took the following example - where `a` and `b` are variables taken from user input?
+
+```js
+a + b;
+```
+
+How should JavaScript interpret that statement? What should it evaluate to?
+
+The answer, of course depends on the values of the **variable expressions** `a` and `b`.
+
+If they are both numbers, the result would be a number. If they're both string values, then the result would be a string. The resulting value would depend on what string, or what number was stored in the variables.
+
+So while the statement `1 + 2` and `'Hello ' + 'World` will always evaluate to the same thing, there are an infinite number of things that the statement `a + b` could evaluate to. To work it out, JavaScript has to first figure out what the values of the **variable expressions** `a` and `b` are.
+
+### Example - function call expressions
+
+A slightly more complicated example involves the use of **functions**. We will cover functions in more depth shortly but simply, we can use functions to **calculate** new values (a bit like an operator), or to **do** things (like printing a message to the screen).
+
+To use a function in JavaScript, we have to **call** it. We do this by putting a pair of brackets after the function name.
+
+Every time we use a function in JavaScript (a **function call expression**), it will evaluate to a value - just like any other kind of expression.
+
+Here are some examples of function call expressions that we have seen already:
+
+- `'Hello World'.toUpperCase()`
+- `console.log('Hello')`
+- `prompt('Hello')`
+
+Note the brackets at the end of each example. Each time we call a function, it can behave differently, depending on *how* we call it.
+
+In the first example we call `toUpperCase` by attaching it to the string `'Hello World'`. This causes the function call expression to evaluate as the string `'HELLO WORLD'`. If we attached it to a different string, we would get a different result.
+
+In the second example, we call `console.log` by putting a value in between the brackets. The message that gets printed to the screen depends on what value is between the brackets!
+
+When we have a function call expression in a statement, JavaScript will have to evaluate the value of that expression, in the same way it has to evaluate the value of a variable expression, or any other expression.

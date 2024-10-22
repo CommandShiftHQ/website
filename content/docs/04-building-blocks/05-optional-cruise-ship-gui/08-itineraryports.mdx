@@ -1,0 +1,32 @@
+---
+title: "Itinerary/Ports"
+---
+
+# Itinerary/Ports
+
+Now we can actually start incorporating our objects. We're going to create a new `Itinerary` with some `Port` objects inside of our HTML, and we'll use our `Controller` to render all of an itinerary's ports to the screen.
+
+![Viewport](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/cruise-ships-gui%2Fports.png?alt=media&token=97c8f2d2-018d-423b-8ae8-5e179f6ccfbb)
+
+## Challenge
+
+Instantiate an `Itinerary` with some `Port`s inside of `index.html` and loop over the itinerary's ports, rendering an element to the DOM for each one.
+
+## To complete this challenge, you will need to:
+
+- Include in your `itinerary.js` and `port.js` files into `index.html` using `script` tags.
+- In the inline `script` block, create some new `Port` instances and add them to a new `Itinerary` instance.
+- Create a new `div` with the id `ports` nested inside the `viewport` div.
+- In `style.css`, add a new selector for `#ports`. Specify a width of `0px`, a `margin-top` of `96px`, a display of `flex` and a `justify-content` of `space-around`.
+- Add a new selector for `#ports > .port`. Specify a width of `64px`, a height of `32px` and set the background image to the `port.png` image file.
+- Add a new method to the `Controller` prototype called `renderPorts`. It should have a parameter of `ports` which will receive an array as an argument. 
+- Inside `renderPorts`, use `document.querySelector` to find the `ports` div and assign it to a variable named `portsElement`. Set `portElement`'s width to `0px`.
+- You should then iterate over the array passed to the `ports` parameter using `forEach` and for each one should render a new `div` to the DOM with the class `port`
+- Each new port element should have a data attribute of `portIndex` set to the port's index in the `ports` array
+- Add 256px to the `#ports` div every time a new port element is appended to it
+- In the inline `script` block in `index.html`, call the `controller.renderPorts` method, passing in your `Itinerary` instance's `ports`.
+
+## Recommended Reading
+
+* [HTMLDog: Creating Elements](http://htmldog.com/guides/javascript/advanced/creatingelements/)
+* [MDN: JS Data Attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes)

@@ -1,0 +1,94 @@
+---
+title: "06 - Pseudo-Class Selectors"
+---
+
+##### Quick note - this is an advanced selector!
+
+Pseudo-classes are keywords added to a selector in the following form:
+
+```css
+selector:pseudo-class {
+}
+```
+
+**Notice that the pseudo-class and the selector are separated by a colon (:).**
+
+We use this to specify elements with a specific state or case. For example, we might want to change the element's background colour if a mouse hovers the element. We can do so with:
+
+```css
+selector:hover {
+}
+```
+
+**Note:** _selector_ can be a class, an id, an element, whichever you decide.
+
+Have a look at some [documentation](https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-classes) to find out about different states we can target.
+
+---
+
+## This is a fun one, let's try it out!
+
+### Lets try some of the more popular ones - :hover, :active, :visited, :checked, :disabled
+
+1. Let's add another block of html to help us demonstrate these selectors
+
+```html
+<div id="“socials”">
+  <h3>My Socials</h3>
+  /* These links are just a demo, so i've left the href blank. */
+  <p>Follow me on <a href="">Twitter</a>!</p>
+  <p>Follow me on <a href="">Instagram</a>!</p>
+  /* The below are form elements, we will get to those later on so don't worry
+  about these just yet, we just need them for demo purposes */
+  <input type="checkbox" id="box" name="test-checkbox" checked />
+  <label for="test-checkbox">Check this box for some reason</label>
+  /*The button below is just a demo, so it doesn't do anything, we will add the
+  disabled attribute though, more on that below...*/
+  <button disabled>You can't press this...</button>
+</div>
+```
+
+2. Great! Now let's see if we can change a style based on whether the checkbox is checked.  
+   Target your checkbox using the ID
+
+```css
+#box {
+}
+```
+
+Then let's add a coloured outline using [outline](https://developer.mozilla.org/en-US/docs/Web/CSS/outline):
+
+```css
+#box {
+  outline: 3px solid green;
+}
+```
+
+Save and refresh and see what happens with your checkbox.
+
+3. Now let's modify the style for the checkbox by adding a pseudo-class selector:
+
+```css
+#box:checked {
+  outline: 3px solid green;
+}
+```
+Save and refresh, then click on the checkbox and see what happens.
+
+4. Can you change the colour of the label text green, whenever the box is checked? I'll give you a clue, you could use the adjacent sibling selector!
+
+```css
+#box:checked + label {
+  color: green;
+}
+```
+
+5. Try this one yourself - use the `:hover` pseudo class on any of your elements, try a few! Change the colour, size or font, anything you fancy! Save and refresh in the browser to see what happens when you hover over that element with your mouse.
+
+6. If you noticed, we added a disabled button to the code block. We use the 'disabled' attribute to ensure the user cannot press it (remove this attribute to see what happens). Try using the `:disabled` pseudo class to change the style of a disabled button.
+
+7. What about `:visited` and `:active?` Try popping these selectors on your link (anchor) elements. Target each link using the two pseudo selectors, and change the colours, a different one for each link. Then save and refresh your browser, click your links and see what's happened!
+
+> Have you noticed that on Google, the sites you've already visited are purple? If you want to change this default behaviour on your own website, :visited is the selector for you!
+
+If you struggled to get any of these to work, make a note and ask your tutor in the next class.

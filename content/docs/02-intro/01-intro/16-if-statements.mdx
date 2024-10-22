@@ -1,0 +1,290 @@
+---
+title: "If statements"
+---
+
+## Learning Objectives
+
+- Understand that there are situations when we need to program a computer to make a decision 
+- Understand that we use **if-statements** to allow JavaScript to make decisions
+- Understand what we mean by the word **condition** when talking about if-statements
+- Understand how to use `else` to extend the number of options available when using if statements
+
+## If Statements
+
+In programming, we very often need to let the computer make its own decisions on what instructions to follow.
+
+If we were making a quiz game, we would be able to make the computer show a congratulation message the user, and also to show a message of commiseration.
+
+The message shown would depend on the answer the user gives and there's no way for us as programmers to know what answer a user is going to give!
+To get the behaviour we want, we need to let the computer decide which message to show.
+
+In this lesson, we're going to learn about the main tools available to us in JavaScript to give a computer decision making capabilities - **if statements** and **if/else** statements.
+
+### More Cake Requirements
+
+Let's go back to our cake factory. The manager has come up with another innovation - decorated cakes!
+
+So far, our machines follow this set of instructions to make undecorated cakes:
+
+- Heat oven to *a given temperature*
+- Add *the given ingredients* to mixing bowl
+- Mix ingredients together
+- Put ingredients in tin
+- Put tin in oven
+- Bake for *the given number* of minutes
+- Take tin out of oven
+
+The new recipe for decorated cakes would look like this:
+
+- Heat oven to *a given temperature*
+- Add *the given ingredients* to mixing bowl
+- Mix ingredients together
+- Put ingredients in tin
+- Put tin in oven
+- Bake for *the given number* of minutes
+- Take tin out of oven
+- Mix icing
+- Apply icing to the cake
+
+The problem is that the factory still wants to make undecorated cakes too.
+
+The manager wants to avoid buying a new machine that only knows how to follow the new recipe. They have been so impressed with your improvements so far that they have come back to you to see if you can help solve the new problem using the existing machine.
+
+They think that they could add a parameter to say whether or not the cake should be decorated or not - like a switch on the machine. But this scenario is different - with the previous problem, if we told the machine to bake the cake for 10, 12, or 15 minutes, it would take that number and use it to do the right thing. That instruction would always be followed and there is no scenario where the cake would not get baked.
+
+Now, we need the machine to make a decision on whether to follow the set of instructions required to decorate the cake.
+
+Thankfully, we have the ideal decision-making tool available to us in JavaScript - the **if-statement**
+
+### Using If Statements
+
+The if-statement is the second example we will see of using code blocks. The basic syntax in JavaScript looks like this:
+
+```js
+if () {
+
+}
+```
+
+We have the `if` keyword, followed by round brackets and a code block.
+
+Inside the round brackets, we need to insert a **condition** - an expression that will evaluate to a boolean value.
+
+This condition could be any kind of expression - a literal boolean (`true` or `false`), a boolean value stored in a variable, a comparison expression, or a function call that returns a boolean value. As long as the expression evaluates to true or false, we can put it into an if-statements.
+
+#### Condition Examples
+
+```js
+if (true) {
+
+}
+```
+
+Here we use the literal value `true` as a condition.
+
+```js
+const myConditionVariable = false;
+if (myConditionVariable) {
+
+}
+```
+
+Here the variable `myConditionVariable` contains a boolean value `false`, therefore we can use it as a condition.
+
+```js
+if (9 > 10) {
+
+}
+```
+
+The comparison expression `9 > 10` evaluates to a boolean value `false`, so we can use it as a condition.
+
+```js
+function myConditionFunction() {
+  return true;
+}
+
+if (myConditionFunction()) {
+
+}
+```
+
+Finally, the function `myConditionFunction` returns a boolean value. We can use the function call `myConditionFunction()` as a condition in an if-statement.
+
+#### If Statement Executions
+
+The value of the condition determines whether statements in the code block will be executed. If the condition is `true`, then the code will be executed. If the condition is `false`, then JavaScript will just ignore the code block, and continue as if it wasn't there.
+
+Let's try a simple experiment in the browser console to demonstrate this:
+
+```js
+console.log('BEFORE');
+
+if (true) {
+  console.log('DURING')
+}
+
+console.log('AFTER');
+```
+
+When we run this code, we can see all three messages are printed to the console.
+
+But if we change the condition value from `true` to `false`, we get a different outcome:
+
+```js
+console.log('BEFORE');
+
+if (false) {
+  console.log('DURING')
+}
+
+console.log('AFTER');
+```
+
+Now only the first and third `console.log` statements are executed. The second `console.log` - the one in the if-statement - is skipped.
+
+### Occasionally decorating cakes
+
+We can use this feature of JavaScript to get the behaviour we want in our `bakeCake` function.
+
+Let's recap on the current state of that function:
+
+```js
+function bakeCake(temperature, ingredients, bakingTime) {
+  console.log('Heating oven to ' + temperature + ' celsius');
+  console.log('Adding ' + ingredients + ' to mixing bowl');
+  console.log('Mixing ingredients together');
+  console.log('Putting ingredients in tin');
+  console.log('Putting tin in oven');
+  console.log('Baking for ' + bakingTime + ' minutes');
+  console.log('Taking tin out of oven');
+};
+```
+
+To add the decorating functionality, we can simply add the new instructions to the end of the function body:
+
+```js
+function bakeCake(temperature, ingredients, bakingTime) {
+  console.log('Heating oven to ' + temperature + ' celsius');
+  console.log('Adding ' + ingredients + ' to mixing bowl');
+  console.log('Mixing ingredients together');
+  console.log('Putting ingredients in tin');
+  console.log('Putting tin in oven');
+  console.log('Baking for ' + bakingTime + ' minutes');
+  console.log('Taking tin out of oven');
+  console.log('Mixing icing');
+  console.log('Applying icing');
+};
+
+bakeCake(180, '100g flour, 175g sugar, 3 eggs, 175g butter, 50g cocoa powder', 25);
+```
+
+This will mean all of our cakes now get decorated all of the time, which isn't what we want.
+
+The manager suggested the idea of adding a new parameter to the function to say if we want the cake to be decorated or not. Let's add that parameter now.
+
+We can then try to make a decorated and an undecorated cake by calling the function once with `true` as the final argument and then again with `false`.
+
+```js
+function bakeCake(temperature, ingredients, bakingTime, shouldDecorate) {
+  console.log('Heating oven to ' + temperature + ' celsius');
+  console.log('Adding ' + ingredients + ' to mixing bowl');
+  console.log('Mixing ingredients together');
+  console.log('Putting ingredients in tin');
+  console.log('Putting tin in oven');
+  console.log('Baking for ' + bakingTime + ' minutes');
+  console.log('Taking tin out of oven');
+  console.log('Mixing icing');
+  console.log('Applying icing');
+};
+
+bakeCake(180, '100g flour, 175g sugar, 3 eggs, 175g butter, 50g cocoa powder', 25, true);
+bakeCake(180, '100g flour, 175g sugar, 3 eggs, 175g butter, 50g cocoa powder', 25, false);
+```
+
+This still didn't work - the machine decorated the cake both times.
+
+To fix this, let's move those new instructions inside an if-statement. We can use the value of the new `shouldDecorate` parameter as a condition in the if statement.
+
+![final function](https://a.storyblok.com/f/79570/1140x578/5bc71c2a24/final.png)
+
+When we call the function again, we can now see it working!
+
+![decorate true](https://a.storyblok.com/f/79570/1310x576/53ae07c9eb/decorate-true.png)
+![decorate false](https://a.storyblok.com/f/79570/1310x516/bb7dcbfb69/decorate-false.png)
+
+## If/Else Statements
+
+In the cake example we just went through, the decision the computer had to make was a simple one - should it do a thing, or should it not do that thing. There were only two possible choices - yes or no.
+
+Here are some other examples of decisions like this:
+
+- Should I go for a walk?
+- Should I book a holiday?
+- Should I dye my hair?
+
+Sometimes, we have to make decisions with more than one choice:
+
+- Should I go for a walk or should I read a book?
+- Should I book a holiday to Spain or to Italy?
+- Should I dye my hair purple or green?
+
+To make these sort of decisions in JavaScript, we can extend our if-statements to include multiple courses of action using the `else` keyword.
+
+The syntax looks like this:
+
+```js
+if (condition) {
+
+} else {
+
+}
+```
+
+To decide which country to go on holiday to, maybe we would want to go to the cheapest.
+
+```js
+const spainCost = 100;
+const italyCost = 90;
+
+if (spainCost < italyCost) {
+  console.log('Go to Spain!');
+} else {
+  console.log('Go to Italy!');
+}
+```
+
+Italy is cheaper than Spain, therefore the condition `spainCost < italyCost` is `false`. Therefore the code block for the if-statement does not get executed, but because we provided an alternative code-block, JavaScript will execute that instead.
+
+Only one of the code blocks will ever be executed.
+
+There are also scenarios where we have more than two choices. Maybe we could also go to Portugal!
+
+We can handle this by writing multiple `if` statements, joined together by `else`.
+In this way we can give the computer as many options as it needs to choose from.
+
+```js
+const spainCost = 100;
+const italyCost = 90;
+const portugalCost = 70;
+
+if (spainCost < italyCost) {
+  console.log('Go to Spain!');
+} else if (portugalCost < italyCost) {
+  console.log('Go to Portugal!');
+} else {
+  console.log('Go to Italy!');
+}
+```
+
+![output](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/images%2F9741622502aa91505f14c20429f9db486926b87ca81f99e31e33e801f88f.png?alt=media&token=69d701c0-063d-4636-bd4a-bf98bc0aa948)
+
+Here we compare the cost of holidays to Spain and Italy.
+
+- If Spain is cheaper, we go there.
+- If Italy is cheaper than Spain, we compare the price of Italy and Portugal.
+- If Portugal is cheaper than Italy, we go there.
+- If Italy is cheaper than Spain and Portugal, we go there.
+
+Try the above code in your browser console, and mess around with the values. See if you can go to all the countries.
+

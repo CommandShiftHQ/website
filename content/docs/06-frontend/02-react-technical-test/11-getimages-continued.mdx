@@ -1,0 +1,35 @@
+---
+title: "GetImages Continued"
+---
+
+Okay, let’s work on getting back the data we actually need instead of something that looks like this:
+
+![data](https://i.imgur.com/eKu7RvE.png)
+
+As we can see from the above image, there’s lots of data we don’t need here but the data we do need is sitting inside `items`. From first glance, `items` appears to be an `array` of 100 `objects`, each one of those objects contains the data we need.
+
+Let’s work out how to drill down into that `object` using dot notation. We start with `response` as that’s what is returning what we’re currently seeing on our screen, so:
+
+`response.data.collection.items`
+
+If we amend our `console.log()` in `getImages.js` we should get the following if we run another search:
+
+![data](https://i.imgur.com/wMZ5wMP.png)
+
+Please note, if it’s not clear how we used dot notation to target this array or objects to be returned, revisit objects and do some further reading or ask a tutor/classmate if they can explain in a way you understand. 
+
+In this image, we have our 100 results only, and none of that other stuff we were returning before that we didn’t need. As you can see, the top two entries have been expanded so you can see what’s inside each of these objects. It would appear that we want to return the `href` value as that looks like it is an address to an image. Let’s try and get that data.
+
+Let’s remove our `console.log()` and replace it with a variable so we can save what’s returning. Let’s call the variable `imageResults`.
+
+Once we’ve done that, if we look inside the object, under `data > 0 > media_type` we can see that some of our results are videos and some are images. We’re not interested in the video’s, we just want the images, so we’re going to have to `filter`.
+
+Under `imageResults` create a new variable called `parsedImages` that variable will `filter` over `imageResults` for `media_type` that is `===` to `”image“`, remember that `data` is an array so you will to access the first entry with `data[0]` as part of the `filter` method.
+
+Next, underneath that variable, create a new variable called `images`, that variable will `map` over `parsedImages` and return `image => image.links[0].href`.
+
+Lastly, `return images`.
+
+Now we’ve done that, we should get one big array of pure images, well done!
+
+No walkthrough for this one, you can do it!

@@ -1,0 +1,117 @@
+---
+title: "Functions - Return values"
+---
+
+## Learning Objectives
+
+- Understand what is meant by the term **return value** of a function
+- Understand how to set the evaluation value of a function call expression
+
+## Function return values
+
+When we call a function, the evaluation value of the function call expression is also called the **return value**.
+
+For example when we call `'Hello'.toUpperCase()`, the return value of the `toUpperCase` is a string `'HELLO'`. We could also say that the function **returns** a string `'HELLO'`.
+
+When we have written our own functions so far, we have always seen them evaluating to `undefined` when we call them - they always return `undefined`.
+
+In this lesson we will look at why that is, and how we can control the return value of our functions.
+
+We will try to write a function that triples a number. The function will be called with a number as an argument, and the function will return that number multiplied by three.
+
+The result will look like this:
+
+```js
+triple(5); // evaluates to 15
+triple(2); // evaluates to 6
+```
+
+Let's start by defining an empty function:
+
+```js
+function triple() {};
+```
+
+When we call the function, the evaluation value is `undefined`:
+
+```js
+function triple(number) {};
+
+triple(5); // evaluates to undefined
+triple(2); // evaluates to undefined
+```
+
+The next step would be to add in a parameter to the function, and multiply its value by 3.
+
+```js
+function triple(number) {
+  number * 3;
+};
+```
+
+But when we call the function, we still get `undefined`:
+
+```js
+function triple(number) {
+  number * 3;
+};
+
+triple(5); // evaluates to undefined
+triple(2); // evaluates to undefined
+```
+
+If we try to `console.log` the `number * 3` statement, we can see that JavaScript is executing the expression and performing the calculation.
+
+```js
+function triple(number) {
+  number * 3;
+};
+
+triple(5); // prints 15, evaluates to undefined
+triple(2); // prints 6, evaluates to undefined
+```
+
+The first function call prints `15` but evaluates to `undefined`. The second function call prints `6` but evaluates to `undefined`.
+
+We need a way to get that calculated value out of the function!
+
+To do this, we can use the `return` keyword:
+
+```js
+function triple(number) {
+  return number * 3;
+};
+
+triple(5); // evaluates to 15
+triple(2); // evaluates to 6
+```
+
+Now our function works as we want it to!
+
+To get a value out of a function, you **must** use the `return` keyword. If a function doesn't have a return statement, it will always return undefined.
+
+However, in some cases you might not be interested in the return value of a function, and that's fine. For example with `console.log` we use it to print a message to a screen, not to calculate a new value. In these cases, no return statement is needed.
+
+### Early returns
+
+An interesting feature of the `return` keyword in JavaScript is that it will stop the execution of your function immediately.
+
+Look at the following example:
+
+```js
+function myFunction() {
+  console.log('HELLO');
+  return 10;
+  console.log('GOODBYE');
+}
+```
+
+The code in this function contains 3 statements for the computer to execute. But when we call the function, only two of the statements will be executed. The last statement `console.log('GOODBYE');` will never happen:
+
+```js
+myFunction();
+```
+
+![image](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/images%2F983a3a083f0c570df256437d59f5c879d92a88b0ff14917ab7e1b6b69308.png?alt=media&token=24f7bf7c-568e-4bde-91b2-ab1d9ca88bad)
+
+This is because the function contains a `return` statement before the final `console.log`. Any code in a function after a `return` statement will not be executed.

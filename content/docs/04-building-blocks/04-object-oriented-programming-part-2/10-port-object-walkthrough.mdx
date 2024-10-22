@@ -1,0 +1,92 @@
+---
+title: "Port Object - Walkthrough"
+---
+
+## Steps
+
+- Discuss with your classmates how the domain model might be added to in this scenario.
+- Create a new test file, which should `describe` a new `Port` object.
+- Create a new test spec to check the new `Port` object can be instantiated. 
+- Write the code that makes this test pass.
+- Create a new test spec to check the new `Port` object has a `name` property. 
+- Write the code that makes this test pass.
+- Refactor the `Ship` test suite so a `Ship` takes a `Port` object instead of a string and check tests still pass.
+- Create a new test spec inside `Ship.test.js` to test a `dock` method.
+- Write the code that makes this test pass.
+- Add, commit with a meaningful message, and push to GitHub.
+
+## Domain Model
+
+```
+As a cruise ship captain,
+So I can get passengers to a new destination,
+I want a ship to be able to dock at a different port.
+```
+
+The domain model might now look like this:
+
+| Object | Methods    | Properties   |
+|--------|------------|--------------|
+| Ship   | setSail    | currentPort  |
+|        | dock       |              |
+| Port   |            |              |
+
+:exclamation: Note that `startingPort` has disappeared from `Ship` and `currentPort` has been introduced instead. It makes more sense - now a ship can be at different ports - that this property be renamed. **Make sure you rename this property in your `Ship` constructor and tests, and run your tests after to ensure everything still passes**.
+
+## Create a new test file `Port.test.js`, which should `describe` `Port`
+
+:exclamation: You should be able to do this without the walkthrough. Once you've passed the test, then proceed.
+
+## Create a new test spec to check the new object can be instantiated. 
+
+:exclamation: You should be able to do this without the walkthrough. Once you've passed the test, then proceed.
+
+## Write the code to make the test pass
+
+## Create a new test spec to check the new `Port` object has a `name` property. 
+
+:exclamation: You should be able to do this without the walkthrough. Once you've passed the test, then proceed.
+
+## Write the code to make the test pass
+
+## Refactor the `Ship` test suite so a `Ship` takes a `Port` object instead of a string and check tests still pass.
+
+Now we have a `Port` object, it makes no sense to pass a string of `'Dover'` to each `Ship` we instantiate in our tests. Instead, we can instantiate a new `Port` passing in `'Dover'` as its name, and we can pass the new instance into `Ship`. 
+
+First, we require in `Port` into our `Ship.test.js` file:
+
+![require Port](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/cruise-ships%2Frequire_port.png?alt=media&token=6fa7c3f3-ab16-42eb-80b6-345c5fba1bf9)
+
+Then we'll look for places where we've instantiated a `Ship` and we'll pass in a `Port` instance instead of a string. We also have to change any expectations that expect `'Dover'`:
+
+![Dependency Inversion: starting port](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/cruise-ships%2Fdependency_inversion_1.png?alt=media&token=c42e3030-c248-4aa4-b6a5-4c01d08dd9be)
+
+![Dependency Inversion: set sail](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/cruise-ships%2Fdependency_inversion_2.png?alt=media&token=54de1120-bbcf-4f88-a82f-6dd12ee07de4)
+
+This is called _dependency inversion_ - the premise that an object (in this case `Ship`) can depend on other objects, **but** it shouldn't know what they are. All `Ship` knows is that it's receiving an argument passed into it's constructor, and its assigning it as a property. It doesn't know it's a `Port` object. This is good as it means a `Port` is substitutable and as such our code is more modular.
+
+We should - after a cheeky `Port` :wine_glass: refactor - still be green on our tests:
+
+![Tests passing](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/cruise-ships%2Fport_refactor_green.png?alt=media&token=1bd4e310-670e-4234-ad87-6b60426460eb)
+
+## Create a new test spec inside `Ship.test.js` to test a `dock` method.
+
+When we call the `dock` method on a `Ship`, we want to change the state on our ship a.k.a the ship's `currentPort` property needs to be updated accordingly. Lets see how the test might look:
+
+![Docking at a different port](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/cruise-ships%2Fdifferent_port.png?alt=media&token=d7eeb7ea-aa26-4e8d-a310-c12f22a7b4d9)
+
+Here we create a `Port`: `dover`, and pass it to a new `Ship` as part of the setup process.
+
+Then - as part of the exercise process - we create a new `Port`: `calais`, and we call `ship.dock` passing in `calais`.
+
+Finally - as party of the verify process - we expect the `Ship`'s `currentPort` to be `calais`.
+
+Run your tests. They should fail with :red_circle: `TypeError: ship.dock is not a function`.
+
+## Write the code that makes this test pass.
+
+In our `Ship` code, we make no further assumptions about what `currentPort` is. Because we've followed the _dependency inversion_ principle, we can just assign to properties whatever gets passed into our constructor and methods as arguments. Therefore, `dock` really is as simple as re-assigning to the `currentPort` property:
+
+![dock](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/cruise-ships%2Fdock.png?alt=media&token=6e411a12-6cb9-4337-ae6a-6ecfba2674fc)
+
+## Add, commit with a meaningful message, and push to GitHub.

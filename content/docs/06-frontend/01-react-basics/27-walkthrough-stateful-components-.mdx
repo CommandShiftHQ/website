@@ -1,0 +1,73 @@
+---
+title: "Walkthrough: Stateful Components 💡"
+---
+
+## Solution
+
+#### 1. Import `useState()` into the `<App />` component
+
+`useState()` and other hooks can be imported from "react" package:
+
+```jsx
+import React, { useState } from "react";
+```
+
+#### 2. Add a `useState()` hook to your `<App />` component with its return value destructured to `selectedDate` and `setSelectedDate`. Set the initial value of `useState()` to the date of the first forecast within `forecasts` array.
+
+Assuming that <App /> currently looks like this:
+
+```jsx
+const App = ({ forecasts, location }) => {
+  return (
+    <div className="weather-app">
+      <LocationDetails city={location.city} country={location.country} />
+      <ForecastSummaries forecasts={forecasts} />
+      <ForecastDetails forecast={forecasts[0]} />
+    </div>
+  );
+};
+```
+
+We first need to add a useState() hook before we can add our state. We have to set the `selectedDate` property in state to the date of the first forecast from `forecasts`:
+
+```jsx
+const App = ({ forecasts, location }) => {
+  const [selectedDate, setSelectedDate] = useState(forecasts[0].date);
+
+  return (
+    <div className="weather-app">
+      <LocationDetails city={location.city} country={location.country} />
+      <ForecastSummaries forecasts={forecasts} />
+      <ForecastDetails forecast={forecasts[0]} />
+    </div>
+  );
+};
+```
+
+#### 3. Create a `selectedForecast` variable and set it equal to the date within your `forecasts` that matches the `selectedDate`, and pass this `selectedForecast` variable into the `<ForecastDetails />` component.
+
+Then we want to pass a `forecast` into `<ForecastDetails />` based on the selected date:
+
+```jsx
+const App = ({ forecasts, location }) => {
+  const [selectedDate, setSelectedDate] = useState(forecasts[0].date);
+  const selectedForecast = forecasts.find(forecast => forecast.date === selectedDate);
+
+  return (
+    <div className="weather-app">
+      <LocationDetails city={location.city} country={location.country} />
+      <ForecastSummaries forecasts={forecasts} />
+      <ForecastDetails forecast={selectedForecast} />
+    </div>
+  );
+};
+
+```
+
+Now the `<ForecastDetails />` component can render whichever forecast matches our selected date. If that date changes, then the forecast rendered in `<ForecastDetails />` will also change, but you might see an error in the command line (where you run `npm start`) or in the browser:
+
+```plaintext
+Line 9:24:  'setSelectedDate' is assigned a value but never used  no-unused-vars
+```
+
+Don't worry about it now, we will handle that in the next step.

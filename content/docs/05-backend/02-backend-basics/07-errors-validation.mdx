@@ -1,0 +1,33 @@
+---
+title: "Errors & Validation"
+---
+
+The problem we should have encountered in the last step is that Express was treating our numeric path parameters as strings!
+
+Instead of doing 1 + 2 and getting the number 3, we are doing '1' + '2' and getting the string '12'.
+
+This is because Express automatically treats all route parameters (and query string parameters) as strings. You should have worked out by this point (either on your own or with the solution) that we need to transform these strings to numbers before we use them in our controllers.
+
+What if the user doesn't pass through a valid number though? Say they pass in `fish` and `chips`. Try it in Postman. Visit [http://localhost:3000/numbers/add/fish/and/chips](http://localhost:3000/numbers/add/fish/and/chips). You should get back a response of: 
+
+```json
+{
+  "result": null
+}
+```
+
+This is because when we do `parseInt` on `fish` or `chips` we get back `NaN`, so we're trying to do `NaN + NaN`, which isn't a valid response. We should instead be validating that our numbers are valid, and if not then we should be responding with a status code that is typically linked to an error e.g. 400 Bad Request or 404 Not Found.
+
+- **Read** about HTTP status codes on [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status)
+
+## Challenge
+
+Check that your numbers are both valid (hint: see [Number.isNaN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/isNaN)). If one or both are invalid, then respond to the user with a `400` status code. Be sure to check in Postman that it does return a 400.
+
+### Extra credit
+
+Write a test that passes in `fish` and `chips`, and assert that a 400 is returned.
+
+## Solution
+
+- **Find the solution** to the above challenge [here](https://hackmd.io/@Yr7Q8gzkQUaCcF02NXvGtw/rJJ0JisgI).

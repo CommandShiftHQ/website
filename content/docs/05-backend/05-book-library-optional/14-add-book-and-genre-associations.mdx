@@ -1,0 +1,187 @@
+---
+title: "Add Book and Genre associations"
+---
+
+Now that we have `genre` and `author` in their own tables we want to be able to associate those two tables via a foreign key.
+
+This is made easy by Sequelize, as using its associations `hasOne`, `hasMany`, `belongsTo` and `belongsToMany` infers foreign key relationships between tables.
+
+Using `genre` as a starting point, the Genre model should look like this (notice that there is no reference to books in the model!):
+
+```js
+module.exports = (connection, DataTypes) => {
+  const schema = {
+    genre: {
+      allowNull: false,
+      type: DataTypes.STRING,
+      unique: true,
+      validate: {
+        notNull: {
+          args: [true],
+          msg: 'We need a genre',
+        },
+        notEmpty: {
+          args: [true],
+          msg: 'The genre cannot be empty',
+        },
+      },
+    },
+  };
+
+  return connection.define('Genre', schema);
+};
+
+```
+1 - We should remove any reference to `genre` in the Book model, so it should now look like similar to: 
+
+```js
+module.exports = (connection, DataTypes) => {
+  const schema = {
+    title: {
+      allowNull: false,
+      type: DataTypes.STRING,
+      validate: {
+        notNull: {
+          args: [true],
+          msg: 'We need a book title',
+        },
+        notEmpty: {
+          args: [true],
+          msg: 'The book title cannot be empty',
+        },
+      },
+    },
+    author: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {
+          args: [true],
+          msg: 'We need a book author',
+        },
+        notEmpty: {
+          args: [true],
+          msg: 'The book author cannot be empty',
+        },
+      },
+    },
+    ISBN: DataTypes.STRING,
+  };
+
+  return connection.define('Book', schema);
+};
+
+```
+
+2 - We will make our associations in our Sequelize setup file in `/src/models/index.js` by adding the following code immediately after where we define the constants `Reader`, `Book` and `Genre`:
+
+```js
+  Reader.hasMany(Book);
+  Genre.hasMany(Book);
+  Book.belongsTo(Genre);
+```
+
+3 - After setting the relationships above, Sequelize will automatically create the foreign key for `GenreId` in the Books table, so you don't need to do it yourself. Therefore Book will have a new column named `GenreId` (notice the capitalisation). This means if we have a `row` on `genres` with the value 
+
+
+```js
+{
+  id: 3,
+  genre: "Travel Literature"
+}
+```
+
+We could create a new book with the following JSON:
+
+```js
+{
+  "title": "In Patagonia",
+  "author": "Bruce Chatwin",
+  "GenreId": 3
+}
+```
+
+More on associations in the (very good) Sequelize [documentation](https://sequelize.org/master/manual/assocs.html). 
+
+4 - Query using Sequelize associations. Let's imagine that upon the creation of our book above we got back an `id` of `10`. If we query our database with `/books/10` we'll see that there's no mention to genre besides a `GenreId` integer which, for a human, does not give us much information.
+
+In order to get the genre beyond an `id` we will need to make sure that our query for Book includes the model Genre. If you change the code of `getItemById` in `/src/controllers/helpers.js` so that it looks like this:
+
+```js
+const getItemById = (res, model, id) => {
+  const Model = getModel(model);
+
+  return Model.findByPk(id, { include: Genre }).then((item) => {
+    if (!item) {
+      res.status(404).json(get404Error(model));
+    } else {
+      const itemWithoutPassword = removePassword(item.dataValues);
+
+      res.status(200).json(itemWithoutPassword);
+    }
+  });
+};
+```
+
+and try the endpoint again, what do you see? 
+
+It should return something similar to:
+
+```js
+{
+    "id": 10,
+    "title": "In Patagonia",
+    "author": "Bruce Chatwin",
+    "ISBN": null,
+    "createdAt": "2020-05-23T11:25:03.000Z",
+    "updatedAt": "2020-05-23T11:25:03.000Z",
+    "GenreId": 3,
+    "Genre": {
+        "id": 3,
+        "genre": "Travel Literature",
+        "createdAt": "2020-05-23T11:24:05.000Z",
+        "updatedAt": "2020-05-23T11:24:05.000Z"
+    }
+}
+
+```
+
+5 - This is all very good, but what about querying a genre so that it shows us all the books listed under it, which is what our requirements asked of us? At the moment if we hit the `/genres` endpoint it would only shows us a list of genres with no books details.
+
+For that we will need to add a new `getAllBooks` function in `/src/controllers/helpers.js` so that it includes our Book model, like so:
+
+```js
+const getAllBooks = (res, model) => {
+  const Model = getModel(model);
+
+  return Model.findAll({ include: Book }).then((items) => {
+    res.status(200).json(items);
+  });
+};
+```
+
+Try the endpoint again. We should see something to:
+
+```js
+    {
+        "id": 3,
+        "genre": "Travel Literature",
+        "createdAt": "2020-05-23T11:24:05.000Z",
+        "updatedAt": "2020-05-23T11:24:05.000Z",
+        "Books": [
+            {
+                "id": 10,
+                "title": "In Patagonia",
+                "author": "Bruce Chatwin",
+                "ISBN": null,
+                "createdAt": "2020-05-23T11:25:03.000Z",
+                "updatedAt": "2020-05-23T11:25:03.000Z",
+                "GenreId": 3
+            }
+        ]
+    },
+    {
+        "id": 4,
+        "genre": "Science Fiction",
+        ....
+```

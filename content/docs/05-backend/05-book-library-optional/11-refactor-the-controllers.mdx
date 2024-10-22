@@ -1,0 +1,18 @@
+---
+title: "Refactor the controllers"
+---
+
+One of the things that we can notice now that we have both `Book` and `Reader` created is that both controllers seem to have a lot of code repetition.
+
+For instance, if we compare the `createReader` and `createBook` controllers we can see most of the code is the same. 
+
+1. Have a go at writing a helper function `createItem` which is general enough to work for both controllers.
+
+2. Can you think of how you could write more helper functions so that all CRUD operations are abstracted away in a helper file?
+
+3. When refactoring, your tests are your corner stone. There should be no errors on the tests before you start refactoring and there should be none by the end of it!
+
+4. Refactoring code to make it DRY is something that is part of a software developer workflow. The less code we have the less bugs it'll be likely to have, or the easier they are to fix. It's also a great way of reverse engineering logic and gaining practice in changing code with the support of tests.
+
+5. Have a peak at part of our refactor solution [in this commit](https://github.com/MCRcodes/book-library-api/blob/solution/src/controllers/helpers.js) if you feel like having some inspiration. Try to understand what is happening and why, but then write your own code. You can do this!
+

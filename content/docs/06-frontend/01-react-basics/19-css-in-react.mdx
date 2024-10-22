@@ -1,0 +1,37 @@
+---
+title: "CSS in React"
+---
+
+## Overview
+At the moment your app should look something like this:
+
+![Unstyled App](https://s3.eu-west-2.amazonaws.com/mcrcodes/weather/unstyled.png)
+
+Not going to win any prizes anytime soon.
+
+In this step, we're going to look at adding some CSS to our React app. With a normal HTML page, we would require any CSS styles to be wrapped in `<style>` tags or we could link an external stylesheet using a `<link>` tag in the document `<head>`.
+
+In React we have a couple of ways to include CSS as well. Let's start with the simplest one.
+
+## Requirements
+
+The main requirement is to have our app looking like the design below, therefore:
+
+1. Location details are displayed at the top, and left aligned.
+2. Forecasts for each day are displayed in the middle, placed horizontally and spaced out evenly.
+3. Forecast details are displayed at the bottom and centred.
+
+It looks like you don't have to style location details, but the rest needs some work. For now let's only do point 2, as we haven't built the `<ForecastDetails />` component yet.
+
+![App](https://s3.eu-west-2.amazonaws.com/mcrcodes/weather/app.png)
+
+## Technical task breakdown
+
+1. Style `<App />`, but only the container element (add margin).
+2. Make sure you have the `App.css` stylesheet imported into your `App.js` file.
+3. Add stylesheet `ForecastSummaries.css`, and style the layout of `<ForecastSummaries />` using flexbox.
+4. Don't forget to import styles into `ForecastSummaries.js`.
+5. Think how you can check in dev tools if styles were applied and imported into our app.
+
+💡 CSS stylesheets - using React (more accurately using Webpack that is used inside `react-scripts`), we can import CSS files into our JavaScript directly. Even better, we can break our CSS files down by component and import them directly into that component. 
+

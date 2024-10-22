@@ -1,0 +1,57 @@
+---
+title: "❗️A word on errors 😱"
+---
+
+We do not create tracks with (willful) errors, so if you find an error that is most likely to do with:
+
+- a Javascript syntax error - files used but not required, unknown variables, parenthesis `()` not closed, curlies `{}` not closed, etc
+
+- comparison between things that aren't the same, usually found in tests - `hello` is not the same as `hello ` - the latter has an extra space which human eyes find difficult to spot but not a computer!
+
+- asynchronous errors - things are executed `before` or `after` we expect them to
+
+- specific API errors - there are errors thrown by `node express` which are specific to the way we interact with its API, either in test or human, format
+
+```
+The repo you can clone for this project has no errors at the time of writing. You should be able to interact with the API via `npm start` and Postman and run tests with none failing by `npm t`
+```
+
+- Please take a systematic approach and don't write so much code, either in implementation or tests, that you don't know which one might be causing trouble. 
+
+- Every time you have changed implementation and/or tests as we are in a "neutral" status (no errors, all tests passing) don't forget to commit/push to Github. This might come in handy if you ever need to go back to a place where you know everything was 👍  
+  
+- Reading / interpreting error messages are the bread and butter of developer work life. When we start learning programming it's easy to think that debugging "errors" is a waste of time or, time badly spent, time that we could be using to build things. This is a not very accurate perception vs reality - developers solve problems for a living, either by chasing errors, building things, or both.
+
+- Do what good developers do - the moment we feel frustration rising it's time to ask for help. 
+
+- Below there's a few unexpected errors we found while writing the solution branch for this track. 
+
+## 1 - Invalid use of NULL value
+
+![](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/book-library-api%2FScreenshot%202020-05-17%20at%2017.21.33.png?alt=media&token=7227ecbc-b361-41ae-8613-3f1ad9b3b67e)
+
+If you're like me and interact with your API as you build it there might come a time when you get this error when:
+
+- you're running your express server
+- you've just updated one (or more) of your model fields to not accepts NULL type fields
+
+This happens because you might have data in your database that no longer matches your schema definition - you might have changed a schema that no longer allows NULL as a value for a field
+
+➡️  How to fix it? 
+
+By deleting the (now) offending records in the database. 
+
+`Hold on, what if "offending records" numbers were in the thousands?` We would never recommend deleting data or records unless they're in the context of a track or example.
+
+In a real life example we would probably need to negotiate a database migration (also talk to your nearest Senior Developer or Solutions Architect 😅 )
+
+## 2 - Cannot set headers after they're sent to the client
+
+![](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/book-library-api%2FScreenshot%202020-05-16%20at%2014.15.18.png?alt=media&token=7fc1320b-2659-4141-8c7e-e09838745af8)
+
+Most times we forget to explicitly return  `res.send()` from controllers, or we do not have an `{else}` logic in a controller. This means we send a second header (read `response` after one has been already sent. Remember express is only happy with ONE response to a request. 
+
+➡️  How to fix it? 
+
+Make sure your controller is returning one single response to the current scenario.
+

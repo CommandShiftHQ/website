@@ -1,0 +1,19 @@
+---
+title: "Conditional Rendering"
+---
+
+Now we’re going to look at conditionally rendering our `SearchResults` component as we don’t want it to appear on the page if a search hasn’t been done.
+
+In `App.js`, pass the state of `searchResults` into `<SearchResults />`, as this is getting slightly confusing, let's call the prop `results`. 
+
+Open `<SearchResults />` and above our `return` we're going to add an `if` statement like so:
+
+```
+if (!results.length) {
+  return <p>No results</p>
+}
+```
+
+The second part of or `if` statement will be the `else` which will return the `img` we currently have as a placeholder.
+
+If you have successfully managed to get this to work you should see your stock image appear on the screen when you type an entry into the search input and click submit! Well done!

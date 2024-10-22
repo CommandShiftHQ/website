@@ -1,0 +1,151 @@
+---
+title: "For loops"
+---
+
+## Learning Objectives
+
+- Understand the types of scenario where we would want to use a for-loop
+- Understand how to write a for-loop in JavaScript
+
+## For Loops
+
+When we want to perform a task a certain number of times, we should reach for a **for-loop**. These are probably the most common type of loop you will see in JavaScript.
+
+### Increasing cake production
+
+The factory manager has one more request to ask of the best engineer in the company. At the moment, although there is just one button to press on the machine, the button still needs to be pressed to bake every cake. The manager thinks there should be a way to bake lots of cakes with a single button press.
+
+They have already installed a new control on the cake machine - a batch size selector, which allows the machine operator to say how many cakes should be baked with a single button press. In our code, this means that the `bakeCake` function now has an new `batchSize` parameter:
+
+```js
+function bakeCake(temperature, ingredients, bakingTime, shouldDecorate, batchSize) {
+  console.log('Heating oven to ' + temperature + ' celsius');
+  console.log('Adding ' + ingredients + ' to mixing bowl');
+  console.log('Mixing ingredients together');
+  console.log('Putting ingredients in tin');
+  console.log('Putting tin in oven');
+  console.log('Baking for ' + bakingTime + ' minutes');
+  console.log('Taking tin out of oven');
+
+  if (shouldDecorate) {
+    console.log('Mixing icing');
+    console.log('Applying icing');
+  }
+};
+```
+
+It's your job to make this new control do something!
+
+### For Loops in JavaScript
+
+For loops are used to perform a task a set number of times.
+
+These loops have three parts:
+
+- A counter variable - a number (usually starting 0)
+- A condition - this is similar to the condition in an if-statement. It normally checks the value of the counter. While the condition is `true`, the loop will continue performing its task. If it's `false`, the loop will stop.
+- A step - this is a statement that changes the value of the counter.
+
+In practice, a simple for-loop looks like this:
+
+```js
+const timesToPerformTask = 10;
+
+for (let counter = 0; counter < timesToPerformTask; counter += 1) {
+  console.log('Doing something');
+}
+```
+
+This will run the statement in the code block 10 times. Let's take a look at the parts of the for-loop in the brackets more closely:
+
+- `let counter = 0;` - this is our **counter variable**. In this example it starts at 0.
+- `counter < timesToPerformTask;` - this is our **condition**. This condition is checked *before* each new repetition of the loop. While the value of the counter is less than `timesToPerformTask` (10), the loop will continue doing it's thing.
+- `counter += 1` - this is our **step**. It increases the value of the value of the counter. This happens *after* every repetition of the loop.
+
+#### Increment operators
+
+The `+=` is a new operator we have not seen before. It increases the value of the variable on the left hand side by the number on the right hand side. `counter += 1` is the same as `counter = counter + 1`.
+
+You may also see something like `counter++`, which also increases the value of counter by 1. This is fine, but in some cases we might want to increase the value by more than 1. In these cases `counter += 2` etc should be used, therefore, it's better to be consistent and always use `+=`.
+
+There are also `-=` and `--` operators, which work in the same way as `+=` and `++`, but they decrease the value instead.
+
+#### Step-by-step
+
+Step by step, here is what happens when the above for-loop runs:
+
+- **`counter`** is `0` - meaning the loop has run 0 times
+- the **condition** `counter < timesToPerformTask` is checked. `0 < 10` is `true`, so the loop continues
+- the code in the **code block** is executed
+- the **step** (`counter += 1`) runs and the `counter` variable is increased by 1
+
+- **`counter`** is `1` - meaning the loop has run 1 times
+- the **condition** `counter < timesToPerformTask` is checked. `1 < 10` is `true`, so the loop continues
+- the code in the **code block** is executed
+- the **step** (`counter += 1`) runs and the `counter` variable is increased by 1
+
+- **`counter`** is `2` - meaning the loop has run 2 times
+- ...etc
+- **`counter`** is `9` - meaning the loop has run 9 times
+- the **condition** `counter < timesToPerformTask` is checked. `9 < 10` is `true`, so the loop continues
+- the code in the **code block** is executed
+- the **step** (`counter += 1`) runs and the `counter` variable is increased by 1
+
+- **`counter`** is `10` - meaning the loop has run 10 times
+- the **condition** `counter < timesToPerformTask` is checked. `10 < 10` is `false`, so the loop stops
+
+We can use this pattern to solve our next cake-baking problem.
+
+### Baking lots of cakes
+
+The function we have so far looks like this:
+
+```js
+function bakeCake(temperature, ingredients, bakingTime, shouldDecorate, batchSize) {
+  console.log('Heating oven to ' + temperature + ' celsius');
+  console.log('Adding ' + ingredients + ' to mixing bowl');
+  console.log('Mixing ingredients together');
+  console.log('Putting ingredients in tin');
+  console.log('Putting tin in oven');
+  console.log('Baking for ' + bakingTime + ' minutes');
+  console.log('Taking tin out of oven');
+
+  if (shouldDecorate) {
+    console.log('Mixing icing');
+    console.log('Applying icing');
+  }
+};
+```
+
+The batchSize is now available as a parameter, but when the function is called, only one cake is produced. Here we are passing `5` as an argument for the `batchSize` parameter.
+
+```js
+bakeCake(180, '100g flour, 175g sugar, 3 eggs, 175g butter, 50g cocoa powder', 25, true, 5);
+```
+
+We can move the entire set of cake-making instructions into a for-loop, and use the `batchSize` parameter to control the number of times the loop runs. In this example, we have called the counter variable `i`, which is a very common name to use.
+
+```js
+function bakeCake(temperature, ingredients, bakingTime, shouldDecorate, batchSize) {
+  for (let i = 0; i < batchSize; i += 1) {
+    console.log('Heating oven to ' + temperature + ' celsius');
+    console.log('Adding ' + ingredients + ' to mixing bowl');
+    console.log('Mixing ingredients together');
+    console.log('Putting ingredients in tin');
+    console.log('Putting tin in oven');
+    console.log('Baking for ' + bakingTime + ' minutes');
+    console.log('Taking tin out of oven');
+
+    if (shouldDecorate) {
+      console.log('Mixing icing');
+      console.log('Applying icing');
+    }
+  }
+};
+```
+
+When we execute the function this time, we see the cake baking process happens 5 times! (You'll have to scroll down in the console to see the entire set of printed messages)
+
+```js
+bakeCake(180, '100g flour, 175g sugar, 3 eggs, 175g butter, 50g cocoa powder', 25, true, 5);
+```

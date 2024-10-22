@@ -1,0 +1,45 @@
+---
+title: "Update State & Event Handlers - update tests 🔬"
+---
+
+Have you checked what the console returns for tests? The first error should say:
+
+```plaintext
+Warning: Failed prop type: The prop `onSelect` is marked as required in `ForecastSummary`, but its value is `undefined`.
+at ForecastSummary (/your/path/to/weather-app/src/components/ForecastSummary.js:29:7)
+```
+
+We need to add `onSelect` prop to `validProps` in `ForecastSummary.test.js` file. Please note we don't need to pass the actual function into it, just an empty one:
+
+```js
+describe("ForecastSummary", () => {
+  const validProps = {
+    date: 1111111,
+    description: "Stub description",
+    icon: "800",
+    temperature: {
+      min: 12,
+      max: 22,
+    },
+    onSelect: () => {},
+  };
+
+  it("renders correctly", () => {
+    const { asFragment } = render(
+      <ForecastSummary
+        date={validProps.date}
+        description={validProps.description}
+        icon={validProps.icon}
+        temperature={validProps.temperature}
+        onSelect={validProps.onSelect}
+      />
+    );
+
+    expect(asFragment()).toMatchSnapshot();
+  });
+
+  // other tests...
+});
+```
+
+The only thing failing now should be snapshot testing. Take a look at the messages in the terminal to fix them.

@@ -1,0 +1,25 @@
+---
+title: "Migrations"
+---
+
+We briefly covered migrations before, but now it's a good time to review how they work in a bit more detail.
+
+We have prepared a video for you to watch: 
+https://www.youtube.com/watch?v=BNgtAloCwHg
+
+[![Migrations](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/migrations.png?alt=media&token=9e1eb357-445b-4255-9761-204dad91cdf2)](https://www.youtube.com/watch?v=BNgtAloCwHg)
+
+### What are migrations?
+
+Migrations are a way to perform programmatic changes to your database when you might not have direct access to the database. 
+Ideally you shouldn't need to work with pgAdmin and postgres directly for this task.
+
+In a nutshell, migrations are just SQL files being executed at most once in a certain order. It is important to remember that migrations are only ever run once, and *exactly once*. To achieve that, we need to keep track of which migrations have already been run when triggering a migration, by creating a separate `migrations` table. 
+
+### How do migrations work?
+
+In our track, this has already been handled in the migrate script you've already added, so you don't need to do anything. Feel free to have a read through and see if you can understand it better.
+
+You can think of each migration as a small incremental step someone could take to re-create the structure of your database, and be up-to-date with what you want their. Each new migration makes a new change that applies on top of the last change. It is also a log of all the changes that were applied in the past, so they can serve as documentation too.
+
+Once a migration has been performed (and the SQL it contained has been executed), you shouldn't change it. You will need to add a new migration and continue applying your desired changes that way.

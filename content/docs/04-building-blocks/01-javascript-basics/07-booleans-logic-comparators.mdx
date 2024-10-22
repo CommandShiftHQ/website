@@ -1,0 +1,78 @@
+---
+title: "Booleans, Logic & Comparators"
+---
+
+In JavaScript, there are 18014398509481983 integer values, a near infinite amount of floats (decimals) and strings, but only 2 boolean values: `true` and `false`.
+
+This makes them super useful for decision making - on occasions you will want your code to do one thing given one set of conditions, and another thing given a different set of conditions. That kind of logic is made possible by booleans.
+
+The most common way to use a boolean in your code is not by using the literal `true` or `false` values, but by using **comparison operators**.
+
+These compare two other values - for example two numbers - and tell you whether a particular relationship exists between those values.
+
+For example, the statement `1 > 0` evaluates to `true`, and the statement `1 < 0` evaluates to `false`.
+
+Building on this, you can assert things about combinations of booleans, to check if both or either of the values are true or false.
+This is done using **logical operators**.
+
+## Truthiness
+
+Another important concept related to booleans is **truthiness**.
+
+Every value in JavaScript is either truthy or falsy.
+
+There are only a few falsy values:
+
+- `false`
+- `''` - an empty string
+- `0`
+- `null`
+- `undefined`
+- `NaN` - not a number (e.g an invalid mathematical operation such as the result of dividing by zero)
+
+Anything else is a truthy value.
+
+The idea here is to allow you to avoid making assertions like:
+
+```js
+if (a !== 0) {
+  // do something if a is not zero
+}
+```
+
+or 
+
+```js
+if (a !== '') {
+  // do something if a is not an empty string
+}
+```
+
+Truthiness allows both of the above to be written as:
+
+```js
+if (a) {
+  // do something
+}
+```
+
+To run the tests for this challenge, run `npm test -- booleans`.
+
+In the same manner as before, try to fix all of the failing tests.
+
+- Run the tests
+- Read the error message
+- Write some code to fix that message
+- Repeat
+
+And again, commit to git and push to Github regularly, and use the links provided and google to help you if you get stuck!
+
+Once done, you can move onto the next challenge.
+
+## Recommended Reading
+
+- [Booleans on MDN JavaScript documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)
+- [Comparison operators on MDN JavaScript documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators)
+- [Logical operators on MDN JavaScript documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Logical_Operators)
+- [Truthy on MDN JavaScript glossary](https://developer.mozilla.org/en-US/docs/Glossary/Truthy)
+- [Falsy on MDN JavaScript glossary](https://developer.mozilla.org/en-US/docs/Glossary/Falsy)

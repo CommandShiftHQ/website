@@ -1,0 +1,23 @@
+---
+title: "Make it DRY ;TLDR"
+---
+
+During the setup phase of our tests (see [Four Phase Test](https://robots.thoughtbot.com/four-phase-test)) we typically follow the same setup actions: create a port, create an itinerary and create a ship. This isn't very DRY (Don't Repeat Yourself!). Fortunately, Jest has a [beforeEach](https://facebook.github.io/jest/docs/en/setup-teardown.html) method that allows us to group similar set up actions in `describe` blocks.
+
+## Challenge
+
+Use Jest's [beforeEach](https://facebook.github.io/jest/docs/en/setup-teardown.html) method to DRY up the test suite for `Ship`.
+
+## To complete this challenge, you will need to:
+
+- Identify the test specs in `Ship.test.js` that share the same setup actions. 
+- Create a new `describe` nested inside of the current `describe` `Ship` callback function, and move those test specs inside of it.
+- In your nested `describe`'s callback function cut the set up actions from the test specs and add them to a `beforeEach`. 
+- Run your tests and ensure they still pass.
+- Do the same DRYing up inside your `Port` test suite.
+- Add, commit with a meaningful message, and push to GitHub.
+
+## Recommended Reading
+
+- [Four Phase Test](https://robots.thoughtbot.com/four-phase-test)
+- [Jest: Setup and Teardown](https://facebook.github.io/jest/docs/en/setup-teardown.html) - Would strongly recommend reading. Sections such as `Scoping` and `Order of execution of describe and test blocks` are very important.

@@ -1,0 +1,101 @@
+---
+title: "Isolating with spies - Walkthrough"
+---
+
+## Steps
+
+- In `can set sail` you will need to remove the assertion on `port.ships` and instead assert that `ship.setSail` calls `port.removeShip` (where `port` is a stub, and `removeShip` is a method on that stub).
+- In `gets added to port on instantiation` you will need to remove the assertion on `port.ships` and instead assert that `port.addShip` has been called (again, `addShip` will be a spy on a `port` stub).
+- In `can dock at a different port` you will need to remove the assertion on `calais.ships` and instead assert that `calais.addShip` has been called with `ship` (again, `addShip` will be a spy on a `port` stub).
+
+## `can set sail`
+
+First of all, we want to stop using `Port` and instead use a stub we'll create a stub object that has the same interface as `Port`, ensuring the methods on our object are spies so we can listen in on them in our test specs. Inside `Ship.test.js` - in the `beforeEach` - we want to change the following:
+
+```js
+beforeEach(() => {
+  dover = new Port('Dover');
+  calais = new Port('Calais');
+  itinerary = new Itinerary([dover, calais]);
+  ship = new Ship(itinerary);
+});
+```
+
+to:
+
+```js
+let dover;
+let calais;
+
+beforeEach(() => {
+  dover = {
+    addShip: jest.fn(),
+    removeShip: jest.fn(),
+    name: 'Dover',
+    ships: []
+  };
+
+  calais = {
+    addShip: jest.fn(),
+    removeShip: jest.fn(),
+    name: 'Calais',
+    ships: []
+  };
+
+  itinerary = new Itinerary([dover, calais]);
+  ship = new Ship(itinerary);
+});
+```
+
+Then we can remove our assertion that `port.ships` no longer contains our `ship`. We have to do so, as the reasoning for even having this test was that we knew if `port.ships` did contain the ship, that our `setSail` method was making the call to `port.removeShip`. Now we're isolating our test and stubbing `Port`, we can do this more efficiently with a spy. 
+
+Instead of asserting on `port.ships`, we'll assert that our `Ship` instance's `setSail` method calls the `removeShip` method on our `Port`-like stub. Because we've tested `removeShip` separately inside `Port.test.js`, we can have complete confidence that despite test isolation, our application will have full test coverage.
+
+This can be demonstrated `can set sail` test. Change your test code from:
+
+```js
+it('can set sail', () => {
+  ship.setSail();
+
+  expect(ship.currentPort).toBeFalsy();
+  expect(dover.ships).not.toContain(ship);
+});
+```
+
+To:
+
+```js
+it('can set sail', () => {
+  ship.setSail();
+
+  expect(ship.currentPort).toBeFalsy();
+  expect(dover.removeShip).toHaveBeenCalledWith(ship);
+});
+
+```
+
+## `gets added to port on instantiation`
+
+Our `Ship` constructor calls a port's `addShip` method in its constructor, so our `Port`-like stub's `addShip` method gets called in the `beforeEach` callback prior to each test running. Therefore, we just have to assert in this test that `addShip` was called.
+
+Change:
+
+```js
+it('gets added to port on instantiation', () => {
+  expect(dover.ships).toContain(ship);
+});
+```
+
+to:
+
+```js
+it('gets added to port on instantiation', () => {
+  expect(dover.addShip).toHaveBeenCalledWith(ship);
+});
+```
+
+## `can dock at a different port`
+
+This one's on you! Continue with the `calais` stub of `Port`.
+
+## Add, commit with a meaningful message, and push to GitHub.

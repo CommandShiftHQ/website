@@ -1,0 +1,37 @@
+---
+title: "Search Component"
+---
+
+Let's start by creating our search input.
+
+To do that you will need to create a component in your `components` folder called `Search.js`, while we're doing that, don't forget to create a `Search.test.js` file in our `__tests__` folder and a `search.css` file in our `styles` also.
+
+In the `Search.js` file, you will import React and `useState` at the top of your file, along with the `search.css` file.
+
+Next, we will create a `stateless functional component`, in other words, this component will not be a `class component`. Inside your `return` brackets, create a `fragment`, this will house everything within our component's `return`. We don't have to import `Fragment` when we use it, instead, we can simply wrap our code in the following opening and closing brackets:
+
+`<>` - This is the same as `<Fragment>`
+
+`</>` - This is the same as `</Fragment>`
+
+We use `Fragments` when we don't need a `div` or a `span` but we need to wrap our code in something. Unlike `div` or `span`, `Fragment` will not show in the inspect console, meaning we don't end up with unnecessary nested `div`'s in our build that make it hard to style or debug.
+
+Inside that `Fragment` create an `input` that has the type of `text`.
+
+Now let's make this render on the screen.
+
+Head over to `App.js` and `import` your `Search` component. Once you've done that, remove the `Hello World!` we created before and replace it with our `<Search />` component. Once you've done that, we should have something that looks absolutely terrible, but at least we now have an input!
+
+Now let's tidy things up a bit. Next, we should add an `asset` which in this case is the NASA logo.
+
+In the `App.js` component, add an `image` tag above your `<Search />` and add the asset link to the `src=""` of your image. If you now take a look at your app there should be a HUGE NASA logo completely covering your screen, let's quickly fix this.
+
+Add a `className` to your `img` and `input`. We should now have three `className`'s we can target across 2 components.
+
+Let's open our `app.css` file we that we moved into our `styles` folder earlier. If you haven't done so already, remove all the default code in here.
+
+In here, make it so `.app` has flex applied to sort everything in the component in a column. Apply some `height` and `width` to your logo and centre it on the page. Then lastly, open your `search.css` file and make your search input centered and looking like it didn't take part in the first moon landing in 1969.
+
+Lastly, before we're done, write a basic test for `App.test.js` and `Search.test.js` to ensure your components mount and work as intended. Take inspiration from our previous `Weather-app` for this one.
+
+Excellent, next we'll look at adding some logic to this component in preparation for our search.

@@ -1,0 +1,158 @@
+---
+title: "While loops"
+---
+
+## Learning Objectives
+
+- Understand the types of scenario where we would want to use a while-loop
+- Understand the difference between for-loops and while-loops
+- Understand how to write a while-loop in JavaScript
+- Understand how to stop a while-loop
+
+## While Loops
+
+We use **for-loops** we want to perform a task a fixed number of times. These loops are based on a counter, which counts how many times the action has been performed.
+
+On other occasions, we might want to keep repeating an action **until** we no longer need to and these situations don't always depend on a counter, but on some other factor.
+
+A classic example would be in a game where the user is asked a question and has to guess the answer. If they get the question wrong, they have to guess again, and keep guessing until they get the answer right.
+
+In this scenario, we don't know how many attempts the user will take to guess correctly, and there is no way we could calculate it beforehand, so a for-loop wouldn't be able to solve our problem.
+
+Thankfully, this is the kind of problem we can use a **while-loop** to solve.
+
+These are similar to for-loops, and actually a little bit simpler to understand!
+
+### While Loops in JavaScript
+
+A simple while loop would look like this:
+
+```js
+let shouldKeepLooping = true;
+while(shouldKeepLooping) {
+  console.log('Do something');
+  shouldKeepLooping = false;
+}
+```
+
+The syntax here is very similar to an if-statement. We create the while-loop using the `while` keyword. In the round brackets we have a simple condition, which should be a boolean expression. Finally there is the block of code that we want to loop over.
+
+We've already said that for-loops depend on a counter and while-loops do not. This means there is a practical difference when we write the two kinds of loops.
+
+A while loop doesn't depend on any particular thing. The condition expression we use to control the loop - and the values used by this expression - could be *anything* and we need to manage these values as part of the loop.
+
+Lets see a practical illustration of this using the simple example above.
+
+The code block we want to execute is a `console.log` statement.
+
+```js
+{
+  console.log('Do something');
+}
+```
+
+To execute this block four times, we could use a for-loop:
+
+```js
+for (let i = 0; i < 4; i += 1) {
+  console.log('Do something');
+}
+```
+
+But if we put wanted to use a while-loop to execute the same code-block until the value of our `shouldKeepLooping` variable was false, we would have a problem:
+
+```js
+let shouldKeepLooping = true;
+while (shouldKeepLooping) {
+  console.log('Do something');
+}
+```
+
+In the example above, the condition that controls the loop depends on the value of the `shouldKeepLooping` variable - the loop will keep running until the value of that variable is `false`. But the code block doesn't change the value of that variable, so the loop will run forever.
+
+
+Step-by-step, the process is this:
+
+- `shouldKeepLooping` starts as `true`
+- before running the code block, the loop checks the value of `shouldKeepLooping`
+- `shouldKeepLooping` is `true` therefore the loop executes the code block
+  - the message is printed
+- before running the code block again, the loop checks the value of `shouldKeepLooping`
+- `shouldKeepLooping` is still `true` therefore the loop executes the code block
+  - the message is printed
+- before running the code block again, the loop checks the value of `shouldKeepLooping`
+- `shouldKeepLooping` is still `true` therefore the loop executes the code block
+  - the message is printed
+- ...repeat this forever
+
+With while-loops, it's really important that the code you are looping over will at some point cause the loop to stop. That's why we have to include the extra statement `shouldKeepLooping = false` - to stop the loop.
+
+```js
+let shouldKeepLooping = true;
+while (shouldKeepLooping) {
+  console.log('Do something');
+  shouldKeepLooping = false;
+}
+```
+
+Now the step-by-step process is this:
+
+- `shouldKeepLooping` starts as `true`
+- before running the code block, the loop checks the value of `shouldKeepLooping`
+- `shouldKeepLooping` is `true` therefore the loop executes the code block
+  - the message is printed
+  - `shouldKeepLooping` is set to false
+- before running the code block again, the loop checks the value of `shouldKeepLooping`
+- `shouldKeepLooping` is now `false` therefore the loop stops
+
+### Example - Guessing Game
+
+Let's take a look at a more real-life example now, using the guessing game scenario we mentioned before.
+
+We will write a simple program that asks the user to guess the name of the capital city of Paraguay (Asuncion).
+
+We can do this by using `prompt`:
+
+```js
+const guess = prompt('What is the capital city of Paraguay?');
+```
+
+When the user provides an answer, we want to tell them if they were right or wrong. We can use `alert` to send a message to the user, and we can use an if/else statement to decide which message to send:
+
+```js
+const userGuess = prompt('What is the capital of Paraguay?')
+
+if (userGuess === 'Asuncion') {
+  alert('Congratulations, you guessed correctly!');
+} else {
+  alert('Uh oh, you guessed incorrectly!');
+}
+```
+
+This code works, but it will only ask the user once. To make the user guess repeatedly until the answer correctly, we need to use a while-loop. The step-by-step process we need for this loop looks like this:
+
+- we will create a variable `hasGuessedCorrectly`, which is begins as the value `false`
+- before running the code block, the loop should check the value of `hasGuessedCorrectly`
+- if the user has not guessed correctly, the loop will do the following:
+  - ask the user to make a guess
+  - check if the guess is correct and use this to update the `hasGuessedCorrectly` variable
+  - display a message to the user
+
+```js
+let hasGuessedCorrectly = false;
+
+while (!hasGuessedCorrectly) {
+  const userGuess = prompt('What is the capital of Paraguay?')
+
+  hasGuessedCorrectly = (userGuess === 'Asuncion');
+
+  if (hasGuessedCorrectly) {
+    alert('Congratulations, you guessed correctly!');
+  } else {
+    alert('Uh oh, you guessed incorrectly!');
+  }
+}
+```
+
+When we run this code, the user will be asked the question repeatedly until they get the answer right - it could be once, twice, or 10000 times. 
+With a for-loop, we could have asked the user a set number of times, but with a while-loop, we can be a little bit smarter.

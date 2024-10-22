@@ -1,0 +1,30 @@
+---
+title: "Message Box"
+---
+
+# Message Box
+
+Lets give the user a bit more information about what's going on with a message box.
+
+![Message box](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/cruise-ships-gui%2Fmessage.png?alt=media&token=2b290847-3939-4c33-9364-d26c7ab5b40f)
+
+## Challenge
+
+Create a new `renderMessage` method and call it whenever a ship leaves a port, docks at another or reaches the end of its itinerary.
+
+## To complete this challenge, you will need to:
+
+- Add a CSS ruleset for selector `#message` and add CSS rules to style your message box.
+- Create a new `renderMessage` method on the `Controller.prototype` that accepts a parameter of `message`.
+- Inside the `renderMessage` method, append a new `div` element to the `#viewport` container (using `Element.appendChild`) with an `id` of `'message'` and set its `innerHTML` of the `message` variable.
+- Add a `setTimeout` which will remove the `#message` div element from the DOM (using `Element.removeChild`) after 2 seconds.
+- Call the method when the ship sets sail.
+- Call the method when the ship docks.
+- Call the method when the ship attempts to go further than its itinerary (in place of the `alert`).
+
+## Recommended Reading
+
+- [MDN: Element.innerHTML](https://developer.mozilla.org/en-US/docs/Web/API/Element/innerHTML)
+- [setTimeout](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setTimeout)
+- [appendChild](https://developer.mozilla.org/en-US/docs/Web/API/Node/appendChild)
+- [removeChild](https://developer.mozilla.org/en-US/docs/Web/API/Node/removeChild)

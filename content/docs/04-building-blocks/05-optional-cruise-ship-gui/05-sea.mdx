@@ -1,0 +1,32 @@
+---
+title: "Sea"
+---
+
+# Sea
+
+We're going to use JavaScript to change the background of our viewport every second so our water moves.
+
+To do this we are going to create a `Controller` constructor/prototype, which is responsible for interacting with and updating the DOM based on the state of our application.
+
+![Viewport](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/cruise-ships-gui%2Fsea.gif?alt=media&token=e3814343-129a-44e3-bd2b-6e628af5ffbd)
+
+## Challenge
+
+Use a combination of `setInterval` with a duration of `1000` (1000 milliseconds = 1 second) and `document.querySelector` to manipulate the viewport background. 
+
+You may need the walkthrough for this step as there are many concepts to cover.
+
+## To complete this challenge, you will need to:
+
+- Create a new constructor function called `Controller` in `src/controller.js`.
+- Create a new prototype method for `Controller` called `initialiseSea`, and call it from within the constructor.
+- Import the `controller.js` file into your html using a `script` tag at the end of the `body`.
+- Add another `script` tag underneathm but this time use inline JavaScript to create a new instance of `Controller`.
+- Inside your `initialiseSea` method, use `setInterval` to run a callback function every `1000` milliseconds. Inside the callback function use `document.querySelector` to find the `#viewport` element and change the background image so it alternates between `water0.png` and `water1.png`. You'll probably want to keep some sort of "counter" variable outside of your `setInterval` to determine which background image to use.
+
+## Recommended Reading
+
+* [A Detailed Breakdown of the `<script>` Tag](https://www.sitepoint.com/a-detailed-breakdown-of-the-script-tag/)
+* [MDN: setInterval](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setInterval)
+* [W3Schools: document.querySelector](https://www.w3schools.com/jsref/met_document_queryselector.asp)
+* [W3Schools: style backgroundImage property](https://www.w3schools.com/jsref/prop_style_backgroundimage.asp)

@@ -1,0 +1,34 @@
+---
+title: "Isolating with dummies ;TLDR"
+---
+
+This is the first step of several, covering how we can isolate our unit tests so that a single test-suite only tests the object at hand (e.g. in `Ship.test.js` we only want to test `Ship` - however we are using real `Port` and `Itinerary` objects to do so). For a recap on test doubles, you can rewatch the lecture [here](https://youtu.be/ELvvFBmQGqU).
+
+A dummy is a test double that acts as a named placeholder - we pass it into a method when that method has a required parameter and only intends to pass around the passed argument (i.e. it doesn't expect to call one of its methods or access a property). A good example might be if you have a method that adds an object to an array, and then you assert on the array that the object exists. You aren't actually using the object in any way - just passing it around.
+
+In *Ports have Ships* chapter we created a `ship` variable with the value of an empty object to use as a placeholder for `Ship` in `Port` tests. The `ship` is a dummy as `Port` does not access any of its properties or methods, it just adds it to the `ships` array.
+
+In Jest, we can also use `jest.fn()` to create a dummy. E.g:
+
+```js
+const basket = new Basket()
+const product = jest.fn()
+
+basket.addProduct(product)
+
+expect(basket.products).toContain(product)
+```
+
+## Challenge
+
+Incorporate dummies into your test suites in places where they could be used instead of the actual objects.
+
+## To complete this challenge, you will need to:
+
+- Look for any places in the test suite where objects are passed into methods where those methods don't use the object. 
+- Replace them with dummies.
+- Run your tests again to ensure they still pass (might be better to run tests after every change).
+
+## Recommended Reading
+
+- [TDD Terminology Simplified](https://code.tutsplus.com/articles/tdd-terminology-simplified--net-30626) - there are some concepts in here we don't cover, but a useful glossary for many of the terms used around TDD.

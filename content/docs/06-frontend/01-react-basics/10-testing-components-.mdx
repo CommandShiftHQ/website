@@ -1,0 +1,146 @@
+---
+title: "Testing Components 🔬"
+---
+
+## Before you start
+
+If you haven't had a lecture on testing React components yet, feel free to skip this step for now. We kept it here, as that's what the workflow would usually look like: build component, write test. Just don't forget to go back to it later! We put 🔬 emoji next to titles of all testing related steps, so you can easily identify them. Of course if you want to test yourself, please feel free to continue 💪.
+
+## Testing React components
+Now we have built our component, let's look into how we might test it.
+
+Testing React - and testing a UI in general - is a little different to the plain JavaScript testing we've seen before. This is because we need the components to be rendered somewhere in order to check how they work, and also how they look.
+
+There are a number of options available - we could boot up a browser and click around manually. We could automate the clicking around in a browser. Both of these options are a little slow, and automated browser testing is notoriously tricky to set up.
+
+Jest gives us the option of snapshot testing - when your tests run, it will take snapshots of your components and compare them to the last time you successfully ran the tests. You can visually see what the component looks like on the page, and it highlights any changes (both unintended and intentional).
+
+This is a good option, but we want to also test how our components **behave**, when given different values.
+
+To do this, we can use a library called **React Testing Library**. It allows us to render our components into a virtual DOM, and gives us some helper methods that help to make assertions about what is being rendered, and help us interact with the component by simulating clicks etc.
+
+## First test
+
+#### 1. Create test file
+
+To get started, first create a new `components` directory inside `tests` and then create a new file in that directory called `LocationDetails.test.js`.
+
+Because we're testing our components, we need to use JSX, and so we need to import React into the test. We also need to import React Testing Library in order to use that, and also import the component that we want to test:
+
+```js
+import React from 'react';
+import { render } from "@testing-library/react";
+import LocationDetails from '../components/LocationDetails';
+```
+
+**N.B.** React testing library is bundled in with `create-react-app`, so there is no need to install it as a dev dependency.
+
+#### 2. Describe block
+
+Now think about the behaviour of our component - what does it do? It's pretty simple - it takes a city and a country and renders them inside of an `h1` tag.
+
+So we can start by translating that to a Jest test (don't forget to wrap tests in `describe` block):
+
+```jsx
+describe("LocationDetails", () => {
+  it('renders the correct city and location props', () => {
+
+  });
+});
+```
+
+#### 3. Render component with stubbed props
+
+To test this, we need to render the component with the `render()` method from the React testing library. We also need to access a certain function within `render()`. For this test we will use the query `getByText()`. We can pass props like normal:
+
+```jsx
+describe("LocationDetails", () => {
+  it("renders the correct city and location props", () => {
+    const { getByText } = render(
+      <LocationDetails city="Manchester" country="UK" />
+    );
+  });
+});
+```
+
+This will render our component with the stubbed props we've passed in, allowing us to test the outcome.
+
+#### 4. Assertions and running tests
+
+Now it's time to write assertions.
+
+```jsx
+describe("LocationDetails", () => {
+  it("renders the correct city and location props", () => {
+    const { getByText } = render(
+      <LocationDetails city="Manchester" country="UK" />
+    );
+
+    expect(getByText("Manchester, UK")).toBeTruthy();
+  });
+});
+```
+
+Here, in our `expect()` section of this test we've done the following:
+
+- Used our `getByText()` method which we pulled from the object returned by `render()`.
+
+- Passed in the text we expect to see rendered on the webpage when the component mounts, exactly as it would be displayed.
+
+- Asked if the text exists as expected with `toBeTruthy()`, and if it does then pass the test.
+
+
+If we run `npm test` we will see that this test passes as "Manchester" and "UK" are the prop values we passed into `render()` earlier.
+
+#### 5. Improve tests
+
+But what about if we want to be more specific with our tests? At the moment we're only asking if the prop is correctly rendered. What if we want to be sure that it's rendering in the correct place also?
+
+For that we can make a slight change, and instead of using `toBeTruthy()` we can use `toBeInstanceOf()` and pass in the type of element, in this case `HTMLHeadingElement`.
+
+```jsx
+describe("LocationDetails", () => {
+  it("renders the correct city and location props", () => {
+    const { getByText } = render(
+      <LocationDetails city="Manchester" country="UK" />
+    );
+
+    expect(getByText("Manchester, UK")).toBeInstanceOf(HTMLHeadingElement);
+  });
+});
+```
+
+Here we're asking if the element containing the text "Manchester, UK" is a `HTMLHeadingElement`. This test ensures we're testing that the prop not only renders but also renders within the `h1` tag.
+
+If you run `npm test`, you should now have a passing test. Nice work! Make sure you understand what's going on, before moving on to the next step.
+
+### Note: what about `App.test.js`?
+
+`App.test.js` has not been mentioned so far in this chapter on purpose... what would be the changes we need to pass down for it to work?
+
+Remember that we have defined our `App` component with a required prop called `location` that should be provided. 
+
+Try to update it without reading the following...
+
+In order to make it work, make sure you provide the appropriate prop that fulfils that requirement (you can even use the hard-coded `.json` file we used in `index.js`)
+
+```jsx
+import { render, screen } from "@testing-library/react";
+import App from "../components/App";
+import forecast from '../data/forecast.json';
+
+describe("App", () => {
+  test("renders App component correctly", () => {
+     render(<App location={forecast.location} />);
+     const h1Element = screen.getByText(/Manchester, UK/i);
+     expect(h1Element).toBeInTheDocument();
+  });
+});
+```
+
+*Note:* Make sure you update this test file as often as `App` gets updated.
+
+## Recommended Reading
+
+* [React Testing Library Documentation](https://testing-library.com/docs/react-testing-library/intro)
+* [React Testing Library: Cheatsheet](https://testing-library.com/docs/react-testing-library/cheatsheet)

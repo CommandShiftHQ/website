@@ -1,0 +1,100 @@
+---
+title: "Walkthrough: Message Box"
+---
+
+# Message Box - Walkthrough
+
+## Steps
+
+- Add a CSS ruleset for selector `#message` and add CSS rules to style your message box.
+- Create a new `renderMessage` method on the `Controller.prototype` that accepts a parameter of `message`.
+- Inside the `renderMessage` method, append a new `div` element to the `#viewport` container (using `Element.appendChild`) with an `id` of `'message'` and set its `innerHTML` of the `message` variable.
+- Add a `setTimeout` which will remove the `#message` div element from the DOM (using `Element.removeChild`) after 2 seconds.
+- Call the method when the ship sets sail.
+- Call the method when the ship docks.
+- Call the method when the ship attempts to go further than its itinerary (in place of the `alert`).
+
+## Add a CSS ruleset for selector `#message` and add CSS rules to style your message box.
+
+```css
+#message {
+  padding: 16px;
+  font-family: 'Press Start 2P', cursive;
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  border-top: 3px solid black;
+  background-color: white;
+}
+```
+
+We set the position to `absolute`, `bottom` to `0` and `width` to `100%` so that the message box positions itself at the bottom of the `#viewport`. If you want to see how the message box looks and make amendments to the styling before moving on then add a new `div` to your `#viewport` element (be sure to remove it before you move on):
+
+```html
+<div id="viewport">
+  ...
+  <div id="message">Testing!</div>
+</div>
+```
+
+## Create a new `renderMessage` method on the `Controller.prototype` that accepts a parameter of `message`.
+
+You can do this without the walkthrough :-).
+
+## Inside the `renderMessage` method, append a new `div` element to the `#viewport` container (using `Element.appendChild`) with an `id` of `'message'` and set its `innerHTML` of the `message` variable.
+
+```js
+const messageElement = document.createElement('div');
+messageElement.id = 'message';
+messageElement.innerHTML = message;
+
+const viewport = document.querySelector('#viewport');
+viewport.appendChild(messageElement);
+```
+
+This is similar to how we appended new `#port` div elements to the DOM, only this time we set an `id` attribute instead of `className`. We also set the `innerHTML` property - `innerHTML` is the content enclosed between opening and closing tags so in this example:
+
+```html
+<div id="message">
+  Hello
+</div>
+```
+
+`messageElement.innerHTML` would equal `Hello`.
+
+## Add a `setTimeout` which will remove the `#message` div element from the DOM (using `Element.removeChild`) after 2 seconds.
+
+```js
+setTimeout(() => {
+  viewport.removeChild(messageElement);
+}, 2000);
+```
+
+`setTimeout` runs the provided callback function after the specified time - in this case 2000 milliseconds, which is equivalent to 2 seconds. We call `removeChild`, which is the opposite of `appendChild`. 
+
+## Call the method when the ship sets sail.
+
+```js
+setSail() {
+  ...
+
+  if (!nextPortElement) {
+    return alert('End of the line!');
+  }
+
+  this.renderMessage(`Now departing ${ship.currentPort.name}`);
+
+  const shipElement = document.querySelector('#ship');
+  ...
+},
+```
+
+In the `setSail` method, after the `if` statement that returns an `alert` if we've reached the end of the itinerary, we add a call to `renderMessage`, passing in our message. If you refresh your `index.html` file now then you should see the message pop up when you click the Set Sail button.
+
+## Call the method when the ship docks.
+
+You can do this without the walkthrough :-).
+
+## Call the method when the ship attempts to go further than its itinerary (in place of the `alert`).
+
+You can do this without the walkthrough :-).

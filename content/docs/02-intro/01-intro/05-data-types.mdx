@@ -1,0 +1,128 @@
+---
+title: "Data Types"
+---
+
+## Learning Objectives
+
+- Understand what strings, numbers and booleans are and what they are used for
+
+## Working with data
+
+In programming, data is the bits of information that we use to build programs. This data can take many forms, some simple (text or numbers) and others more complicated (a date, an image or some audio data).
+In our computer programs, we want to be able to take data from the real world, such as a person's name or age and represent it to the computer in a way that it can understand and use.
+
+But with different types of data, we want to do different things! For example, we might want to divide two numbers. But we wouldn't want to divide two pieces of text. And we might want to transform a piece of text into uppercase, but what if we told the computer to uppercase a date?
+
+To solve this, JavaScript classifies all of the data in a program into different **types**. These types define what kind of operations we can perform on some data.
+
+There are lots of different data types in JavaScript - we can even create our own - but in this lesson we're going to take a look at three **primitive types**: strings, numbers and booleans.
+
+If we had some complex data in our program representing a person, the data might include their name (text), and their age (a number). But while the person data is composed of these smaller pieces of data, the text data and number data themselves are not made up of anything simpler. These **primitive types** are the building blocks of all the data we can have in our programs.
+
+## Primitive Data Types
+
+### Strings
+
+In programming, we use a **string** to represent text data. Any sequence of characters - letters, spaces, numbers, symbols - is a string. A string can be anything from a person's name, to an entire novel. JavaScript provides a multitude of ways to manipulate and analyze the data stored in strings.
+
+Some languages make a distinction between single characters and longer strings, but in JavaScript any sequence of characters of any length is considered to be a string. There is even an empty string, with no characters!
+
+In JavaScript, strings are surrounded by quote marks (we will normally use single quote marks `''`, but double-quotes `""` work just the same).
+
+In our previous example, the text `'Hello World!'` was a string.
+
+Now try writing the same string as a statement on its own:
+
+![string evaluation](https://a.storyblok.com/f/79570/288x244/ac6aec9a1d/1.png)
+
+In this example, the statement `'Hello World!'` was **evaluated** as the string `'Hello World!'`. Nothing extra was printed to the screen - there were no side-effects in this case.
+
+Now let's try something more interesting. Since our data is a string, JavaScript has some built-in functionality (called **methods** - more on this soon) that allows us to do things to manipulate the data.
+
+For example, we can make our string all uppercase:
+
+![string uppercase](https://a.storyblok.com/f/79570/484x248/441888c50e/2.png)
+
+We can replace portions of our uppercase string:
+
+![string replace](https://a.storyblok.com/f/79570/872x234/33dff281e3/3.png)
+
+And we can take just a portion (a **substring**) of a string:
+
+![string substring](https://a.storyblok.com/f/79570/1174x250/d82a2dd868/4.png)
+
+These particular methods are unique to string data. If we tried to perform them on a number rather than a string, we would get an error - because JavaScript doesn't know how to transform a number to uppercase.
+
+### Numbers
+
+Another type of data in JavaScript is called a **number**.
+
+In programming we can use numbers for lots of things:
+
+- **Counting** - How many times has a person entered their password incorrectly into a website?
+- **Describing values** - How many millilitres of water should be added to a cake recipe?
+- **Calculating** - What was a companies' total revenue last year?
+
+In JavaScript, there is no such distinction between whole numbers (such as 1, 2, 3) and decimals (such as 1.2, 2.5). All numbers are the type **number**.
+
+We can represent a number in JavaScript by just typing the number.
+
+Try it in the console!
+
+![number evaluation](https://a.storyblok.com/f/79570/282x234/44b0a96e18/5.png)
+
+Just as the string statement above evaluated as itself, a number statement will do the same.
+
+#### `8` vs `'8'`
+
+An important distinction to make here is between the string `'8'` and the number `8`. Both are perfectly valid values in JavaScript but due to their types, they are different!
+
+If we wanted to write a program to do some mathematics, it would be important to use the number value, rather than the string value.
+
+To illustrate this, try adding the number `8` to the number `20`:
+
+![number addition](https://a.storyblok.com/f/79570/280x248/dd6b3a7857/6.png)
+
+As you would expect, this statement evaluates to the number `28`.
+
+But now try adding the string `'8'` to the string `'20'` - what do you think will happen?
+
+![string addition](https://a.storyblok.com/f/79570/284x232/574d331935/7.png)
+
+In this case we get the string value `'820'`!
+
+This is because JavaScript treats strings differently to numbers. Remember, computers are dumb. Even thought it's obvious to us as humans that the value `'8'` could represent a number, JavaScript does not have that same level of insight. There is no way for JavaScript to distinguish the string `'8'` from the string `'Hello World!'`, or any other string. To JavaScript, they are all just strings - pieces of data representing some text.
+
+### Booleans
+
+The last basic data type in JavaScript is called a **boolean**.
+
+While there are a near infinite number of possible string and number values in JavaScript, there are only two boolean values - `true` and `false`.
+
+These two values are some of the most important in any programming language, as they will allow you to ask questions in your programs, and make decisions based on the answers received.
+
+Let's try evaluating some boolean statements in the console:
+
+![boolean evaluation](https://a.storyblok.com/f/79570/284x306/c014c136ca/8.png)
+
+It's quite unusual to use a literal boolean value in programs. As we mentioned, we use booleans when we want to ask a question.
+
+A basic example of this would be to find out if two values are equal to each other. In JavaScript, we can do this using the **equality operator** `===` (that's **three** equals signs!)
+
+![conditional logic](https://a.storyblok.com/f/79570/288x384/d514b66614/9.png)
+
+Here we are asking the following questions:
+
+1. *Is the number `8` equal to the number `9`?* - this evaluates `false`
+2. *Is the number `8` equal to the number `8`?* - this evaluates `true`
+3. *Is the number `8` equal to the string `'8'`?* - this evaluates `false` because strings are not numbers!
+
+We can then use the answers to those questions to make decisions in our programs.
+
+Let's preview a quick example of that in the console. (Remember, to write a multi-line expression in your console, use `Shift`+`Enter` rather than just `Enter`)
+
+![conditional logic](https://a.storyblok.com/f/79570/710x378/82e264fb97/10.png)
+
+Here we use **conditional logic** in the form of an **if-else statement** to make a decision. The boolean value that results from our comparison `8 === 9` determines which `console.log` statement will be executed. What do you think would happen if you ran the same code again, but changed comparison to `8 === 8`?
+
+It's also important to note the distinction between the strings `'true'` and `'false'`, and their boolean counterparts `true` and `false`. These are completely different values, in the same way as strings and numbers are.

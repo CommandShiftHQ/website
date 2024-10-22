@@ -1,0 +1,43 @@
+---
+title: "Icons and Dates - troubleshooting tests 🔬"
+---
+
+## Icons
+
+If you have a failing test related to your icons the problem is likely down to an invalid prop in your test file.
+
+In `ForecastSummary.test.js`:
+
+```js
+const validProps = {
+  date: 1111111,
+  description: "Stub description",
+  icon: "800",
+  temperature: {
+    min: 12,
+    max: 22,
+  },
+};
+```
+
+In `ForecastSummaries.test.js` use ids "800" and "602". Feel free to use different icon ids, just check the [icon docs](https://openweathermap.org/weather-conditions) first.
+
+Now just update the snapshots in the console!
+
+## Dates
+
+To fix a failing tests related to the dates you need to change the expected value for assertion in `ForecastSummary.test.js` from:
+
+```js
+    expect(getByText("1111111")).toHaveClass("forecast-summary__date");
+```
+
+to:
+
+```js
+    expect(getByText("Thu Jan 01 1970")).toHaveClass("forecast-summary__date");
+```
+
+The reason being the `date` value in `validProps` is still correct, but since we altering it, we expect a human-readable date in the desired format to be returned.
+
+Remember to update snapshots again!

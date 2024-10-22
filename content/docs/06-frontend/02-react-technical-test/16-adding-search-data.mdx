@@ -1,0 +1,32 @@
+---
+title: "Adding Search Data"
+---
+
+First, let’s start by opening our `App.js` file and taking a look at our `searchResults` state. If you `console.log` it, you will see it contains an array for 100 images. You will also see that it says `Promise: undefined` - `Promise: resolved`, we’ll get to this in a minute. 
+
+Inside the `searchResults` hook, make sure the default state is an empty array, otherwise the app will crash before we do a search.
+
+Now we’re going to try using `map` on `searchResults` to get each item individually instead of one big array. 
+
+So let’s try `searchResults.map((e) => console.log(e))`.
+
+This should return every image as its own entity on a search. Try running a search now.
+
+What happened?
+
+You should have got an error saying that ‘map’ has caused an issue somewhere. 
+
+This is because our `GET` request is asynchronous. The function fires on submit when our promise is empty as it takes a second to return the payload of the 100 images. This is what we were seeing in the `console.log()` before when it said `Promise: undefined` - `Promise: resolved`. JavaScript is just too fast for its own good sometimes.
+
+Let’s fix this.
+
+Head over to `Search.js`.
+
+We need to add `async` and `await` keywords to our `handleSubmit` to tell it what order to do things.
+
+Add `async` just before function assigned to `handleSubmit` starts (between the first `=` and `(event)` param). This tells the function that it is asynchronous. Then inside the parentheses of `setSearchResults()` before `getImages()` add the `await`.
+This tells the function to not return anything until this action has been performed. This will now stop it returning undefined before the promise is resolved.
+
+Let’s try our app again. Do a search and see what happens. It should work perfectly this time and you should see the results appear in your browser console. If they don’t, phone a friend…
+
+Awesome, now we can remove the line where we map through searchResults and return `console.log` from `App`, confident that we know what we’re getting back and our request is working as intended.

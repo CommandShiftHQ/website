@@ -1,0 +1,26 @@
+---
+title: "Conditional Rendering - Walkthrough"
+---
+
+In our `SearchResults` component, we added an `if` statement to conditionally render our code depending on our state. The component should now look something like this:
+
+```jsx
+import React from "react";
+import "../styles/search-results.css";
+
+const SearchResults = ({ results }) => {
+  if (!results.length) {
+    return <p>No results</p>;
+  } else {
+    return (
+      <>
+        <img src="mock-image"/>
+      </>
+    );
+  }
+};
+
+export default SearchResults;
+```
+
+It doesn't matter if you chose to use the `if` statement or you used a ternary operator. Both will work in exact same way, but ternary might be less readable if one (or both) of the returned valued breaks into couple of lines. The general advice on which one should be used would be: use ternary when the code is relatively short and easy to asses what it does, and use if when the code is more complex. It's up to you and your best judgment if the situation which one to use, but always remember that code should be readable, it's a favour you're doing to your future self and fellow developers.

@@ -1,0 +1,178 @@
+---
+title: "Walkthrough: Update State & Event Handlers 💡"
+---
+
+## Solution
+
+#### 1. Write a method `handleForecastSelect()` in the `<App />` component
+
+Let's start by adding the handler function. Add the following code to your `<App />` component:
+
+```jsx
+function handleForecastSelect(date) {
+  setSelectedDate(date);
+};
+```
+
+This is pretty simple - the function gets passed a date, and we use the `setSelectedDate()` method from our `selectedDate` hook to set that date on our state object.
+
+#### 2. Add a "More details" button to the `<ForecastSummary />` component.
+
+In the `<ForecastSummary />` component, under the rest of the markup, render a HTML `<button>` element, with the text "More details" and `type="button"` (one of the Eslint rules requires `type` attribute to be specified for a `<button>` element):
+
+```jsx
+function ForecastSummary(props) {
+  const { date, icon, temperature, description } = props;
+
+  const formattedDate = new Date(date).toDateString();
+
+  return (
+    <div className="forecast-summary" data-testid="forecast-summary">
+      <div className="forecast-summary__date">
+        {formattedDate}
+      </div>
+      <div className="forecast-summary__icon" data-testid="forecast-icon">
+        <WeatherIcon name="owm" iconId={icon} />
+      </div>
+      <div className="forecast-summary__temperature">
+        {temperature.max}
+        &deg;C
+      </div>
+      <div className="forecast-summary__description">{description}</div>
+      <button type="button">More details</button>
+    </div>
+  );
+};
+```
+
+To see this button in the browser, you can ignore the failing ESlint rule by adding following line at the top of `App.js` file, just for now:
+
+```jsx
+/* eslint-disable  no-unused-vars */
+```
+
+Don't commit this change and remember to remove it later (only commit the addition of the button). We're disabling it now only so that you can see the app rendered with UI changes we just made. 
+
+If you look at your app in the browser now, you should see one button for each forecast summary. So what happens when we click it? Hopefully, the answer is nothing - because we haven't told it to do anything.
+
+#### 3. Connect the function to the button, so that when we click the button, the function gets called with the date for that forecast
+
+We want to respond to the event that gets triggered when our button gets clicked. We can register event handlers on DOM elements by adding an `on{Event}` attribute to the element. So, to respond to clicks on our button, we need to add an `onClick` attribute to it. The value of this should be a function. For now, let's just make an anonymous function that logs a message to the console:
+
+```jsx
+<button type="button" onClick={() => console.log('Hello!')}>
+  More details
+</button>
+```
+
+Now, if you click on the button, you should see the message being logged to your browser console.
+
+However, the function we want to invoke should not just `console.log` a welcoming message - we want it to invoke the handler function we wrote earlier in our `<App />` component, and we want it to invoke that function with the relevant date passed as an argument.
+
+Can you think of a way to pass the `handleForecastSelect()` method from the parent `<App />` component down to the child `<ForecastSummary />` component?
+
+If you said **props**, then well done - you're getting the hang of this!
+
+In `<App />`, pass the `handleForecastSelect()` method into `<ForecastSummaries />` as a prop called `onForecastSelect`:
+
+```jsx
+function App({ forecasts, location }) {
+  const [selectedDate, setSelectedDate] = useState(forecasts[0].date);
+
+  const selectedForecast = forecasts.find(
+    (forecast) => forecast.date === selectedDate
+  );
+
+  const handleForecastSelect = (date) => {
+    setSelectedDate(date);
+  };
+
+  return (
+    <div className="weather-app">
+      <LocationDetails city={location.city} country={location.country} />
+      <ForecastSummaries
+        forecasts={forecasts}
+        onForecastSelect={handleForecastSelect}
+      />
+      <ForecastDetails forecast={selectedForecast} />
+    </div>
+  );
+};
+```
+
+In `<ForecastSummaries />`, you now have access to a prop called `onForecastSelect`, which is a function with the ability to set state in the `<App />` component:
+
+```jsx
+function ForecastSummaries({ forecasts, onForecastSelect }) {
+  return (
+    <div className="forecast-summaries">
+      {forecasts.map((forecast) => (
+        <ForecastSummary
+          key={forecast.date}
+          date={forecast.date}
+          description={forecast.description}
+          icon={forecast.icon}
+          temperature={forecast.temperature}
+        />
+      ))}
+    </div>
+  );
+};
+
+export default ForecastSummaries;
+
+```
+
+Pass this prop down from `<ForecastSummaries />` to each individual `<ForecastSummary />` as a prop called `onSelect`.
+
+```jsx
+function ForecastSummaries({ forecasts, onForecastSelect }) {
+  return (
+    <div className="forecast-summaries">
+      {forecasts.map((forecast) => (
+        <ForecastSummary
+          key={forecast.date}
+          date={forecast.date}
+          description={forecast.description}
+          icon={forecast.icon}
+          onSelect={onForecastSelect}
+          temperature={forecast.temperature}
+        />
+      ))}
+    </div>
+  );
+};
+```
+
+Now each rendered `<ForecastSummary />` has access to the `handleForecastSelect()` method from `<App />`, regardless of it being called `onSelect` within the scope of `<ForecastSummary />`. This means that `<ForecastSummary />` has the ability to set state in the `<App />` component.
+
+We can invoke this method as a callback function when the `onClick` event is called, and pass `date` to it as a param:
+
+```jsx
+function ForecastSummary(props) {
+  const { date, icon, temperature, description, onSelect } = props;
+
+  const formattedDate = new Date(date).toDateString();
+
+  return (
+    <div className="forecast-summary" data-testid="forecast-summary">
+      <div className="forecast-summary__date">...</div>
+      <div className="forecast-summary__icon" data-testid="forecast-icon">...</div>
+      <div className="forecast-summary__temperature">...</div>
+      <div className="forecast-summary__description">...</div>
+      <button type="button" onClick={() => onSelect(date)}>
+        More details
+      </button>
+    </div>
+  );
+};
+
+export default ForecastSummary;
+
+```
+
+And there we have it - we now have the ability to select a date from our weather forecast to see the full forecast for that date!
+
+🤔 Do you remember what else you should do? Tests! Update your tests and snapshots.
+
+🤔 Did you remember to remove the comment disabling the ESlint rule?

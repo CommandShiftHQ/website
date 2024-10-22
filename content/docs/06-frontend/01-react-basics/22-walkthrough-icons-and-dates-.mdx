@@ -1,0 +1,40 @@
+---
+title: "Walkthrough: Icons and Dates 💡"
+---
+
+## Solution
+
+### Icons
+
+#### 1. Formatting the icon.
+```jsx
+... 
+import iconData from './iconData.json';
+
+const weatherCode = icon.slice(0,1) + "00";
+
+<div className="forecast-summary__icon" data-testid="forecast-icon">
+  <img src={iconData[weatherCode]} />
+</div>
+```
+
+#### 2. Dates
+
+There are many different libraries out there for manipulating dates in JavaScript but for our purposes the native JS [Date object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date) will suffice. 
+
+```jsx
+const formattedDate = new Date(date).toDateString();
+```
+
+Then replace `date` with `formattedDate`, as follows:
+
+```jsx
+<div className="forecast-summary__date">
+  {formattedDate}
+</div>
+```
+
+#### 3. Update your tests.
+
+Don't forget to update your tests to assert that a correctly formatted date is returned.
+

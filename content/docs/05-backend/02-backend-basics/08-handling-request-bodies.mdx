@@ -1,0 +1,101 @@
+---
+title: "Handling Request Bodies"
+---
+
+In the previous steps, we have been using request parameters in the form of route params and query params, both of which are included in the URL.
+
+The problem with these types of parameters is that Express always gives them to you as strings. To use numeric value, we have to validate that the string value is numeric, and then parse it as a number.
+
+It would be better if there was a way for the Express application to receive data sent from the client in the correct format - strings as strings, numbers as numbers, booleans as booleans etc.
+
+Thankfully, there is a way! When we make a GET (or DELETE) request, we can only pass data to the server through URL parameters / query parameters. However, when we make POST, PUT or PATCH requests, we can pass additional data in our request without modifying the URL. This is the _request body_. 
+
+- **Read** about HTTP methods on [Restful API Tutorial](https://restfulapi.net/http-methods/)
+
+We can send data to one of our endpoints as a JSON string, which our API can then parse into a JavaScript object. This means we can pass numbers, booleans, objects, arrays etc. Another advantage of this is that we can send much larger and more complex data structures.
+
+If we take a look at one of the tests in `__tests__/numbers.test.js`, you can see some data being sent:
+
+```js
+/* tests/numbers.test.js */
+it('multiplies two numbers', done => {
+  request(app)
+    .post('/numbers/multiply')
+    .send({ a: 10, b: 3 }) 
+    .then(res => {
+      ...
+    });
+});
+```
+
+Here we send an object `{ a: 10, b: 3 }`. You might be thinking...this isn't a JSON string. That's because behind the scenes the `supertest` library will run [JSON.stringify](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify) on this object before sending the HTTP request.
+
+Have a look at the [Express `req` object documentation](https://expressjs.com/en/4x/api.html#req.body). You can see that there is a `req.body` property which contains any data that might be sent during a request. However, the docs also say:
+
+> By default, [req.body] is undefined, and is populated when you use body-parsing middleware such as body-parser and multer.
+
+The reason for this is that request bodies can contain a variety of data types. You might be vaguely familiar with the `application/json` data type as it just means JSON, but a client could also send data as `application/xml`, `application/x-www-form-urlencoded`, or even `multipart/form-data` (if they were uploading an image).
+
+When working on an API, we need to decide what data type(s) our API should accept (it could be more than one), and parse this data into JavaScript. To do this we register something called _middleware_.
+
+### Middleware
+
+- **Read** [:books: Express docs - Using Express Middleware](https://expressjs.com/en/guide/using-middleware.html)
+
+A middleware function is one that intercepts the request before it reaches its final destination (the controller function).
+
+There are a variety of reasons we use middleware. These primarily include:
+
+- logging information about the request
+- modifying the request object (this is what we will need middleware for - to takes our request body and transform the data into a JavaScript object)
+- terminating the request/response cycle early (if a user makes a request to upload an image, an authentication middleware function might validate the JWT sent with the request - if the token is invalid, the middleware will send a 401 response before the request ever gets to the image upload controller function).
+
+There are many [third-party middleware packages](https://expressjs.com/en/resources/middleware.html) available on npm (such as `body-parser` or `multer` as mentioned above). For this API, we want to parse data sent with the  `application/json` data type into JavaScript. Fortunately, this is so common that Express actually comes with it's own JSON parsing middleware. All we have to do is tell Express to use it. Add the following to `src/app.js` before any of your route handlers:
+
+```js
+/* src/app.js */
+const express = require('express');
+
+const app = express();
+
+app.use(express.json());
+
+...
+```
+
+Now you will be able to access any JSON data sent to your application by referencing `req.body`.
+
+### POST requests
+
+Remember, `GET` and `DELETE` requests cannot include request bodies. To do so you need to make a `POST`, `PUT` or `PATCH` request.
+
+The first numbers test requires us to handle a `POST` request with a JSON body:
+
+```js
+/* tests/numbers.test.js */
+describe('POST /multiply', () => {
+  it('multiplies two numbers', done => {
+    request(app)
+      .post('/numbers/multiply')
+      .send({ a: 10, b: 3 })
+      .then(res => {
+        expect(res.status).toEqual(200);
+        expect(res.body).toEqual({ result: 30 });
+        done();
+      });
+  });
+  ...
+});
+```
+
+## Challenge
+
+Can you set up a route that handles a POST request to `/numbers/multiply`?
+
+Inside of your controller function, extract the parameters `a` and `b` from the request body and pass them into your `multiply` function from JavaScript Basics to respond with the required data to pass the test.
+
+## Solution
+
+Now you've got that working, you should have the skills to complete the rest of the numbers tests - and indeed the rest of the boolean and arrays tests as well!
+
+- **Find the solution** to the above challenge [here](https://hackmd.io/@Yr7Q8gzkQUaCcF02NXvGtw/rJw7OjjeU).

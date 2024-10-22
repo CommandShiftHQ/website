@@ -1,0 +1,501 @@
+---
+title: "Ships have Itineraries that have Ports - Walkthrough"
+---
+
+## Steps
+- Discuss with your classmates how the domain model now looks.
+- Create a new test file, which should `describe` a new `Itinerary` object.
+- Create a new test spec to check the new `Itinerary` object can be instantiated. 
+- Write the code that makes this test pass.
+- Create a new test spec to check the new `Itinerary` object has a `ports` property. 
+- Write the code that makes this test pass.
+- Refactor the `Ship` test suite so a `Ship` takes an `Itinerary` object instead of a `Port` object. The `Itinerary` object will have 2 `Port` objects stored in an array on its `ports` property.
+- Refactor the `it can dock at a different port` test so that no argument is passed to `ship.dock`, and asserts the `currentPort` to be the next port in the `Itinerary` instance. The tests will break.
+- Write the code that makes the tests pass again.
+- Add, commit with a meaningful message, and push to GitHub.
+
+## Domain Model
+
+```
+As a tour representative,
+So I can decide which destinations passengers visit,
+I want a ship to take an itinerary which determines at which port it next docks.
+```
+
+The domain model might now look like this:
+
+| Object    | Methods    | Properties   |
+|-----------|------------|--------------|
+| Ship      | setSail    | currentPort  |
+|           | dock       |              |
+| Port      |            |              |
+| Itinerary |            | ports        |
+
+## Create a new test file `Itinerary.test.js`, which should `describe` `Itinerary`
+
+:exclamation: You should be able to do this without the walkthrough. Once you've passed the test, then proceed.
+
+## Create a new test spec to check the new object can be instantiated. 
+
+:exclamation: You should be able to do this without the walkthrough. Once you've passed the test, then proceed.
+
+## Create a new test spec to check that an `Itinerary` instance can have `ports`
+
+An `Itinerary` has `ports`. `ports` is plural which indicates an `Itinerary` will have one or more ports. We know know too that `Port` is its own entity. Therefore, when we instantiate an `Itinerary`, we will pass in an array of `Port` instances (you will need to require in your `Port` constructor!!!):
+
+![It has ports](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/cruise-ships%2Fitinerary%2Fhas_ports_test.png?alt=media&token=3ac39c47-1ffb-4562-a279-fe7fbb3c16e3)
+
+Here we:
+
+- Setup: Create instances of `Port`
+- Exercise: Pass `Port` instances into a new instance of `Itinerary`
+- Verify: Assert that our `Itinerary` instance does now possess `Port` instances
+
+Run your tests. They should fail with :red_circle: :
+
+```bash
+    Expected value to equal:
+      [{"name": "Dover"}, {"name": "Calais"}]
+    Received:
+      undefined
+
+  Difference:
+
+      Comparing two different types of values. Expected array but received undefined.
+```
+
+## Write the code that makes this test pass.
+
+The code to pass this is actually fairly straightforward:
+
+![Itinerary has ports](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/cruise-ships%2Fitinerary%2Fitinerary_ports.png?alt=media&token=f30cd97a-3e5d-46e5-9b46-18ad9639c4e2)
+
+As per the _dependency inversion_ principle, our `Itinerary` object shouldn't know anything about a `Port` object. All it needs to know is that it takes an array which gets assigned to its `ports` property. So long as the _interface_ of the object we pass in matches the interface of a `Port` object then we can swap out `Port` for another object without breaking the `Itinerary` object.
+
+## Modify your `can set sail` test to assert `previousPort` contains the previous port after `setSail` has been called
+
+We need to ensure that when a ship sets sail, it sets a `previousPort` equal to the current port, so we know where we set sail from (and therefore can determine where the ship is next due to dock). 
+
+First let's modify our Ship test suite:
+
+```js
+it('can set sail', () => {
+  const port = new Port('Dover');
+  const ship = new Ship(port);
+
+  ship.setSail();
+
+  expect(ship.currentPort).toBeFalsy();
+  expect(ship.previousPort).toBe(port);
+});
+```
+
+Here we've just added the following assertion:
+
+```js
+expect(ship.previousPort).toBe(port);
+```
+
+You should of course now have failing tests, as a `Ship` instance doesn't yet have a `previousPort` property: 
+
+```js
+  ● Ship › can set sail
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: {"name": "Dover"}
+    Received: undefined
+
+    Difference:
+
+      Comparing two different types of values. Expected object but received undefined.
+
+      21 |     ship.setSail();
+      22 |
+    > 23 |     expect(ship.previousPort).toBe(port);
+         |                               ^
+      24 |     expect(ship.currentPort).toBeFalsy();
+      25 |   });
+      26 |
+
+      at Object.it (__tests__/Ship.test.js:23:31)
+```
+
+You can fix that now. First in your `Ship` constructor, add the property:
+
+```js
+function Ship (currentPort) {
+  this.currentPort = currentPort;
+  this.previousPort = null;
+}
+```
+
+And then modify your `setSail` method to assign the current port to the `previousPort` property:
+
+```js
+setSail() {
+  this.previousPort = this.currentPort;
+  this.currentPort = null;
+},
+```
+
+Your tests should now pass.
+
+## Refactoring the `Ship` test suite
+
+A `Ship` starts off anchored :anchor: at a `currentPort` which is a `Port` instance passed into the `Ship` constructor. We now have additional abstraction in the form of our `Itinerary` object. We now need to refactor our `Ship` test suite so that a `Ship` takes an `Itinerary` instance and its `currentPort` is set to the first item in the `Itinerary`.
+
+This is where OOP starts to become more complex. Up until now we've just been passing objects into other objects. Now we actually have to use the methods and properties on those objects within other objects. 
+
+Lets see how our `Ship` test suit might be modified to accommodate this additional abstraction. First in `Ship.test.js` require in the `Itinerary` object:
+
+```js
+const Itinerary = require('../src/Itinerary');
+```
+
+Then modify your `has a starting port` test changing it from:
+
+```js
+it('has a starting port', () => {
+  const port = new Port('Dover');
+  const ship = new Ship(port);
+
+  expect(ship.currentPort).toBe(port);
+});
+```
+
+To:
+
+```js
+it('has a starting port', () => {
+  const port = new Port('Dover');
+  const itinerary = new Itinerary([port]);
+  const ship = new Ship(itinerary);
+
+  expect(ship.currentPort).toBe(port);
+});
+```
+
+Remember that `Itinerary` expects `ports`. Even if we pass in a single port, we still have to ensure it's in an array, hence: `new Itinerary([port])`.
+
+We also have to refactor the `setSail` test to ensure it takes an itinerary:
+
+Change:
+
+```js
+it('can set sail', () => {
+  const port = new Port('Dover');
+  const ship = new Ship(port);
+
+  ship.setSail();
+
+  expect(ship.currentPort).toBeFalsy();
+});
+```
+
+To:
+
+```js
+it('can set sail', () => {
+  const port = new Port('Dover');
+  const itinerary = new Itinerary([port]);
+  const ship = new Ship(itinerary);
+
+  ship.setSail();
+
+  expect(ship.currentPort).toBeFalsy();
+});
+```
+
+And finally, refactor `can dock at a different port` so that it tests a ship docks at the next port in an itinerary, as opposed to the current behaviour of docking at a port we explicitly specify.
+
+Change:
+
+```js
+it('can dock at a different port', () => {
+  const dover = new Port('Dover');
+  const ship = new Ship(dover);
+  const calais = new Port('Calais');
+
+  ship.dock(calais);
+
+  expect(ship.currentPort).toBe(calais);
+})
+```
+
+To:
+
+```js
+it('can dock at a different port', () => {
+  const dover = new Port('Dover');
+  const calais = new Port('Calais');
+  const itinerary = new Itinerary([dover, calais])
+  const ship = new Ship(itinerary);
+
+  ship.setSail();
+  ship.dock();
+
+  expect(ship.currentPort).toBe(calais);
+})
+```
+
+Our user story dictates that a `Ship` should now dock at the next port on an `Itinerary`. Therefore it makes no sense to pass a `Port` into a `Ship`'s `dock` method anymore as it's no longer our decision to make.
+
+We do also have to call `setSail` now as `dock` no longer has a `Port` object passed in and therefore we need to ensure the `previousPort` is set so it knows where to dock next.
+
+Take time to follow this through. You could spend an hour trying to work out what's going on, or you could take a day, but it is very important that you do grasp it. Remember, a `Port` goes into an `Itinerary`'s ports, and this `Itinerary` gets passed to a ship (Port -> Itinerary -> Ship).
+
+The tests will now fail with multiple errors:
+
+```js
+  ● Ship › has a starting port
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: {"name": "Dover"}
+    Received: {"ports": [{"name": "Dover"}]}
+
+    Difference:
+
+    - Expected
+    + Received
+
+    + Itinerary {
+    +   "ports": Array [
+          Port {
+            "name": "Dover",
+    +     },
+    +   ],
+      }
+
+      14 |     const ship = new Ship(itinerary);
+      15 |
+    > 16 |     expect(ship.currentPort).toBe(port);
+         |                              ^
+      17 |   });
+      18 |
+      19 |   it('can set sail', () => {
+
+      at Object.it (__tests__/Ship.test.js:16:30)
+
+  ● Ship › can dock at a different port
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: {"name": "Calais"}
+    Received: undefined
+
+    Difference:
+
+      Comparing two different types of values. Expected object but received undefined.
+
+      36 |     ship.dock();
+      37 |
+    > 38 |     expect(ship.currentPort).toBe(calais);
+         |                              ^
+      39 |   });
+      40 | });
+      41 |
+
+      at Object.it (__tests__/Ship.test.js:38:30)
+```
+
+## Write the code that makes the tests pass
+
+It's always good practice to start with the first error (at the top of your _stack trace_). Write the code that makes that one test pass, run the tests again, and move onto the next one. 
+
+Let's look at the first failing test:
+
+```js
+  ● Ship › has a starting port
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: {"name": "Dover"}
+    Received: {"ports": [{"name": "Dover"}]}
+
+    Difference:
+
+    - Expected
+    + Received
+
+    + Itinerary {
+    +   "ports": Array [
+          Port {
+            "name": "Dover",
+    +     },
+    +   ],
+      }
+
+      14 |     const ship = new Ship(itinerary);
+      15 |
+    > 16 |     expect(ship.currentPort).toBe(port);
+         |                              ^
+      17 |   });
+      18 |
+      19 |   it('can set sail', () => {
+
+      at Object.it (__tests__/Ship.test.js:16:30)
+```
+
+To make this test pass, change:
+
+```js
+function Ship (currentPort) {
+  this.currentPort = currentPort;
+  this.previousPort = null;
+}
+```
+
+To:
+
+```js
+function Ship (itinerary) {
+  this.itinerary = itinerary;
+  this.currentPort = itinerary.ports[0];
+  this.previousPort = null
+}
+```
+
+What's going on here? We pass an instance of `Itinerary` into the `Ship` constructor. Firstly, we assign it to an `itinerary` property so we keep access to it. The significant part is setting the current port though. An `Itinerary` object has `ports`, and we've passed it by reference into `Ship`. Therefore, it's perfectly acceptable to call `ports` on it still and to use square bracket notation to access the first array element (which of course is a `Port`).
+
+Remember:
+
+`Port` -> `Itinerary` -> `Ship`
+
+Now if you run your tests again, you'll notice we've passed this test, but now we've created another failing test:
+
+![Undefined error](https://mcrcodes.s3.eu-west-2.amazonaws.com/course/cruise-ships/undefined_error.png)
+
+This is because in our `Ship > can be instantiated` test, we instantiate without an `Itinerary` instance passed, so `Ship` tries to set its `currentPort` property to `undefined.ports[0]`. We can fix this by modifying the test:
+
+![Fix ship](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/cruise-ships%2Fitinerary%2Ffix_ship.png?alt=media&token=55e8b1e4-e12a-4e41-bfb0-22e86cf30308)
+
+That should just leave us with one test failure remaining:
+
+![Error 3](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/cruise-ships%2Fitinerary%2Frefactor_error_3.png?alt=media&token=58ba6984-38ad-476a-b438-fbe8e29dfbd6)
+
+Remember, we now expect the `dock` method to pick the next `Port` on an `Itinerary`, therefore we aren't passing in a `Port` to the method anymore.
+
+The pass this test, we need to change our dock method to set the `currentPort` to the next port in the itinerary. Remember at this point that `setSail` has been called already so we will need to use `previousPort` to work out where to dock next. Change the `Ship` `dock` method from:
+
+```js
+dock (port) {
+  this.currentPort = port
+}
+```
+
+to:
+
+```js
+dock () {
+  const itinerary = this.itinerary;
+  const previousPortIndex = itinerary.ports.indexOf(this.previousPort);
+
+  this.currentPort = itinerary.ports[previousPortIndex + 1];
+}
+```
+
+We get the index of the current port inside of the `Itinerary` and set the new current port to that index plus 1.
+
+## Test for the edge case that the ship can't set sail further than the last port in the itinerary. You should be testing that the `setSail` method throws an error when you try and sail past the last port in the itinerary.
+
+Inside `Ship.test.js` add a new test spec:
+
+```js
+it('can\'t sail further than its itinerary', () => {
+  const dover = new Port('Dover');
+  const calais = new Port('Calais');
+  const itinerary = new Itinerary([dover, calais]);
+  const ship = new Ship(itinerary);
+
+  ship.setSail();
+  ship.dock();
+
+  expect(() => ship.setSail()).toThrowError('End of itinerary reached');
+});
+```
+
+This assertion syntax might seem unfamiliar. We are expecting our `setSail` method to throw an error the second time it is called. The problem is that if we do the following:
+
+```js
+expect(ship.setSail()).toThrowError('End of itinerary reached');
+```
+
+Then `ship.setSail` gets invoked and throws an error before the test has chance to assert it. Therefore, with the `toThrowError` matcher you always pass in a callback function so that Jest can decide when to call it.
+
+This test should now fail:
+
+```js
+  ● Ship › can't sail further than its itinerary
+
+    expect(function).toThrowError(string)
+
+    Expected the function to throw an error matching:
+      "End of itinerary reached"
+    But it didn't throw anything.
+
+      52 |     ship.dock();
+      53 |
+    > 54 |     expect(() => ship.setSail()).toThrowError('End of itinerary reached');
+         |                                  ^
+      55 |   });
+      56 | });
+      57 |
+
+      at Object.it (__tests__/Ship.test.js:54:34)
+```
+
+## Write the code that makes this test pass.
+
+Change the `Ship`'s `setSail` method to:
+
+```js
+setSail() {
+  const itinerary = this.itinerary;
+  const currentPortIndex = itinerary.ports.indexOf(this.currentPort);
+
+  if (currentPortIndex === (itinerary.ports.length - 1)) {
+    throw new Error('End of itinerary reached');
+  }
+
+  this.previousPort = this.currentPort;
+  this.currentPort = null;
+},
+```
+
+This will now cause another test to fail:
+
+```js
+  ● Ship › can set sail
+
+    End of itinerary reached
+
+      11 |
+      12 |     if (currentPortIndex === (itinerary.ports.length - 1)) {
+    > 13 |       throw new Error('End of itinerary reached');
+         |             ^
+      14 |     }
+      15 |
+      16 |     this.previousPort = this.currentPort;
+
+      at Ship.setSail (src/Ship.js:13:13)
+      at Object.it (__tests__/Ship.test.js:28:10)
+```
+
+This is because we have other tests in our test suite where we call `setSail` with only one port in our itinerary. Therefore we need to go back and modify these tests (tedious I know, but it's what has to be done to have wonderful robust code!). To fix, add another port to the itinerary in the `can set sail test`:
+
+```js
+it('can set sail', () => {
+  const dover = new Port('Dover');
+  const calais = new Port('Calais');
+  const itinerary = new Itinerary([dover, calais]);
+  const ship = new Ship(itinerary);
+
+  ship.setSail();
+
+  expect(ship.currentPort).toBeFalsy();
+});
+```
+
+## Add, commit with a meaningful message, and push to GitHub.

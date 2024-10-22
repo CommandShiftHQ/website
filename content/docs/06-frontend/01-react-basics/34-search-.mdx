@@ -1,0 +1,50 @@
+---
+title: "Search "
+---
+
+## Overview
+
+We have live data coming into our Weather App, but it's always for Manchester 🌧.
+
+The next feature we are going to implement is to add **search functionality** to the app. We will be able to enter a city name into a text box. When we click the submit button, it will make a new request for weather data for that city, and update the UI with the returned data.
+
+![Search](https://s3.eu-west-2.amazonaws.com/mcrcodes/weather/search.png)
+
+Look at all that sunshine in Liverpool!
+
+So far in the app, all of the components we have made have been fairly custom, by which I mean they have a specific function that is unique to our app. One clue we have done this is in the component names (`<ForecastSummary />`, `<ForecastDetails />`). This is quite a common thing to happen when making presentational components whose job it is to display data.
+
+In this challenge, however, we are going to be making a `<SearchForm />` component whose primary job is not simple presentation. For components like this where the main thing we are interested in is the functionality they bring, it's good to try to encapsulate that behaviour as generically as possible.
+
+## Requirements
+
+So what is that behaviour?
+
+1. User should be able to enter text in the text field.
+2. When user clicks the submit button, forecast for the searched location should be displayed.
+
+In this case, we need to use the **text we have entered** to make a **request** for the data from that city. But in general, the behaviour of a search form is just that we want to do something with the search value - this action is defined by the context in which we use the form, and it isn't something we need to worry about.
+
+## Technical task breakdown
+
+Let's start by making the basic layout of the form:
+
+### Basic static form
+
+1. Create a new file, and create a new component `<SearchForm />` in this file.
+2. `<SearchForm />` should render a text input, and a button. Render an input label, input placeholder and button with the text "Search".
+3. Render this `<SearchForm />` component in your `<App />` component, between the `<LocationDetails />` and `<ForecastSummaries />`.
+
+You should now see the form on your page in the browser.
+
+### Make form interactive
+
+4. Capture information typed into the `<input>` field.
+5. Store information from the `<input>` field in a state variable in `<App />`.
+6. Create `handleCitySearch()` in `<App />`, which should make another `getForecast()` request.
+7. Modify the endpoint in `getForecast()` so it can return the forecast for a particular city (example of endpoint with param: `https://cmd-shift-weather-app.onrender.com/forecast?city=Leeds`).
+8. Make `handleCitySearch()` available to the "Search" button in `<SearchForm />`.
+
+## Recommended Reading
+
+* [Events](https://developer.mozilla.org/en-US/docs/Web/API/Event)

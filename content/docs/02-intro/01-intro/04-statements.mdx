@@ -1,0 +1,65 @@
+---
+title: "Statements"
+---
+
+## Learning Objectives
+
+- Understand what is meant by the programming term **statement**
+- Understand what is meant by "JavaScript **evaluates** a statement"
+- Understand what is meant by "a statement has **side-effects**"
+
+## Statements
+
+In programming, a **statement** is an individual task or instruction for the computer to complete.
+
+A JavaScript statement is usually a single line of code, finished with a semi-colon (`;`).
+
+When your JavaScript code gets executed, the browser will read the code line by line, statement by statement, instruction by instruction, until all of the instructions in the program have been executed.
+
+Here are some examples of simple JavaScript statements:
+
+- `5;`
+- `10 + 4;`
+- `console.log('Hello World');`
+
+## Evaluation
+
+Every statement in JavaScript has a value. When we execute a statement, JavaScript will figure out what the value of that statement is. This process is called **evaluation**.
+
+For example, the statement `1 + 2` evaluates to the value `3`.
+
+Very soon, we will learn how we can use the values JavaScript calculates for us to control how our programs behave.
+
+In your developer console, when you execute a statement, the value of that statement is displayed on the line below the statement, next to a little arrow pointing left.
+
+In some cases, the evaluation value of a statement will be more obvious than in other cases.
+
+Let's have a go evaluating the three statements above:
+
+![statement](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/introduction-to-programming%2F4%2F1.png?alt=media&token=5dae1002-46b7-4fed-9cfb-cace443bf0ee)
+
+In the simplest example, the statement `5` evaluates to the value `5`.
+
+![statement](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/introduction-to-programming%2F4%2F2.png?alt=media&token=4bdcb148-d344-4855-ba25-f02d2a9e25e3)
+
+In this example, the statement `10 + 4` evaluates to the value `14`. This is a little more complicated, but is not really a surprise.
+
+![statement](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/introduction-to-programming%2F4%2F3.png?alt=media&token=19de77b8-5230-4556-9ce5-ec45ed02f5de)
+
+In the final example, the statement results in two things being printed out - `Hello World`, and `undefined`. The evaluation value of the statement is actually `undefined`. We can see this in the console because `undefined` has the little left-facing arrow beside it.
+
+### `undefined`
+
+When we see the value `undefined` in JavaScript, this means there is **no data**. It's a value that has no value!
+
+### Side Effects
+
+We have seen that we can use `console.log` to print messages, but this printing process is actually separate to the evaluation of the statement.
+
+When a statement causes something to happen other than a simple evaluation, the extra thing that happens is called a **side-effect**.
+
+We can say that the statement `console.log('Hello World!');` was **evaluated** as `undefined`, but it has the **side-effect** of causing a message to printed to the screen.
+
+Side effects are very important in programming, as they allow us to interact with the person using the program!
+
+It's very important to understand this distinction, particularly when using `console.log`.

@@ -1,0 +1,79 @@
+---
+title: "GetImages"
+---
+
+So we've got our `Search` component looking good, let's have a look at getting some images now.
+
+The first thing we should do is create the necessary file in our `requests` folder. Call the file `getImages.js`. Notice the different naming conventions? React component files start with a capital letter, standard `js` files follow camel-case rules.
+
+Next, we need to install a package. We're going to use `axios` to `GET` our images as it automatically parses our data for us, unlike `fetch` which is a standard `GET` method that we can use without a package.
+
+Once we've installed the `axios` package, open `getImages.js` import `axios` at the top of our file and create a function called `getImages` with the parameter of `query` and remember to export the function at the bottom of the file.
+
+Next, we need to make our `GET` request.
+
+We'll start by telling the function what to do if no query is present when the function runs.
+
+```js
+if (!query) {
+  return Promise.resolve([]);
+}
+```
+
+This tells the function to return an empty promise if the function runs without a user entering a query. This will stop any unexpected errors from occurring should our search be actioned without data.
+
+Next, let's look at the endpoint we were given as part of the tech test.
+
+`https://images-api.nasa.gov/search` and the parameter of `q`.
+
+Let’s open Postman and query the endpoint of: https://images-api.nasa.gov/search in the form of a GET request, we should get back the message: `"reason": "Expected 'q' text search parameter or other keywords."`
+
+You’ll also notice we got a `400 Bad Request`. This is because we haven’t added a query parameter as the message says, so let’s do that.
+
+Perform a `GET` request on https://images-api.nasa.gov/search again, but this time add a query and our parameter to the end with `?q=moon`. 
+
+This time you should get back moon results and a status of 200. Good, we’re all set to apply this to our app.
+
+Going back to our `getImages` function, let’s add an `else` to our `if` statement and return a `GET` request.
+
+```js
+else {
+  return axios
+    .get(`https://images-api.nasa.gov/search?q=moon`)
+    .then((response) => {
+      console.log(response)
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+```
+Here we’re doing a `GET` request to the endpoint with axios, then we’re going to temporarily console log the response so we can see the data we’re getting back. We have a good idea what we’re going to get in the `response` as we can clearly see the structure in Postman, but there’s no point in guessing or presuming at this stage as that will result in hours of lost time. If we know for certain what this request will return, we can be sure we’re not referencing `undefined` values.
+
+You will also notice as well as a `then()` block, we also wrote a `catch()` block. This will trigger if there is a bad request.
+
+Let’s get this function hooked up to our search input next.
+
+Back in `Search.js` let’s import our `getImages` function.
+
+Once we’ve done that, let’s create a `handleSubmit` event handler that will take care of our request.
+
+We’re going to pass in the parameter of `event` to our `handleSubmit`, then within our function, we will call `event.preventDefault()` to stop our app re-rendering on submit.
+
+Underneath this, and still inside our function block, we will call `getImages()` and pass in the parameter of `value` which is referring to the `value` in our `state`.
+
+Next, we need to add an `onSubmit` prop to our `form` tag within our component body. This of course should call the `handleSubmit` function on submit.
+
+Let’s open Chrome and check our console tab to make sure the search input works as intended.
+
+Type something into the input and hit the submit button, you should see in your console in Chrome’s dev tools that we’re now returning data from a `GET` request!
+
+One problem though, no matter what search query we pass into the input, we only get back results for the moon.
+
+Let’s go back to our `getImages` function to see why.
+
+The eagle-eyed of you will notice that we hardcoded the parameter `?q=moon` on our `GET` request before, let’s change that now to the following: ``https://images-api.nasa.gov/search?q=${query}``
+
+Now when we enter a value into the search input and hit submit, the query will be amended to the end of our `GET` request. Try a few requests to ensure this works as intended. Remember that Postman is your best friend when it comes to testing endpoints.
+
+Next, we'll take a look at getting the data we actually want instead of a huge object.

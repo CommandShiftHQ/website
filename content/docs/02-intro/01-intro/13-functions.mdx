@@ -1,0 +1,171 @@
+---
+title: "Functions"
+---
+
+## Learning Objectives
+
+- Understand what a function is
+- Understand how functions allow code to be reused
+
+## Functions
+
+Functions are one of the most powerful tools available in programming. Learning how to use them and how to write them is one of the most important skills you will learn. They allow us to write code that is more reliable, reusable, flexible and easier to maintain.
+
+In this lesson we're going to look at what functions are used for, and how to utilise them in JavaScript.
+
+### What's the big idea?
+
+Imagine that you work in a cake factory. The factory only makes one kind of cake, a sponge cake made with the following instructions:
+
+- Heat oven to 190 celsius
+- Add 200g flour, 200g sugar, 4 eggs, 200g butter, 1tsp baking powder to mixing bowl
+- Mix ingredients together
+- Put ingredients in tin
+- Put tin in oven
+- Bake for 20 minutes
+- Take tin out of oven
+
+The factory has machines that automate the baking of cakes. Each machine has the ability to make an entire cake. All you need to do is operate the machine.
+
+Each machine has 7 buttons, each one corresponding to a step in the cake making process. To make a new cake, you have to press the same 7 buttons in the same order.
+
+However, in the factory you make hundreds of cakes every day. This means that you have to press the same 7 buttons over and over and over again. It's tedious work and it can lead to mistakes. Sometimes you press them in the wrong order, or you forget to press one, or you press a button twice.
+
+It would be better if the machine just had one button, a "BAKE CAKE" button. When you press the button, the 7 steps get executed automatically in the right order. As a machine operator, you would only have to press 1 button per cake and you would get a lot more consistent results.
+
+This is the problem that functions solve in programming.
+
+### Baking cakes in JavaScript - Version 1
+
+Let's look at how we can solve the problem in JavaScript code. In this example, we will represent each step of the recipe with a `console.log` statement, that prints out the instructions to the screen.
+
+Our initial program will look like this:
+
+```js
+console.log('Heating oven to 190 celsius');
+console.log('Adding 200g flour, 200g sugar, 4 eggs, 200g butter, 1tsp baking powder to mixing bowl');
+console.log('Mixing ingredients together');
+console.log('Putting ingredients in tin');
+console.log('Putting tin in oven');
+console.log('Baking for 20 minutes');
+console.log('Taking tin out of oven');
+```
+
+As a first attempt at baking two cakes in our JavaScript program, we can write out all of that code twice:
+
+```js
+console.log('Heating oven to 190 celsius');
+console.log('Adding 200g flour, 200g sugar, 4 eggs, 200g butter, 1tsp baking powder to mixing bowl');
+console.log('Mixing ingredients together');
+console.log('Putting ingredients in tin');
+console.log('Putting tin in oven');
+console.log('Baking for 20 minutes');
+console.log('Taking tin out of oven');
+
+console.log('Heating oven to 190 celsius');
+console.log('Adding 200g flour, 200g sugar, 4 eggs, 200g butter, 1tsp baking powder to mixing bowl');
+console.log('Mixing ingredients together');
+console.log('Putting ingredients in tin');
+console.log('Putting tin in oven');
+console.log('Baking for 20 minutes');
+console.log('Taking tin out of oven');
+```
+
+### Function Declarations
+
+There are a few ways to create a function in JavaScript. For our purposes all of the ways are equivalent, and we will be creating our functions using the `function` keyword. The syntax for doing so looks like this:
+
+```js
+function myFunction() {}
+```
+
+This type of statement is called a **function declaration**. It defines a function called `myFunction`.
+
+Once a function is declared, it is accessible in the same way as any other variable in JavaScript - take a look.
+
+```js
+const myVariable = 'Hello';
+function myFunction() {}
+
+myVariable;
+myFunction;
+```
+
+Note that the evaluation value of `myFunction` looks a little unusual. That's because `myFunction` refers to the function itself. It refers to the button on the cake machine. When we refer to a function in this way, we are talking about the function, in this example the physical button, but we're not pressing the button yet.
+
+To do that, we need to **call** or **invoke** the function using round brackets.
+
+The curly brackets on the right of the function declaration are a **code block**, like we saw in the previous lesson. This is the first example we have seen of code blocks in use! This code block is where we put the instructions into our function.
+
+When we call a function, all of the instructions in the function declaration will be executed.
+
+```js
+const myVariable = 'Hello';
+function myFunction() {};
+
+myVariable;
+myFunction;
+myFunction();
+```
+
+So while `myFunction` evaluates as the function itself, `myFunction()` calls the function and evaluates its value.
+
+In this example, the function `myFunction` evaluates as `undefined`. This is because our function doesn't contain any instructions right now. Don't worry about that for now - we will look at how to control the evaluation value of a function very shortly.
+
+#### Not a function
+
+What happens if we try to call a normal variable, such as a string?
+
+```js
+const myVariable = 'Hello';
+myVariable();
+```
+
+Oops! This code produced an error. JavaScript is telling us that "`myVariable` is not a function". In JavaScript, being callable is a special property of functions.
+
+![image](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/images%2Fa98f17686f6abfe9ae09301dba3b5468fb03c8bb79771adcffa269f1a504.png?alt=media&token=dbac57f9-5454-46bf-bbe5-8330fd964b7f)
+
+### Baking cakes in JavaScript - Version 2
+
+Let's now write a function that does something - let's automate our cake baking process!
+
+First let's write a new function called `bakeCake`.
+
+```js
+function bakeSpongeCake() {};
+```
+
+In the function's code block, we want to put all of the instructions for how to bake a cake.
+
+```js
+function bakeSpongeCake() {
+  console.log('Heating oven to 190 celsius');
+  console.log('Adding 200g flour, 200g sugar, 4 eggs, 200g butter, 1tsp baking powder to mixing bowl');
+  console.log('Mixing ingredients together');
+  console.log('Putting ingredients in tin');
+  console.log('Putting tin in oven');
+  console.log('Baking for 20 minutes');
+  console.log('Taking tin out of oven');
+};
+```
+
+Now we've defined the function, we can call it as many times as we like. Every time we do so, we will get exactly the same result, with a fraction of the effort:
+
+```js
+function bakeSpongeCake() {
+  console.log('Heating oven to 190 celsius');
+  console.log('Adding 200g flour, 200g sugar, 4 eggs, 200g butter, 1tsp baking powder to mixing bowl');
+  console.log('Mixing ingredients together');
+  console.log('Putting ingredients in tin');
+  console.log('Putting tin in oven');
+  console.log('Baking for 20 minutes');
+  console.log('Taking tin out of oven');
+};
+
+bakeSpongeCake();
+bakeSpongeCake();
+bakeSpongeCake();
+bakeSpongeCake();
+```
+
+Four cakes, zero effort.

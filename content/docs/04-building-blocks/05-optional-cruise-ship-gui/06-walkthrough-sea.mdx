@@ -1,0 +1,176 @@
+---
+title: "Walkthrough: Sea"
+---
+
+# Sea - Walkthrough
+
+## Steps
+
+- Create a new constructor function called `Controller` in `src/controller.js`.
+- Create a new prototype method for `Controller` called `initialiseSea`, and call it from within the constructor.
+- Import the `controller.js` file into your html using a `script` tag at the end of the `body`.
+- Add another `script` tag underneathm but this time use inline JavaScript to create a new instance of `Controller`.
+- Inside your `initialiseSea` method, use `setInterval` to run a callback function every `1000` milliseconds. Inside the callback function use `document.querySelector` to find the `#viewport` element and change the background image so it alternates between `water0.png` and `water1.png`. You'll probably want to keep some sort of "counter" variable outside of your `setInterval` to determine which background image to use.
+
+## Create a new constructor called `Controller`.
+
+Inside your `src/` folder, add a new file called `controller.js` and create a constructor:
+
+```js
+function Controller () {}
+```
+
+## Create a new prototype method for `Controller` called `initialiseSea`, and call it from within the constructor.
+
+```js
+function Controller() {
+  this.initialiseSea();
+}
+
+Controller.prototype.initialiseSea = function initialiseSea() {
+
+};
+```
+
+Remember, `this` refers to the current instance of an object. In this case, `this.initialiseSea()` won't exist on the object itself, but it will exist on it's prototype (which JavaScript falls back to) so we're okay to call it this way.
+
+## Add a `script` tag to the end of your `index.html` body which includes the `Controller.js` file.
+
+```html
+<body>
+  ...
+  <script src="src/controller.js"></script>
+</body>
+```
+
+## Add another `script` tag underneath but this time enter JS between the tags to create a new instance of `Controller`.
+
+```html
+<body>
+  ...
+  <script src="src/controller.js"></script>
+  <script>
+    const controller = new Controller();
+  </script>
+</body>
+```
+
+The order of the `script` tags is important here, as the JavaScript gets loaded in the order specified.
+
+What do you think would happen if we did swap the order of these `script` tags? Why?
+
+Try it out and see what happens! Remember, you can look in your browser console to help you debug.
+
+## Inside your `initialiseSea` method, use `window.setInterval` to run a callback function every `1000` milliseconds.
+
+```js
+Controller.prototype.initialiseSea = function initialiseSea() {
+  window.setInterval(() => {}, 1000);
+};
+```
+
+Here, `window` is a globally accessible object provided by the browser. It provides some built in functionality for us when we write JavaScript to run in the browser.
+
+Interestingly, properties on the `window` object are normally available as global variables themselves - for example the `console` object (of `console.log` fame) is actually `window.console`...
+
+`setInterval` is a method which allows us to run a task at regular intervals. It's like a loop that repeats forever. It's going to be handy for animating the sea - the animation will continue indefinitely.
+
+The above code runs the empty function every 1 second (1000 milliseconds). Try putting a `console.log` into the function. Reload the page and check your browser console - you should see the message be printed out every second.
+
+## Inside the callback function use `document.querySelector` to find the `#viewport` element and change the background image so it alternates between `water0.png` and `water1.png`.
+
+Inside the `initialiseSea` method, we'll firstly create an array of the background images we want to alternate between:
+
+```js
+Controller.prototype.initialiseSea = function initialiseSea() {
+  const backgrounds = [
+    './images/water0.png',
+    './images/water1.png',
+  ];
+  window.setInterval(() => {}, 1000);
+};
+```
+
+Then we'll create a "counter" variable to help us keep track of which background is currently in use:
+
+```js
+Controller.prototype.initialiseSea = function initialiseSea() {
+  const backgrounds = [
+    './images/water0.png',
+    './images/water1.png',
+  ];
+  let backgroundIndex = 0;
+  window.setInterval(() => {}, 1000);
+};
+```
+
+Now let's bulk the `setInterval` callback function out so it changes our background image:
+
+```js
+window.setInterval(() => {
+  document.querySelector('#viewport').style.backgroundImage = `url('${backgrounds[backgroundIndex % backgrounds.length]}')`;
+  backgroundIndex += 1;
+}, 1000);
+```
+
+[Template literals](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals) have been used here to interpolate a background image from the `backgrounds` array. Please read about them - they are amazing.
+
+We use `document.querySelector('#viewport')` here which finds the `<div id="viewport"></div>` HTML element and returns it as a **DOM object**.
+
+Remember, DOM Objects are JavaScript objects that represent HTML elements.
+
+:books: [DOM Element API Reference at MDN](https://developer.mozilla.org/en-US/docs/Web/API/Element)
+
+You'll also notice we've used the global variable `document` - this is another thing that comes from the browser, and it represents the the html document as a whole.
+
+Don't worry about `document` so much for now, just be aware what it is and what it represents.
+
+:books: [Document API Reference at MDN](https://developer.mozilla.org/en-US/docs/Web/API/Document)
+
+Any attributes that the HTML element can have will exist as keys/property names on the DOM object, so for example `document.querySelector('#viewport')` will return a DOM object that might look like:
+
+```js
+{
+  id: 'viewport',
+}
+```
+
+DOM elements also have a `style` property which represents the inline styles applied to the html element. This is also an object.
+
+So `document.querySelector('#viewport').style.backgroundImage = 'url(...)'` sets the `backgroundImage` attribute on the `style` object, so we end up with something like this:
+
+```js
+{
+  style: {
+    backgroundImage: 'url(...)'
+  }
+}
+```
+
+Which in turn (behind the scenes) is doing this to the HTML element:
+
+```html
+<div id="viewport" style="background-image: url(...)">
+</div>
+```
+
+If you look in your browser, you will see that this is exactly what is happening:
+
+![Updating the background image](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/cruise-ships-gui%2Fsea.gif?alt=media&token=e3814343-129a-44e3-bd2b-6e628af5ffbd)
+
+After the DOM manipulation, we just increase the counter by one.
+
+We use the module `%` operator to loop the index back to the start of the images array. If you don't remember this, look back to your `javascript-basics` work from the beginning of the course.
+
+## Linting
+You may get some linting error in this step saying that `window` or `document` are not defined. This is because these are global variables that are provided by the browser, and ESLint doesn't know about them.
+To fix this, add the following to you `.eslintrc` file:
+```json
+{
+    "extends": "mcr-codes",
+    "env": {
+        "browser": true
+    }
+}
+```
+This extra configuration tells ESLint that our code is going to run in a browser environment, so it should not error when it encounters global variables such as `document` and `window`.

@@ -1,0 +1,12 @@
+---
+title: "Adding Search Data - Walkthrough"
+---
+
+After updating your `handleSubmit` method, it should look like this:
+
+```jsx
+ const handleSubmit = async (event) => {
+    event.preventDefault();
+    setSearchResults(await getImages(value));
+  };
+```

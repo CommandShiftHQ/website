@@ -1,0 +1,155 @@
+---
+title: "Objects in the Browser"
+---
+
+# Making our objects browser friendly
+
+Sorry for this step - it's all fun after this _I promise_.
+
+The next thing we want to do is to render some ports.
+
+Lets start by importing our `port.js` file into the `index.html` file. Do this in the same way you imported the `controller.js` file.
+
+Now look in the browser console... you should see an error similar to the following:
+
+```
+Uncaught ReferenceError: module is not defined
+    at port.js:15
+```
+
+Taking a look at line 15 of `port.js` we see the following line:
+
+```
+module.exports = Port;
+```
+
+Why is `module` not defined?
+
+Until now we've been using our objects (`Port`, `Itinerary` and `Ship`) inside a Node.js environment. In Node.js, each file is a _module_, and we use a combination of `module.exports` and `require` to pass objects between files. 
+
+The problem we now face is that browser works a bit differently to Node, in that `module` isn't a concept.
+When we include a JS file into the window environment, **everything** in the global scope of that file is imported into the global scope of the `window` object. If we import various different files that happen to have the same variable names used in their global scopes then they will clash.
+
+In a nutshell:
+
+* **Node.js**: We can use `module.exports` to selectively export objects from a file and `require` to assign those exported objects to variable names of our choosing.
+* **Browser**: Everything in a file's global (top-level) scope is exported onto the `window` object as a globally-accessible variable. If we have multiple files being included with `<script>` tags and two of those files sets a global variable with the same name, they will clash and the later one  override the earlier other. (If we import two JS files into our HTML, and both of the JS files have a top level variable called `foo`, in the HTML, the value of the `foo` variable will be the value from the last file to be imported).
+
+We have two problems:
+Firstly, we have no constraints on what our files do to the `window` object. That is we are effectively exporting everything from the global scope of file, which breaks the encapsulation of our module.
+Secondly, the `module` object doesn't exist in the browser, so our `module.exports` statements in our constructor files will error.
+
+The first problem can be solved by wrapping our code inside an _Immediately-Invoked Function Expression_ (otherwise referred to as an IIFE). An IIFE is what it says on the tin - a function which is invoked as soon as it is declared. It looks like this:
+
+```js
+(function () {
+  // do stuff here
+}())
+```
+
+We have our function:
+
+```js
+function () {
+  // do stuff here
+}
+```
+
+Which we immediately proceed to call (`()`):
+
+```js
+function () {
+  // do stuff here
+}()
+```
+
+Finally, we have to wrap the whole declaration in parentheses for JavaScript to treat it as an expression (otherwise it will throw a syntax error):
+
+```js
+(function () {
+  // do stuff here
+}())
+```
+
+The benefit of using an IIFE is that in JavaScript, variables/function declarations are scoped to functions so:
+
+```js
+(function () {
+  function Port () {}
+}())
+```
+
+won't attach `Port` to the `window` object (because it isn't on the top level scope), whereas:
+
+```js
+function Port () {}
+```
+
+would attach a `Port` property to the `window` object, as `Port` is now on the top level scope.
+
+Let's make a start by encapsulating our `Port` object:
+
+```js
+(function exportPort() {
+  function Port(name) {
+    this.name = name;
+    this.ships = [];
+  }
+
+  Port.prototype = {
+    addShip(ship) {
+      this.ships.push(ship);
+    },
+    removeShip(ship) {
+      this.ships = this.ships.filter(dockedShip => dockedShip !== ship);
+    },
+  };
+}());
+```
+
+Now nothing from the `Port.js` file is exported, which is a problem. We'll be failing our tests now for a start, but also we will need `Port` in our GUI soon. We can fix this by adding the following at the end of the IIFE:
+
+```js
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = Port;
+} else {
+  window.Port = Port;
+}
+```
+
+This checks to see if `module` and `module.exports` both exist (a.k.a. we are in the Node.js environment) and if they do then we export `Port` from the module, otherwise we attach the `Port` object to the `window` object (which exists in the browser environment).
+
+Overall, `Port.js` now looks like this:
+
+```js
+(function exportPort() {
+  function Port(name) {
+    this.name = name;
+    this.ships = [];
+  }
+
+  Port.prototype = {
+    addShip(ship) {
+      this.ships.push(ship);
+    },
+    removeShip(ship) {
+      this.ships = this.ships.filter(dockedShip => dockedShip !== ship);
+    },
+  };
+
+  if (typeof module !== 'undefined' && module.exports) {
+    module.exports = Port;
+  } else {
+    window.Port = Port;
+  }
+}());
+```
+
+## Challenge
+
+Do the same as above for the other constructor files (including your new `Controller` constructor).
+
+## Recommended Reading
+
+* [Ben Alman: Immediately-Invoked Function Expression (IIFE)](http://benalman.com/news/2010/11/immediately-invoked-function-expression/)
+* [Essential JavaScript: Mastering Immediately-invoked Function Expressions](https://medium.com/@vvkchandra/essential-javascript-mastering-immediately-invoked-function-expressions-67791338ddc6)

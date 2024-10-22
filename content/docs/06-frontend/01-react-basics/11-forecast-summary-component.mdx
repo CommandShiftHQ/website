@@ -1,0 +1,40 @@
+---
+title: "Forecast Summary Component"
+---
+
+## Requirements
+
+The requirements for the next feature of our app are:
+
+**_Users should be able to see a summary of each day of the forecast, including the date, general description, an icon for the weather that day, and maximum temperature._**
+
+This can be broken into two problems:
+
+* We need to render the date, description, icon and max temperature for a day.
+* We need to repeat this for each day of the forecast.
+
+In this step we are going to solve the first of these problems. Your challenge is to make a component which displays the forecast summary for an individual day.
+
+## Technical task breakdown
+
+This task is similar to the work you did in `LocationDetails.js`, so if you get stuck, go back to there before you check the walkthrough for `<ForecastSummary />`.
+
+#### 1. Create relevant files
+
+This is the `<ForecastSummary />` component we came up with in the "Thinking in Components" step. This means you will need two new files: one for the component, and one for tests. Don't worry for now about "plugging in" the component in the application. It will be displayed as an item in a list later, which we will cover in the next steps.
+
+Build dummy components (rendering just an empty `<div>` with the appropriate `className`) and initiate tests with a describe block.
+
+#### 2. Expected props
+
+Back in "Thinking in Components" step, we said in the walkthrough that this component would take 4 props - `date`, `temperature`, `description` and `icon`. Your challenge is to access these 4 pieces of information.
+
+🤔 Check with the design which value for the temperature you should use - min or max?
+
+🤔 Check how to display units for temperature yourself 💪.
+
+#### 3. Add markup for each forecast summary detail
+
+As guidance, each prop should be rendered inside of a `<div>`. Add `classNames` to these `<div/>`s to help you select the elements in your tests.
+
+💡 Finding the right names for elements is one of the hardest things in development, which is why developers started creating naming conventions. [BEM](http://getbem.com/) (Block-Element-Modifier) is one of the most popular ones for class names. Check the linked documentation and try to use it 😉.

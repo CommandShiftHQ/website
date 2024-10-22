@@ -1,0 +1,29 @@
+---
+title: "Search Logic"
+---
+
+Okay so we've got our `Search` component looking decent, now let's get it working!
+
+We're going to need to create an event handler method for our input if we want to collect the user's query and use that to search for results.
+
+Start by adding a `useState` hook for a `value` within our `Search` component.
+
+Once we've done that we can add the event handler to our `input`.
+
+On `input` add the following `onChange={(e) => setValue(e.target.value)}` this will save the users search query every time there is a change within the `input`.
+
+Great, now we're collecting data and storing it in state.
+
+Now we should probably look at how a user might submit their search query, so let's add a button and create a form.
+
+In `Search.js` create a `form` tag and wrap it around in `input`, once you've done that, add a `button` tag underneath your `input`.
+
+Give the `button` a `className`, `type` of `submit`, and a search term.
+
+Now we need to style our form and button as well as making some amendments to our previous styling.
+
+First, let's remove the `margin: auto` from our input. For the form, we want the button and the input to sit next to each other in the middle of the page so style the `form` with `display: flex` and `flex-direction: row`. Once you've done that, style your button to look a lot better than it currently does.
+
+For now, if we hit submit on our button it will refresh the page. This isn't what we want it to do but we'll revisit this soon and write a function that validates our input.
+
+Once you've done this you may need to update your snapshot tests as they will fail otherwise. Now we're ready to move on!

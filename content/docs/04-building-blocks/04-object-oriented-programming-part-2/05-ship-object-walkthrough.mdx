@@ -1,0 +1,105 @@
+---
+title: "Ship Object - Walkthrough"
+---
+
+## Steps
+
+- Discuss with your classmates what the domain model would look like for the above user story. Would recommend a pen and paper for this step.
+- Create a new test file, which should `describe` your constructor.
+- Create a new test spec (`it`) for ensuring an instance of your object can be created.
+- Write the code that makes this test pass.
+- Create another test spec for each property and/or method you identify.
+- Write the code that makes this test pass.
+- Add, commit with a meaningful message, and push to GitHub.
+
+## Domain Model
+
+From the user story:
+
+```
+As a cruise ship captain,
+So I can get passengers aboard a ship,
+I want a ship to have a starting port.
+```
+
+The domain model for this user story might look like this:
+
+| Object | Methods    | Properties   |
+|--------|------------|--------------|
+| Ship   |            | startingPort |
+
+## `describe` Ship
+
+We have a `Ship` object so we'll describe a `Ship` constructor.
+
+Create a `__tests__` folder in your project root, and inside create a new file `Ship.test.js`.
+
+First, we'll import in our constructor file. It doesn't exist yet, but we're developing using a test-driven approach, so that's okay:
+
+![Module import](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/cruise-ships%2Fmodule_import.png?alt=media&token=3b888b00-401d-4ec2-a42f-e39dc12d0867)
+
+:exclamation: The `/* globals describe it expect */` just tells VS Code and the linter that these variables don't exist in the scope (because the `jest` test runner brings them into scope), so don't show linter errors for them.
+
+Then below, we'll `describe` our constructor:
+
+![describe](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/cruise-ships%2Fdescribe.png?alt=media&token=1cf854a6-7f08-445a-9c58-8470a9b06d59)
+
+Save the file, and in your Terminal run `npm run test`. You should fail with the following:
+
+![Module not found](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/cruise-ships%2Fmodule_not_found.png?alt=media&token=0ed0ba53-ddfb-4332-a0d3-9b057096e844)
+
+The error here is: `Cannot find module '../src/Ship.js' from 'Ship.test.js'`. We can solve this by creating the `Ship.js` file in a new folder in the project root: `src/`. Run your tests again. You should now fail with:
+
+![No tests](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/cruise-ships%2Fno_tests.png?alt=media&token=bffc6898-1754-4dd5-aace-d31f8482948f)
+
+## Test an instance of Ship can be created
+
+To fix this error, we can proceed to write our first test:
+
+![it instantiates](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/cruise-ships%2Fit_instantiates.png?alt=media&token=8d0b10ab-48ea-472f-934c-0d16c6c12586)
+
+Run your tests:
+
+![Ship is not a constructor](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/cruise-ships%2Fnot_a_constructor.png?alt=media&token=2e8497e4-b5bd-4140-b6a2-73adac4ac754)
+
+## Write the code to make this pass
+
+:exclamation: You should be able to do this without the walkthrough. Once you've passed the test, then proceed.
+
+## `it` has a `startingPort`
+
+We identified a property of `startingPort` during the domain modelling, so write a test to check a `Ship` has this property:
+
+![Has startingPort](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/cruise-ships%2Fhas_port.png?alt=media&token=4afbd9e0-f64d-4a40-b656-312479758afc)
+
+Run your tests. They should fail with:
+
+```bash
+  ● Ship › has a starting port
+    expect(received).toBe(expected) // Object.is equality
+    Expected: "Dover"
+    Received: undefined
+    Difference:
+      Comparing two different types of values. Expected string but received undefined.
+      10 |     const ship = new Ship('Dover');
+      11 |
+    > 12 |     expect(ship.startingPort).toBe('Dover');
+         |                               ^
+      13 |   });
+      14 | });
+      15 |
+      at Object.it (__tests__/Ship.test.js:12:31)
+```
+
+## Write the code to make this pass
+
+:exclamation: You should be able to do this without the walkthrough. Once you've passed the test, then proceed.
+
+## Add, commit with a meaningful message, and push to GitHub.
+
+```bash
+git add __tests__/Ship.test.js
+git add src/Ship.js
+git commit -m "Tests for Ship and Ship constructor"
+git push origin main 
+```

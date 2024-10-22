@@ -1,0 +1,41 @@
+---
+title: "Numbers"
+---
+
+By now you should be familiar with passing strings as route parameters, and sending responses based on those parameters.
+
+The first tests in the numbers test suite are similar to those we have already seen:
+
+```js
+/* tests/numbers.test.js */
+describe('GET /add/{number}/and/{number}', () => {
+  xit('adds 2 and 1', done => {
+    request(app)
+      .get('/numbers/add/2/and/1')
+      .then(res => {
+        expect(res.status).toEqual(200);
+        expect(res.body).toEqual({ result: 3 });
+        done();
+      });
+  });
+  ...
+});
+```
+
+Remember, you'll need to change `xit` to `it` here for the tests to catch it (and you should at this point have a failing test).
+
+## Challenge
+
+You can solve this in a way now which you should be comfortable with. You'll add a new endpoint to your `app.js` file, defining two path parameters, and using the `add` function from your `numbers` JS basics module to help formulate your response.
+
+Note that your code probably won't pass the test the first time. You might get a response back of 21...can you think why this might be?
+
+### Extra credit
+
+You should know by now... try it in Postman!
+
+## Solution
+
+Try your best to solve the above first without looking at the solution.
+
+- **Find the solution** to the above challenge [here](https://hackmd.io/@Yr7Q8gzkQUaCcF02NXvGtw/ry6ircsl8).

@@ -1,0 +1,221 @@
+---
+title: "Ports have Ships - Walkthrough"
+---
+
+## Steps
+
+- Discuss in pairs how the domain model now looks.
+- Create a new test spec for a `Port` `addShip` method.
+- Write the code that makes this test pass.
+- Create a new test spec for a `Port` `removeShip` method.
+- Write the code that makes this test pass.
+- Create a new test `Ship > gets added to port on instantiation` in the `Ship` test suite. You'll need to check `ship.currentPort.ships` to see if it contains your `Ship` instance.
+- Write the code to make this pass. The `Ship` constructor will need to call the starting port's (`this.currentPort`) `addShip` method, passing itself in (remember the current instance is referred to with `this`).
+- Add an extra assertion to the test for `Ship > can dock at a different port` to test that the `Ship`'s `currentPort`'s `ships` contains the `Ship` instance. You'll likely want to assert on `ship.currentPort.ships`.
+- Write the code that makes this test pass.
+- Modify the test for `Ship > can set sail` to test that the `Ship`'s previous `currentPort` (you can use `indexOf` on `ship.itinerary` to find this) no longer contains the `Ship` instance on its `ships` property (something like `previousPort.ships`).
+- Write the code that makes this test pass.
+- Add, commit with a meaningful message, and push to GitHub.
+
+## Domain Model
+
+```
+As a port operations manager,
+So I can best utilise a port,
+I want a port to keep track of the ships currently docked.
+```
+
+The domain model might now look like this:
+
+| Object    | Methods    | Properties   |
+|-----------|------------|--------------|
+| Ship      | setSail    | currentPort  |
+|           | dock       |              |
+| Port      | addShip    |              |
+|           | removeShip |              |
+| Itinerary |            | ports        |
+
+Requirements aren't always as specific as we would like. We could have a method on a `Port` prototype called `trackShips` but when we think about tracking ships in real life, we mean a port operations manager wants to see them come and go. We know from this user story that a port possesses ships. Therefore, we assume that to keep track of ships, we will need to be able to add and remove them from that ships array. 
+
+## Create a new test spec for a `Port` `addShip` method
+
+![Add ship test](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/cruise-ships%2Fport-ships%2Fadd_ship_test.png?alt=media&token=45ccb074-2c17-4a87-b2f3-0cd06eedc3d6)
+
+You'll notice here that we've not used the `Ship` constructor for creating a `Ship` instance, but rather an object literal. The reason is because we've already tested `Ship` in the ship test suite. Here we're just checking that a port can store a collection of entities - at the moment we don't even need to be concerned with the interface of the object we add to a port. When we do need to be concerned with the interface then we can use _mocks_, which will be covered in next week's walkthrough.
+
+Remember also object literals construct new unique objects. If we did this:
+
+```js
+const cat = {};
+const dog = {};
+```
+
+Then there are 2 seperate objects stored in memory.
+
+This test should fail with:
+
+```js
+  ● Port › can add a ship
+    TypeError: port.addShip is not a function
+      17 |     const ship = {};
+      18 |
+    > 19 |     port.addShip(ship);
+         |          ^
+      20 |
+      21 |     expect(port.ships).toContain(ship);
+      22 |   });
+      at Object.it (__tests__/Port.test.js:19:10)
+```
+
+## Write the code that makes this test pass
+
+:exclamation: You should be able to do this without the walkthrough. Remember, you want to have the ability to store multiple items on a `Port` object, and the ability to add to that collection of items. Once you've passed the test, then proceed.
+
+## Create a new test spec for a `Port` `removeShip` method.
+
+![Remove ship test](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/cruise-ships%2Fport-ships%2Fremove_ship_test.png?alt=media&token=23a5365c-db53-4f94-bc4f-7b220585d2ae)
+
+It should fail with:
+
+```js
+  ● Port › can remove a ship
+    TypeError: port.removeShip is not a function
+      29 |     port.addShip(titanic);
+      30 |     port.addShip(queenMary);
+    > 31 |     port.removeShip(queenMary);
+         |          ^
+      32 |
+      33 |     expect(port.ships).toEqual([titanic]);
+      34 |   });
+      at Object.it (__tests__/Port.test.js:31:10)
+```
+
+## Write the code that makes this test pass
+
+:exclamation: You should be able to do this without the walkthrough (you'll want to look into how to remove items from an array for this one). Once you've passed the test, then proceed.
+
+## Create new test `Ship > gets added to port on instantiation` in the `Ship` test suite
+
+```js
+it('gets added to port on instantiation', () => {
+  const dover = new Port('Dover');
+  const itinerary = new Itinerary([dover]);
+  const ship = new Ship(itinerary);
+
+  expect(dover.ships).toContain(ship);
+});
+```
+
+Here we create a `Port`, which gets passed to an `Itinerary` that gets passed to `Ship`. We expect that the `Port` instance that eventually ends up being made available to the `Ship` after this flow, will have it's `addShip` method called, and thus `port.ships` will contain our `Ship` instance.
+
+## Write the code that makes this test pass
+
+```js
+function Ship(itinerary) {
+  this.itinerary = itinerary;
+  this.currentPort = itinerary.ports[0];
+  this.previousPort = null;
+  this.currentPort.addShip(this);
+}
+```
+
+We have access to our `currentPort` (which we have already pulled out of our itinerary), so we just call `addShip` on it and pass in `this` (which refers to our current `Ship` instance). A constructor just defines what happens when an object is instantiated, so we can perform these operations in constructors in cases like this one.
+
+## Modify test for `Ship > can dock at a different port` to test that `Ship` gets added to the `Port`'s `ships` when it docks
+
+```js
+it('can dock at a different port', () => {
+  const dover = new Port('Dover');
+  const calais = new Port('Calais');
+  const itinerary = new Itinerary([dover, calais]);
+  const ship = new Ship(itinerary);
+
+  ship.setSail();
+  ship.dock();
+
+  expect(ship.currentPort).toBe(calais);
+  expect(calais.ships).toContain(ship);
+});
+```
+
+Here, we've just added the line:
+
+```js
+expect(calais.ships).toContain(ship);
+```
+
+Now a port can keep capacity and store `ships`, we need to ensure that our `Ship.dock` method calls the destination port's `addShip` method. Here, the next port on the itinerary is `calais` so we expect `calais.ships` to include our ship once the `dock` method has been called.
+
+We now fail with:
+```js
+  ● Ship › can dock at a different port
+    expect(array).toContain(value)
+
+    Expected array:
+      []
+
+    To contain value:
+      {"currentPort": {"name": "Calais", "ships": []}, "itinerary": {"ports": [{"name": "Dover", "ships": [[Circular]]}, {"name": "Calais", "ships": []}]}, "previousPort": {"name": "Dover", "ships": [[Circular]]}}
+
+      42 |
+      43 |     expect(ship.currentPort).toBe(calais);
+    > 44 |     expect(calais.ships).toContain(ship);
+         |                          ^
+      45 |   });
+      46 |
+      47 |   it('can't sail further than its itinerary', () => {
+
+      at Object.it (__tests__/Ship.test.js:44:26)
+```
+
+## Write the code that makes this test pass
+
+In `Ship.js`:
+
+```
+dock() {
+  const itinerary = this.itinerary;
+  const previousPortIndex = itinerary.ports.indexOf(this.previousPort);
+  this.currentPort = itinerary.ports[previousPortIndex + 1];
+
+  this.currentPort.addShip(this);
+},
+```
+
+We've just added the line:
+
+```js
+this.currentPort.addShip(this);
+```
+
+Again, we are just calling a method on an object that has been passed into our `Ship` instance through dependency inversion.
+
+## Modify the test for `Ship > can set sail` to test that the `Ship`'s previous `currentPort` no longer contains the `Ship` instance on its `ships` property
+
+```js
+it('can set sail', () => {
+  const dover = new Port('Dover');
+  const calais = new Port('Calais');
+  const itinerary = new Itinerary([dover, calais]);
+  const ship = new Ship(itinerary);
+
+  ship.setSail();
+
+  expect(ship.currentPort).toBeFalsy();
+  expect(dover.ships).not.toContain(ship);
+});
+```
+
+We've added the line:
+
+```js
+expect(dover.ships).not.toContain(ship);
+```
+
+Here we expect the `Ship`'s `setSail` method to call it's `currentPort`'s `removeShip` method, and we can assert on this by checking `dover.ships` no longer has our `Ship` inside.
+
+## Write the code that makes this test pass.
+
+This one is up to you. Modify the `setSail` method in `Ship.js` so a `Ship` removes itself from a `Port`'s `ships`.
+
+## Add, commit with a meaningful message, and push to GitHub.

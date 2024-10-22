@@ -1,0 +1,77 @@
+---
+title: "Database design and queries"
+---
+
+Reviewing our list of requirements, we've completed:
+
+* [x] ~~Do not return password from API~~
+* [x] ~~Want to be able to have list of all the books~~
+
+as this functionality was implemented earlier on in the project and can be accessed by using the `/books` endpoint.
+
+So, we have left:
+
+```
+	* Want to be able to search by each of the fields above
+```
+
+The "fields above" referring to book title, author, genre and ISBN.
+
+As a start lets have a look at the below table for `Book` which contains some test data.
+
+|id| title  |  author | genre | ISBN |
+|--|--------|---------|-------|----|
+|1|Highrise|J.G. Ballard|Sci-fi|1-2-1-3-4-5-a|
+|2|Dune|Frank Herbert|Sci fi|1-2-1-3-4-5-a|
+|3|The Left Hand of Darkness|Ursula K. Le Guin|Science Fiction|1-3-4-56-a|
+|4|The Dispossessed|Ursula Le Guin|Science Fiction|9988-9876-65-b|
+|5|Earthsea | Ursula K. Le Guin |  |  |
+
+- **title and author mandatory**
+
+In order to be able to search for any of these fields we will need to be able to query successfully each of the table columns. Looking at the data above what problems can you see that might come our way?
+
+For instance:
+- If you were to query `genre` for all the science fiction books in our database, how many variations would we need to consider in the example above? (4! Don't forget that `null` values are also a variation and the only strings that are exactly the same are "Science Fiction")
+- In a large database, how would we know how many variations of the string that represents the "science fiction" `genre` are there? 
+- What issues can you see with `author` and `ISBN`? (Note how `author` also does not have data consistency and `ISBN` is not unique)
+
+
+One of the ways we can address these issues is by making our data relational. Instead of keeping data in one table, we could write it as several tables related to each other:
+
+**Book**
+
+|id| title | authorId | genreId | ISBN |
+|--|--------|---------|-------|----|
+|1|Highrise|1|1|1-2-1-3-4-5-a|
+|2|Dune|2|1|1-2-1-3-4-5-a|
+|3|The Left Hand of Darkness|3|1|1-3-4-56-a|
+|4|The Dispossessed| 3|1|9988-9876-65-b|
+|5|Earthsea | 3 |  |  |
+
+ - **mandatory*
+
+**Author**
+
+|id| author |  
+| --|-------|
+|1|J.G. Ballard|
+|2|Frank Herbert|
+|3|Ursula K. Le Guin|
+
+**Genre**
+
+| id | genre |  
+| --- | ------------|
+|1 | Science Fiction|
+|2 | Fantasy |
+
+
+We now have data across three tables with relationships set up between them, using `authorId` and `genreId` as relationship hooks (aka `primary keys`).
+
+We can also see that `author` *hasMany* `book`s and also `genre` *hasMany* `book`s. On the other hand, `book` *hasOne* `genre` and *hasOne* `author`. We will learn more about *hasOne* and *hasMany* in a little while.
+
+## Task
+
+* Create the `author` and `genre` Model, Controller, Routes and tests.
+* We would encourage you to use relevant validation for both - for instance, we probably wouldn't want to have duplicates of either `author` and `genre` or have rows in the database with `null` or `""`values 

@@ -1,0 +1,45 @@
+---
+title: "From User Stories to Requirements"
+---
+
+We can use our user stories to come up with a list of requirements:
+
+**User Stories 1-4**
+
+```
+Reader:
+	- name: String
+	- email: String
+		* Check if email address is valid
+	- password: String
+		* Check if password is at least 8 characters long
+
+```
+
+**User Stories 5-8**
+
+```
+Book:
+	- title: String
+		* Check if title exists
+	- author: String
+		* Check if author exists
+	- genre: String
+	- ISBN: String
+```
+
+**From all user stories**
+
+```
+Actions:
+	* Do not return password from API
+	* Want to be able to have list of all the books
+	* Want to be able to search by each of the fields above
+```
+
+
+* These initial requirements are driven by user stories, however, can you think of any others? 
+
+* As a database admin can you think of any other conditions you would like to have in order to keep data consistent?
+	* 🤔 For instance, would it make sense to allow a Reader to create an account without checking if name, email or password exist?
+  

@@ -1,0 +1,161 @@
+---
+title: "State ⭐️"
+---
+
+## What is the "state"?
+
+In the React sense, “state” is an **object** that represents the **parts of the app that can change**.
+
+So far, the **state** of our application never changes - we have a static JSON file with our data, and that data never changes. Our application doesn't do anything with the data apart from pass it into components to get rendered.
+
+Because of the lack of state in our application, all of the components we have created so far have been **stateless components** (you may see the terms stateless, dumb, functional and pure components, which can be used interchangeably).
+
+A stateless component is just a JavaScript function, which receives a `props` parameter, and returns some JSX. Using stateless components is normally preferable where possible. They are the most simple type of component, and they actually have performance benefits too.
+
+However, in most React apps that do anything interesting, we will want to use state. State management is one of the most important parts of learning React. State allows us to keep track of how the user has interacted with our app. For example:
+
+- if a user fills out a form field, we keep track of their input in state,
+- if a user selects an item from a list, we keep track of the selected item,
+- if a user logs in to the site, we can store their details in state,
+- and so on.
+
+We can use this managed state to respond to user input accordingly:
+
+- we can validate the form values they have entered,
+- we can display the selected item,
+- if a user is not logged in, we can prevent a page or component from being displayed,
+- and so on.
+
+Basically all interesting things you would ever want to do will involve state management.
+
+### How to handle state?
+
+There are 2 different ways we can handle state in our application, inside class components and using Hooks in functional components. We will be concentrating on using Hooks in our Weather App as this tends to be the industry standard in React. Class components were used originally and will be around for a while yet in legacy code, so it is important you know the difference and understand both.
+
+## Classes and Class Components
+
+Going back to the object-oriented principles we learned at the start of the course, we can encapsulate related state and behaviour in an object using the prototype/constructor pattern.
+
+To create a stateful component, we can do the same - the only difference is that in React it is preferred to use the ES6 class syntax.
+
+### [ES6 Classes](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes)
+
+### [More ES6 Classes](https://scotch.io/tutorials/better-javascript-with-es6-pt-ii-a-deep-dive-into-classes)
+
+Behind the scenes, Classes in JavaScript are the same as the Proto/Constructor pattern. The only difference is syntax.
+
+Going back to our Virtual Pet, using Proto/Constructor we had this code to set the properties.
+
+```js
+function Pet(name) {
+  this.name = name;
+}
+```
+
+Using classes, this would look like this:
+
+```js
+class Pet {
+  constructor(name) {
+    this.name = name;
+  }
+}
+```
+
+To add a method to our Pet, we would add it to the prototype:
+
+```js
+Pet.prototype.sayHello = function() {
+  return `Hi, my name is ${this.name} and I'm a talking pet.`;
+}
+```
+
+using class syntax, this function would go inside of the class body:
+
+```js
+class Pet {
+  constructor(name) {
+    this.name = name;
+  }
+
+  sayHello() {
+    return `Hi, my name is ${this.name} and I'm a talking pet.`;
+  }
+}
+```
+
+To create a React component using classes, we would do something like this:
+
+```jsx
+class MyComponent extends React.Component {
+  render() {
+    return (
+      <p>{this.props.message}</p>
+    );
+  }
+}
+```
+
+Have you noticed `this.props` in the example above? In functional components, we use just `props`. Maybe you have an idea why? We will explain in more detail below.
+
+We highly recommend reading a bit more about [converting a functional component to a class](https://reactjs.org/docs/state-and-lifecycle.html#converting-a-function-to-a-class) in React docs.
+
+### Differences between a plain class and this React class component
+
+There are a few small differences between a plain class like our `Pet`, and this React class component.
+
+- `extends` - your class component should **inherit** from `React.Component` using the `extends` keyword - this provides the component with a number of built-in behaviours that it needs to function correctly. Note also how the React component does not have a `constructor()` method. This is because it inherits is constructor method from the parent, `React.Component`, so does not need one. If you want to, you can write your own constructor method, but the most basic class component does not need one.
+
+- `render()` method - every React class component must have a `render()` method - this returns the JSX that you want to be rendered (the same as a pure/functional/stateless function would). You can add whatever other methods you want to the class, but `render()` is the minimum requirement. This method is also inherited from `React.Component`.
+
+- `props` -> `this.props` - in a functional component we always have access to the props because all of the code is located inside of a single function. When working with class components, the props get passed into the `constructor` method of `React.Component` and can only be referenced directly there. In other methods the props can be referenced using `this.props` instead.
+
+## Hooks
+
+Hooks are a relatively new addition to React, they allow you to use state and other React features without writing a class.
+
+At the moment, your `<App />` component is a stateless component. In previous versions of React we would have to convert our `<App />` to be a stateful component before we could store state, like in the following example:
+
+```jsx
+class MyComponent extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      message: 'Hello World',
+    };
+  }
+
+  render() {
+    return (
+      <p>{this.state.message}</p>
+    );
+  }
+}
+```
+
+**However**, we no longer have to do this if we're going to use React Hooks.
+
+Using Hooks to set the initial state of a functional component, we need to add our `useState()` hook, which looks something like this:
+
+```js
+import React, { useState } from "react";
+
+const App = () => {
+  const [state, setState] = useState({message: 'Hello World});
+
+  return (
+    <div className="App">
+      <h1>{state.message}</h1>
+    </div>
+  );
+}
+```
+
+Things to pay attention to here:
+
+- We imported `useState` at the top of our file as a part of React.
+- We then declared and destructured `useState()` within our `<App />` component. `useState()` returns an array with two variables. The first variable holds the **value** of our state and the second variable **sets the state** by changing the value of our first variable. These can be named whatever we please, however, they should be descriptive of the data they are storing. It is a convention to name the first variable after the data it stores, and to prefix the name of the second variable with **set** followed by first variable's name. In the example above generic terms have been used to help understand the differences between the two. 
+
+- Within the `useState()` parenthesis we can set the initial state value of state. In this case, we have just passed in an object which has a property called message, you can set the initial state to a value or an empty object, array etc.
+- The `<h1>` is then displaying the value of the property message within state.

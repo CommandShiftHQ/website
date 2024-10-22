@@ -1,0 +1,54 @@
+---
+title: "Setting up our Backend App (Recommended)"
+---
+
+Next, we're going to setup our backend application.
+
+Here you have two options:
+
+- **`Recommended`**: We have created a handy `npx` script that will build the basic scaffolding of a backend project for you, install required dependencies such as `express`, `dotenv` and `eslint`, and initialise a git repo. If you wish to use this script please follow the steps on this page.
+
+- **`Manual`**: If you want a challenge or better understand what the npx script does, you can skip the rest of this page and move onto the next pages with instructions to manually setup the required project scaffolding and dependencies.
+
+*If you want to kick start your project but still learn what the project does, you can go with a hybrid approach of setting up your project with our npx script and read through the following pages to get a better understanding of how everything works.*
+
+## What Is An NPX Script?
+
+NPX stands for Node Package eXecute. It is simply an NPM package runner. It allows developers to execute any Javascript Package available on the NPM registry without even installing it.
+
+Developing an NPX script for often repeated actions provides some benefits:
+
+- Much quicker than writing your code from scratch.
+- You will receive the same outcome from the script every time. No room for syntax mistakes!
+- Your template can be fine tuned over time as you integrate more technologies into your work.
+
+If you want to take a look at the magic behind this npx command you can find the code and the repo [here](https://github.com/CommandShiftHQ/create-backend-app).
+
+## Create Backend App
+
+![Create Backend App Terminal Output](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/create-backend-app.png?alt=media&token=667c071c-ca6c-4df7-8a39-f2dbe127017b)
+
+1. Open the folder where you wish to create your backend project in your terminal.
+
+2. Run the command `npx @command-shift/create-backend-app`.
+
+3. Follow the prompts, specify your project name and allow migrations and npm installation.
+
+4. You will now need a file to store your environment variables. Make a new file called `.env` in the root of your project. Store the following inside it:
+
+   ```
+   PGUSER=postgres
+   PGHOST=localhost
+   PGPASSWORD=password
+   PGDATABASE=music_library_dev
+   PGPORT=5432
+   PORT=3000
+   ```
+
+5. You have now successfully setup a basic backend application! Go ahead and commit this new project to Github.
+
+You can now skip forward to the **`Setting Up the Test Environment`** page. We recommend reading through the skipped pages to get a better understanding of the steps the NPX script automates.
+
+## Additional Reading
+
+- **Read** [:books: Create a NPX Script](https://www.elpuas.com/blog/create-a-npx-script/#:~:text=npx%20is%20a%20tool%20intended,executables%20hosted%20on%20the%20registry.)

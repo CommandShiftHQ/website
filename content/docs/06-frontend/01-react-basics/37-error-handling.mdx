@@ -1,0 +1,57 @@
+---
+title: "Error handling"
+---
+
+## Overview
+
+There is only one outstanding thing to fix now: Try and search for some random text, "ssdgfd" (for example) - nothing should happen, but you should receive an error message in the console:
+
+```plaintext
+Uncaught (in promise) Error: Request failed with status code 404
+```
+
+We should handle these errors, and displaying a user-friendly message instead.
+
+The issue we are having is if we search for a city that doesn't exist, or if there is an error fetching the data in general, we are not handling it.
+
+Before you start:
+
+- Figure out how to handle an error response using axios.
+- Look at the API documentation: [https://mcr-codes-weather-app.herokuapp.com/](https://mcr-codes-weather-app.herokuapp.com/). What are the possible status codes that you can get back? What do these codes mean? Which of these are errors?
+- In your error handling code, set an appropriate error message in your app state based on the error code you receive.
+- Conditionally render the error message from state - if there is a message, render it. If not then don't render anything.
+
+💡 Axios error handling is a bit funky as you don't get access to `response.status` inside the `then()` because all non-2xx statuses throw an error and go to `catch()`. As always, check the `axios` docs, or alternatively check this [cheatsheet](https://kapeli.com/cheat_sheets/Axios.docset/Contents/Resources/Documents/index).
+
+## Requirements
+
+To complete this task you will need to:
+
+- display an appropriate message if the searched city name is incorrect,
+- handle different types of response status.
+
+## Technical task breakdown
+
+1. Add console error logs for all bad status codes.
+2. Create an `errorMessage` state variable in `<App />` and pass it to `<LocationDetails />` as a prop.
+3. Modify `<LocationDetails />` to conditionally display it in the UI.
+3. Validate `errorMessage` in `<LocationDetails />`.
+4. Pass `setErrorMessage` to `getForecast()` and set error messages for 404 and 500 status codes.
+5. Add conditional rendering for `<ForecastSummaries />` and `<ForecastDetails />` whenever an error message should be displayed.
+
+Have you covered all of the bases? What happens if you perform a failed search, followed by a successful one?
+
+## Final touches
+
+1. When you're happy with the behaviour of your app, take some time applying more styles to it, not only to `<SearchForm />`, but to the whole app. Be creative!
+
+2. Looking through your code, can you see any places where you have repeated yourself? Try and refactor it to make your code a little cleaner.
+
+3. Take the time to go back over the walkthroughs and other materials from this track. Are you happy with all of the topics covered? Can you think of any more functionality you might want to add? Are you satisfied with the tests you've written? 
+
+**Take the time to experiment by yourself, and focus on anything you're not totally comfortable with.
+**
+
+## 🎉 Well done 🎉
+
+You made it through probably the toughest track so far. Make sure your code is all committed and pushed to GitHub, take a breather and congratulate yourself on getting to this stage.

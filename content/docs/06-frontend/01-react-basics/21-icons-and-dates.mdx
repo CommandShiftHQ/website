@@ -1,0 +1,61 @@
+---
+title: "Icons and Dates"
+---
+
+## Overview
+
+The application is getting somewhere now, but it still looks a bit odd - it's not clear what the date "1525046400000" and the icon "800" mean exactly, is it?
+
+As developers, a core part of our jobs is handling and manipulating data. As UI developers, it's our job to handle transforming that data into something more user-friendly.
+
+## Requirements
+
+1. Each forecast summary displays a relevant icon.
+2. All dates in the app follow format: ddd Do MMM, so for example: Sun 18th Mar.
+
+## Technical task breakdown
+
+### Formatting the icons
+
+The weather data we are using comes from the Open Weather API. This API provides a list of icons for each weather condition, and every response from the api provides an icon `id`. [The icons are available to see here](https://openweathermap.org/weather-conditions).
+
+The first part of this challenge is to update the `<div>` which currently contains the icon `id` (so values like "800" or "602") in the `<ForecastSummary />` component.
+
+To complete this part of the task:
+
+1. Create a `json` file called iconData 
+2. Create a property for each *icon group* (i.e. 200, 300 etc) detailed in the [api](https://openweathermap.org/weather-conditions).
+
+```
+{
+    "200": "https://openweathermap.org/img/wn/10d@2x.png",
+    "300": "https://openweathermap.org/img/wn/09d@2x.png",
+    ...
+}
+```
+
+3. The value for each property should be an image url, feel free to use any image you think would be suitable as an icon here.
+4. Import this data into the file where you are currently rendering your icon.
+5. In this file you're currently rendering the weather code to screen but you want me ensure you translate each number from an individual code into the respective code group (i.e. 230 -> 200).
+6. Name the variable `weatherCode` you use to store the update `code`.
+7. Once you've done this, you'll need to index `iconData` with the `weatherCode` as the `src` of an `img`.
+8. You may also need to fix and update the tests for the `<ForecastSummary />` component. Feel free to include css on this step to ensure your icons are the same height and width.
+
+### Formatting the date
+
+As we mentioned earlier, the `date` property on our forecasts is formatted as a Unix timestamp in milliseconds - that is, the number of milliseconds since 01/01/1970 00:00:00:0000 UTC (the Unix epoch).  
+
+Storing dates in this form makes a lot of sense - it's a consistent format, independent of timezone differences, and it makes comparing dates as simple as comparing two numbers. Unfortunately, it's less comprehensible to a human than to a computer, so we need to format it correctly in order to be able to use it.
+
+To get a date from a unix timestamp in JavaScript, we can use the `Date` constructor - `new Date(1525046400000)`.
+
+N.B. you can generate a unix timestamp from a `Date` using `Date.parse`
+
+To complete this part of the task:
+
+1. Create a variable called `formattedDate` and use the Javascript Date constructor.
+2. Place the `date` variable deconstructed from the `ForecastSummary` props in the parenthesis of the Date constructor. 
+If you output this value to the console, you will see a timestring.
+3. So far we have a timestring but not quite in the format we want. We need to use a method available on the Date object [.toDateString()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toDateString).
+4. Replace the variable `date` within your return statement with your newly formatted date variable
+5. Don't forget to update your tests to assert that a correctly formatted date is returned.

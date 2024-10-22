@@ -1,0 +1,217 @@
+---
+title: "Walkthrough: Sailing"
+---
+
+# Sailing - Walkthrough
+
+## Steps
+
+- Add a button to `index.html` with an id of `#sailbutton`.
+- Style and position the button using CSS.
+- Modify the `Controller` constructor so it takes a parameter of `ship`. Set `this.ship` to `ship` and modify any other references to `ship` in `Controller` to come from `this.ship`, not method parameters.
+- Modify your constructor call in `index.html` so it also takes a ship.
+- Add a `click` event listener to the button inside the `Controller` constructor and set the callback function to an arrow function that calls `this.setSail`.
+- Use the index of the next port in the ship's itinerary to find the corresponding DOM element
+- Set the ship's left position to the next port's `offsetLeft` - do so gradually using `setInterval, adding 1px every n (you choose) milliseconds, so the boat moves along gradually. Be sure to use `clearInterval` when the ship reaches the port, and be sure to call   `ship.setSail` and `ship.dock` so our instance of `Ship` is updated.
+- Alert the user that they're at the end of their cruise if they attempt to go further than the itinerary.
+
+## Add a button to `index.html` with an id of `#sailbutton`.
+
+```html
+<div id="viewport">
+  ...
+  <button id="sailbutton">Set Sail!</button>
+</div>
+```
+
+I've chosen to place my button within the `#viewport` element, but you can place yours wherever you please.
+
+## Style and position the button using CSS.
+
+Let's make our button look super retro by using an old-school font.
+
+Head on over to [Google Fonts](https://fonts.google.com/) and find a font you like the look of:
+
+![](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/images%2Fgooglefontssearchgif.gif?alt=media&token=6ab08e4b-a79b-4f90-b58d-c3b212d6ae17)
+
+Click the `+` icon and instructions on how to embed the font should come up somewhere on the screen:
+
+![](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/images%2Fgooglefontsgif.gif?alt=media&token=1025ba28-0fcd-4a9a-8c5b-975a1cb4b94a)
+
+Embed the specified HTML inside your `head` tag and keep the tab open as you'll need to add the CSS rule to your button. I've gone with the `Press Start 2P` font.
+
+Now head over to your stylesheet. I've used the below styling:
+
+```css
+#sailbutton {
+  border: 0;
+  background-color: #FB3640;
+  border-bottom: 4px solid #d8040f;
+  color: white;
+  font-family: inherit;
+  padding: 10px 20px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  font-family: 'Press Start 2P', cursive;
+}
+```
+
+Notice how the CSS from Google Fonts has been added to `#sailbutton`. It also falls back to the `cursive` font if there's an error downloading the font. 
+
+We can also add styling for when the button is clicked using `:focus`: 
+
+```css
+#sailbutton:focus {
+  background-color: #d8040f;
+  border-bottom-width: 0;
+  padding-top: 14px;
+}
+```
+
+## Modify the `Controller` constructor so it takes a parameter of `ship`. Set `this.ship` to `ship` and modify any other references to `ship` in `Controller` to come from `this.ship`, not method parameters.
+
+```js
+function Controller(ship) {
+  this.ship = ship
+
+  this.initialiseSea();
+}
+```
+
+And remove the `ship` parameter from `renderShip` and set it to `this.ship` instead.
+
+```js
+renderShip() {
+  const ship = this.ship
+
+  const shipPortIndex = ship.itinerary.ports.indexOf(ship.currentPort);
+  const portElement = document.querySelector(`[data-port-index='${shipPortIndex}']`);
+
+  const shipElement = document.querySelector('#ship');
+  shipElement.style.top = `${portElement.offsetTop + 32}px`;
+  shipElement.style.left = `${portElement.offsetLeft - 32}px`;
+},
+```
+
+## Modify your constructor call in `index.html` so it also takes a ship.
+
+```js
+const itinerary = new Itinerary([
+  new Port('New York City'), 
+  new Port('Grand Turk'),
+  new Port('San Juan'),
+  new Port('Amber Cove')
+]);
+const ship = new Ship(itinerary);
+const controller = new Controller(ship);
+
+controller.renderPorts(itinerary.ports);
+controller.renderShip();
+```
+
+Note the order has been shifted around here.
+
+## Add a `click` event listener to the button inside the `Controller` constructor and set the callback function to an arrow function that calls `this.setSail`.
+
+```js
+function Controller(ship) {
+  this.ship = ship
+
+  this.initialiseSea();
+
+  document.querySelector('#sailbutton').addEventListener('click', () => {
+    this.setSail();
+  });
+}
+```
+
+The reason we don't just do this: 
+
+```js
+document.querySelector('#sailbutton').addEventListener('click', this.setSail)
+```
+
+is because the `this` context when calling `this.setSail` would refer to information about the event, rather than our properties/methods on the `Controller` instance. Instead we pass an arrow function, which takes its `this` context from it's scope (the constructor) so we ensure that it does refer to our object.
+
+## Add a `setSail` method to the `Controller.prototype`. 
+
+```js
+Controller.prototype = {
+  ...
+  setSail() {},
+};
+```
+
+## Use the index of the next port in the ship's itinerary to find the corresponding DOM element
+
+```js
+const ship = this.ship
+
+const currentPortIndex = ship.itinerary.ports.indexOf(ship.currentPort);
+const nextPortIndex = currentPortIndex + 1;
+const nextPortElement = document.querySelector(`[data-port-index='${nextPortIndex}']`);
+```
+
+Exactly the same as what we did in `renderShip` but now we get the next index which returns the next port element.
+
+## Set the ship's left position to the next port's `offsetLeft` - do so gradually using `setInterval`, adding 1px every n (you choose) milliseconds, so the boat moves along gradually. Be sure to use `clearInterval` when the ship reaches the port, and be sure to call  `ship.setSail` and `ship.dock` so our instance of `Ship` is updated.
+
+```js
+const shipElement = document.querySelector('#ship');
+const sailInterval = setInterval(() => {
+  const shipLeft = parseInt(shipElement.style.left, 10);
+  if (shipLeft === (nextPortElement.offsetLeft - 32)) {
+    ship.setSail();
+    ship.dock();
+    clearInterval(sailInterval);
+  }
+
+  shipElement.style.left = `${shipLeft + 1}px`;
+}, 20);
+```
+
+Firstly we get hold of our `#ship` element with `document.querySelector`.
+
+Then we set an interval to run a function every 20 milliseconds:
+
+```js
+const sailInterval = setInterval(() => {
+
+}, 20);
+```
+
+Inside this function, we find the ship's current CSS property `left` value as an integer:
+
+```js
+const shipLeft = parseInt(shipElement.style.left, 10);
+```
+
+Then we say that if the ship element's current left position is that of the next port (minus 32 pixels so the ship shows left of the port) then we'll clear the interval (stop running our function) and we'll call `setSail` and `dock` on our ship to update it's data:
+
+```js
+if (shipLeft === (nextPortElement.offsetLeft - 32)) {
+  ship.setSail();
+  ship.dock();
+  clearInterval(sailInterval);
+}
+```
+
+Lastly, we just add to the ship's `left` CSS property:
+
+```js
+shipElement.style.left = `${shipLeft + 1}px`;
+```
+
+## Alert the user that they're at the end of their cruise if they attempt to go further than the itinerary.
+
+```js
+const nextPortElement = document.querySelector(`[data-port-index='${nextPortIndex}']`);
+
+if (!nextPortElement) {
+  return alert('End of the line!');
+}
+```
+
+After the declaration of `nextPortElement`, we add an `if` statement to check it exists. If it doesn't then we use `alert` to show a message to the user in their browser window.

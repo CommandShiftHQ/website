@@ -1,0 +1,22 @@
+---
+title: "Structure"
+---
+
+Next we’re going to have a quick look at the structure of our app. It currently looks like this:
+
+![structure](https://i.imgur.com/SzqmahR.png)
+
+This is fine for what we’re currently doing but we want to add a new component that will render our search results in, when we do that, our structure will look like this:
+
+![structure](https://i.imgur.com/U5oY2pq.png)
+
+`App.js` is the parent container for all our components in which the `Search` and `SearchResults` components will be rendered. We don’t want to render `SearchResults` inside `Search` as we will most likely end up having to pass state down too many levels (known as prop drilling). Things can quickly get unmanageable if you get your structure wrong at the beginning of your build. Always take some time out to plan how state will be passed around your app without prop drilling or causing layout issues.
+
+Now your turn. We’re going to define some state inside `App.js` called `searchResults`, we will then pass this into `Search.js` (as a prop) where we will set our `searchResults` state as whatever the return value of `getImages()` is.
+
+Create a `useState` hook called `searchResults` in `App.js`.
+Pass `setSearchResults` into the  `Search` component and destructure so we don’t have to reference `setSearchResults` as `props.setSearchResults`
+In `Search.js`, use `setSearchResults()` within our `handleSubmit` function to capture the results of the `getImages()` request.
+
+Great, now we’re storing the `GET` request in our state, if you want to `console.log()` `searchResults` to see this in action, feel free to do so, or use the Chrome extension called React Dev Tools to see it there without the need for console logging.
+

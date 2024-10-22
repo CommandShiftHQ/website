@@ -1,0 +1,73 @@
+---
+title: "Adding Validation to Reader"
+---
+
+Now that we have `Reader` and `Book` created, it’s time that we add some validation to the data we‘re sending to/from our database.
+
+## **WHAT** is validation?
+In a nutshell, it's the capability of being able to validate data before it is handled and/or captured. On server side projects, validation is particularly important as protection against malicious users, without which they could submit dangerous input to the server.
+
+There’s a few main types of validation that are very useful to us as developers:
+
+1. that something* exists
+2. that something* isn’t empty
+3. that something* matches a rule
+			
+*`something` being a data structure
+
+## **WHERE** to add validation? 
+The place where we should add validation in our application is where we define what data we save/retrieve to/from our database, eg in our models.
+
+## **HOW** to add validation?
+Sequelize provides us with a number of out-of-the-box validation functions and constraints. We have used the `DataTypes` object before, and in itself this is a validation of the `type` that is used for a model field. 
+
+Sequelize does give us more power than that, which you can have a look at here: [Sequelize - Pre-attribute validations](https://sequelize.org/master/manual/validations-and-constraints.html).
+
+## Task
+Referring to the Sequelize documentation above, validate fields in our Model according to our requirements:
+
+```
+Reader:
+	- name:  String
+	- email:  String
+		* Check if email address is valid
+	- password: String
+		* Check if password is at least 8 characters long
+```
+
+### Note:
+1. In Sequelize the following:
+
+```js
+  const schema = {
+    email: DataTypes.STRING,
+    name: DataTypes.STRING,
+    password: DataTypes.STRING,
+  };
+```
+can be written as:
+
+```js
+  const schema = {
+    email: {
+      type: DataTypes.STRING,
+    },
+    name: {
+      type: DataTypes.STRING,
+    },
+    password: {
+      type: DataTypes.STRING,
+    },
+  };
+```
+which allows us to expand what we're matching each Model field against.
+
+2. Make sure that `name`, `email` and `password` exist and cannot be empty
+
+3. Make sure that `email` is in the correct format
+
+4. Make sure `password` is longer than 8 characters
+
+5. Make sure the controller knows how to handle the different error messages the model might throw.
+
+6. Don't forget to write tests that support this functionality

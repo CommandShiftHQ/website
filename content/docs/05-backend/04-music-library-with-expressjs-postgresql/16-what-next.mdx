@@ -1,0 +1,48 @@
+---
+title: "What Next?"
+---
+
+Well done! That's all the `CRUD` operations working :tada:
+
+## Still have some time?
+⚠️ Please read all the instructions below before proceeding to change your project's code to ensure you understand all requirements.
+
+### Further reading
+
+You can read more about them here with some examples: [A look at PostgreSQL migration in node](https://www.antoniovdlc.me/a-look-at-postgresql-migrations-in-node/)
+
+Now you know more about migration... let's go back to our challenge...
+
+## The challenge
+Can you extend your Music Library project to add a new `Album` table and `CRUD` operations for it? 
+
+1. Start by adding an `Album` table to the database. *You can do this by adding another migration file to your repository*.
+
+2. Your `Album` table will need `id`, `name` and `year` columns. To keep things simple, the `year` column can be an `INT`.
+
+3. Albums will also need to be able to reference the artist that released them. Add another column to your table called `artistId`. It should be a `foreign key` which references the `Artist` table. Have a look on the internet on how you can set a foreign key with PostgreSQL syntax.
+
+4. Write a test file called `album-create.test.js`. It will be very similar to the `artist-create.test.js` file.
+
+5. The test should `POST` to `/artists/:id/albums` to create a new album associated to that artist. ⚠️ You will need to make sure there is an artist in your database before you try and create an album.
+
+6. The rest of the `CRUD` tests should send their requests to either `/albums` or `/albums/:id`. Plan your routers accordingly.
+
+## Common pitfalls and good things to remember:
+- If you were eager and created the `Album` table by running the migration just with step 2, but haven't set up the foreign key from step 3, you will be tempted to change the second migration you've added. This is not going to work because once a migration occurs, you can't change it. That's because a `hash` of what the SQL that was executed is being recorded in the `migrations` table. To fix this, you will need to `ALTER` the table and add a contraint instead - as part of an additional migration. 
+
+- Here are some errors you might encounter:
+
+  1. Hashes don't match.
+
+```bash
+Error: Migration failed. Reason: Hashes don't match for migrations '02-create-album-table.sql'.
+This means that the scripts have changed since it was applied.
+```
+
+  *Solution*: This error occurs, most likely, because you've already performed the migration mentioned and you're trying to edit it. Revert the migration to initial SQL command and add a new one with the change you want to make. 
+
+## Finished? ✅
+
+Fantastic! 
+Let us know on Slack and ask for a code review.

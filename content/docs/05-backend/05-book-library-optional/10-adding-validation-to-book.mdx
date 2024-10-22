@@ -1,0 +1,20 @@
+---
+title: "Adding Validation to Book"
+---
+
+Now that we've added validation to the `Reader` model, our next task is to add validation to `Book`. 
+In this case we just want to make sure that we have an author and a title.
+
+```	
+Book:
+	- title: String
+		* Check if title exists
+	- author: String
+		* Check if author exists
+	- genre: String
+	- ISBN: String
+```
+
+1. Make sure constraints and validation are added to the `Book` model.
+2. Make sure the controller knows how to handle the different error messages the model might throw.
+3. Write unit tests that make sure that this functionality is in place.

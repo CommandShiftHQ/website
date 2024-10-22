@@ -1,0 +1,63 @@
+---
+title: "Walkthrough: CSS in React 💡"
+---
+
+## Solution
+
+#### 1. Style `<App />`, but only the container element (add margin).
+
+To begin, find the directory you created earlier `src/styles` and the file you moved there called `App.css`.
+
+In your `<App />` component, make sure the top level `div` has a `className` prop with a value of `"weather-app"`, and then in your `App.css` file write some css which does the following:
+
+```css
+.weather-app {
+  margin: 0 20px;
+}
+```
+
+💡 We've changed the class name from `App` (which came with CRA), to `weather-app` for couple of reasons:
+
+1. Our app is not anonymous, it's a Weather App. If you combine it with other modules (maybe it's going to be a microservice application in a bigger system?) you might want to use a specific class name to avoid two nodes having the same class name.
+2. It's a way more common convention to use **lowercase** class names for styling in general. Most often it's combined with **kebab case** (yes, that's a real name 🙃 An example of kebab case is `product-card-return-more`. There is also `camelCaseForJavaScript`, and snake case in PHP: `some_php_variable`).
+3. We're using BEM naming convention for this project, where each part, BLOCK, ELEMENT, and MODIFIER use lowercase + kebab case, and then is separated from another by either `__` or `--`, for example: `product-card__return-more--active-form`.
+
+⚠️ Please bear in mind, choice of class naming convention is either a personal preference (if you work on your own) or an agreed solution (if you're in a team), but it's better to follow well-known standards instead of creating something completely new or using casing that has been adopted by other other languages and frameworks.
+
+#### 2. Make sure you have the `App.css` stylesheet imported into the `App.js` file.
+
+`<App />` component should have these files imported:
+
+```js
+import React from 'react';
+import LocationDetails from './LocationDetails';
+import ForecastSummaries from './ForecastSummaries';
+
+import '../styles/App.css';
+```
+
+#### 3. Add stylesheet `ForecastSummaries.css`, and style layout of `<ForecastSummaries />` using flexbox.
+
+Add another stylesheet, `ForecastSummaries.css`, which targets the `forecast-summaries` class and applies the following rules:
+
+```css
+.forecast-summaries {
+  display: flex;
+  justify-content: space-between;
+}
+```
+
+#### 4. Don't forget to import styles into `ForecastSummaries.js`.
+
+Import this file into `<ForecastSummaries />`, and suddenly your application should look a lot nicer.
+
+```js
+import React from 'react';
+import ForecastSummary from './ForecastSummary';
+
+import '../styles/ForecastSummaries.css';
+```
+
+#### 5. Think about how you can check in dev tools if styles were applied and imported into our app.
+
+Take a look at the html `<head>` tag in the browser dev tools - you'll see a couple of `<style>` tags. If you compare this to the `index.html` file in your repo, there is no reference to any stylesheets in `index.html`. These style tags have been dynamically injected into the DOM by Webpack and they contain the styles from your stylesheets.

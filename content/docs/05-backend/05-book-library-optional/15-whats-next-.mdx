@@ -1,0 +1,34 @@
+---
+title: "What's next "
+---
+
+Before we can say our requirements are met, we need to address the fact that if we leave our code as per the previous page, ALL calls to our `getAllItems` function will always include `Book` and ALL calls to our `getItemById` function will always include `Genre`.
+
+If you left your code as per previous page examples and try to hit `/genres/:id` (choose any `id`) you'll see an error of
+
+```
+Unhandled rejection SequelizeEagerLoadingError: Genre is not associated to Genre!
+```
+
+This happens because using `{include: Genre}` worked great for our `getItemById` function in `/books/:id` but it breaks when used with `/genres/:id`. Something very similar happens when hitting `/books`.
+
+Can you think of a way of fixing this?
+
+## Tasks to complete requirements:
+
+- Refactor helpers so that we only use `{include: Model}` when needed
+- Update tests to reflect these changes
+- Update Book and Author models, Sequelize associations and helpers following the example of `genre`
+
+
+## What's next?
+
+- You've come a long way and learned a huge amount! If you have the time, what else could you do regarding code quality and expanding functionality on this app? 
+
+* You could refactor tests so they use helper functions as there's an awful amount of code repetition which is performing the same tasks
+* You could use the [Sequelize API](https://sequelize.org/master/manual/assocs.html) to refactor the way your associations work by establishing specific foreign key, using Model aliases, not displaying dates in results etc, so that the data returned on the API is more consistent and less bloated
+* You could make sure that ISBN is unique
+
+
+
+

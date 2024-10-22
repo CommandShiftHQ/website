@@ -1,0 +1,84 @@
+---
+title: "Isolating with stubs - Walkthrough"
+---
+
+## Steps
+
+- Look for any places in the test suite where objects are passed into methods where it would be straightforward to stub those objects. 
+- Replace them with stubs.
+- Run your tests again to ensure they still pass (might be better to run tests after every change).
+
+## Identifying areas to stub
+
+We want to stub out any remaining objects that aren't related to a test suite. The easiest way to find this is to go through a test suite such as `Ship.test.js` and look for any reference to other constructors such as `Port` and `Itinerary` that don't cover the object under test (which of course is `Ship`).
+
+Looking through the test suites, the only file I can see is `Ship.test.js`, where `Itinerary` has been used in the following places:
+
+```
+Ship
+  with a port and itinerary
+    beforeEach
+  can dock at a different port
+```
+
+## Replace with stubs
+
+We'll tackle the first area together, which is the `beforeEach`:
+
+```js
+beforeEach(() => {
+ dover = {
+    addShip: jest.fn(),
+    removeShip: jest.fn(),
+    name: 'Dover',
+    ships: []
+  };
+
+  calais = {
+    addShip: jest.fn(),
+    removeShip: jest.fn(),
+    name: 'Calais',
+    ships: []
+  };
+
+  itinerary = new Itinerary([dover, calais]);
+  ship = new Ship(itinerary);
+});
+
+```
+
+Here you want to stub out the `Itinerary` instance:
+
+```js
+beforeEach(() => {
+ dover = {
+    addShip: jest.fn(),
+    removeShip: jest.fn(),
+    name: 'Dover',
+    ships: []
+  };
+
+  calais = {
+    addShip: jest.fn(),
+    removeShip: jest.fn(),
+    name: 'Calais',
+    ships: []
+  };
+
+  itinerary = {
+    ports: [dover, calais]
+  };
+
+  ship = new Ship(itinerary);
+});
+```
+
+Remember, our stub has to match the interface of the object we replace, and any properties we instantiate on our original object in order for the test to function have to be duplicated on the stub. `Itinerary` normally has a `ports` property, which is set to an array of ports we pass in on instantiation. Therefore, in our stub we add a `ports` property, and set it to a value of an array containing our `Port` instance.
+
+Now ride solo and tackle `can dock at a different port`, stubbing out `Itinerary`.
+
+## Run your tests again to ensure they still pass (might be better to run tests after every change).
+
+(They should).
+
+## Add, commit with a meaningful message, and push to GitHub.

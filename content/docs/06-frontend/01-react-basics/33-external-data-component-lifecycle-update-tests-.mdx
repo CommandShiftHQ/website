@@ -1,0 +1,90 @@
+---
+title: "External Data & Component Lifecycle - update tests 🔬"
+---
+
+## Overview
+
+We've made some significant changes to the app, it is expected to have some of the tests failing. Let's check which tests are failing at the moment and if we have any warnings.
+
+Console *should* report the following issues:
+
+1. `<App />` doesn't render city or country (test failing).
+2. Missing `onForecastSelect` prop in tests for `<ForecastSummaries />` (console error).
+3. Type for `icon` prop in tests for `<ForecastSummaries />` (console error).
+
+## Solution
+
+Let's start with fixing the failing test, then we will look into these warnings.
+
+#### 1. App doesn't render city or country
+
+Search for this message in the console:
+
+```plaintext
+  ● App › renders city and country
+```
+
+Do you know why it's failing now? Can this behaviour be expected considering the latest changes?
+
+We started writing tests for our app with `it("renders city and country", () => {});` at the very beginning. Now it's the time to review it and check if we need this test at all.
+`LocationDetails.test.js` contains a very similar test `it("renders the correct city and location props", () => {});` that checks if the component renders the given values, which is exactly what we need. We can remove the duplicate from `App.test.js`. Instead, we might want to simply test snapshots to check which elements are displayed by the UI.
+
+Can you write this one on your own? Here are some hints:
+
+- Before you run tests again make sure the test file for `<App />` is located in `src/tests/components` directory! 
+- Replace the old test with `it("renders correctly", () => {});` Remember `<App />` no longer receives props from `index.js`.
+- Check tests! All should be good and you should see the newly created snapshot.
+
+#### 2. Type for the icon prop in tests for `<ForecastSummaries />`
+
+We have to account for the correct type of the `icon` prop in `validProps` just as we did in the previous step.
+
+Change the `icon` values type in `validProps` in `ForecastSummaries.test.js`, for example `icon: "800"` should be now `icon: 800`.
+
+#### 3. Missing `onForecastSelect` prop in tests for `<ForecastSummaries />`
+
+This one is simple, but requires some organisational changes in the existing `validProps` object:
+
+- assign the existing array to a `forecasts` property within the `validProps` object,
+- add `onForecastSelect: () => {}` as a second property in `validProps`,
+- update `forecasts` prop in `render()` method and add `onForecastSelect` prop.
+
+```jsx
+describe("ForecastSummaries", () => {
+  const validProps = {
+    forecasts: [
+      {
+        date: 1111111,
+        description: "Stub description 1",
+        icon: 800,
+        temperature: {
+          max: 22,
+          min: 12,
+        },
+      },
+      {
+        date: 2222222,
+        description: "Stub description2",
+        icon: 602,
+        temperature: {
+          max: 24,
+          min: 13,
+        },
+      },
+    ],
+    onForecastSelect: () => {},
+  };
+
+  it("renders correctly", () => {
+    const { asFragment } = render(
+      <ForecastSummaries
+        forecasts={validProps.forecasts}
+        onForecastSelect={validProps.onForecastSelect}
+      />
+    );
+    expect(asFragment()).toMatchSnapshot();
+  });
+
+  it("renders the correct number of ForecastSummary instances", () => {...});
+});
+```

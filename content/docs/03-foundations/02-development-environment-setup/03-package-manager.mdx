@@ -1,0 +1,38 @@
+---
+title: "03 - Package Manager"
+---
+
+The first thing we’ll install is a **package manager**.
+
+A package manager is a program that you’ll use to install and update other pieces of software (aka. Packages).
+
+There are lots of different package managers for different operating systems. We'll use **Homebrew** if you're using macOS, or **apt-get** if you're using Ubuntu.
+
+# Installation
+
+## Homebrew for macOS
+
+For macOS users, we’ll use **Homebrew**, and you can find its official documentation [here](https://brew.sh/).
+
+For the installation:
+
+1. Open your terminal.
+2. Run this command:
+
+`/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
+
+3. Once the previous command has finished running, run: `brew install wget`.
+
+And that’s it. The installation of Homebrew might take a couple of minutes. Let us know if there are any errors.
+
+## apt-get for Ubuntu
+
+Life is a bit easier for Ubuntu users, because it comes with a good package manager called **apt-get**. However, let’s ensure that the package manager is up to date:
+
+1. Open your terminal.
+2. Run: `sudo apt-get update`
+3. Run: `sudo apt-get upgrade`
+
+And that’s it. Let us know if you get any errors.
+
+Once you’ve done this, let’s proceed.

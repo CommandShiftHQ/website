@@ -1,0 +1,21 @@
+---
+title: "Stateful Components"
+---
+
+## Overview of the problem
+
+At the moment our `<App />` is stateless, so to begin, convert it to a stateful component by importing `useState()` into the component.
+
+## Requirements
+
+The first requirement in the "Detailed Forecast" step was:
+
+**UI should display forecast for one day in more detail.**
+
+We used the first element in `forecasts` array to display any value. Now it's the time to display the appropriate one.
+
+## Technical task breakdown
+
+1. Import `useState()` into the `<App />` component.
+2. Add a `useState()` hook to your `<App />` component with its return value destructured to `selectedDate` and `setSelectedDate`. Set the initial value of `useState()` to the date of the first forecast within `forecasts` array.
+3. Create a `selectedForecast` variable and set its value to the date within your `forecasts` that matches the `selectedDate` (think of a function that can search through an array and return the matching value) and pass the `selectedForecast` variable into the `<ForecastDetails />` component. Don't worry if all you see is an error, we will tackle it in the next step.

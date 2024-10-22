@@ -1,0 +1,28 @@
+---
+title: "Ports have Ships ;TLDR"
+---
+
+```
+As a port operations manager,
+So I can best utilise a port,
+I want a port to keep track of the ships currently docked.
+```
+
+## Challenge
+
+`Port` now needs to have a `ships` property. When a `Ship` docks at a `Port`, the `Port` method needs to add that ship to its `ships`. When a `Ship` sets sail, the `Port` method needs to remove that `ship` from its `ships`.
+
+## To complete this challenge, you will need to:
+
+- Discuss with your classmates how the domain model now looks.
+- Create a new test spec for a `Port` `addShip` method.
+- Write the code that makes this test pass.
+- Create a new test spec for a `Port` `removeShip` method.
+- Write the code that makes this test pass.
+- Create a new test `Ship > gets added to port on instantiation` in the `Ship` test suite. You'll need to check `ship.currentPort.ships` to see if it contains your `Ship` instance.
+- Write the code to make this pass. The `Ship` constructor will need to call the starting port's (`this.currentPort`) `addShip` method, passing itself in (remember the current instance is referred to with `this`).
+- Add an extra assertion to the test for `Ship > can dock at a different port` to test that the `Ship`'s `currentPort`'s `ships` contains the `Ship` instance. You'll likely want to assert on `ship.currentPort.ships`.
+- Write the code that makes this test pass.
+- Modify the test for `Ship > can set sail` to test that the `Ship`'s previous `currentPort` (you can use `indexOf` on `ship.itinerary` to find this) no longer contains the `Ship` instance on its `ships` property (something like `previousPort.ships`).
+- Write the code that makes this test pass.
+- Add, commit with a meaningful message, and push to GitHub.

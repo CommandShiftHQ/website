@@ -1,0 +1,90 @@
+---
+title: "11 - Tables"
+---
+
+When you think about tables and computers, you're instantly taken to spreadsheets. 
+You may have created tables that display chunks of data in an organised way.
+
+HTML allows you to create some tables, but you need to think in terms of a grid made up of rows and columns.
+
+# Basic Structure
+
+Each block in the table is known as a **table cell**.
+
+When creating a table in HTML, **you need to write it row by row**.
+
+Let's look at the example below:
+
+<CodePen id="jOaevaP" title="Basic table" />
+
+
+
+Let's deconstruct this:
+
+- The first element you see is `<table>`, which sets the tone for its content.
+- Then you can see groups of items, all encapsulated in `<tr>` elements (which stands for **table-row**). Remember that tables are written row by row.
+- In the first row, you see `<th>` elements (as in **table-headers**), which you can see are displayed in bold.
+- And finally `<td>`, for **table-data**, displayed right below.
+
+
+Even if a cell has no content, you should still use a `<td>` or `<th>` element to represent the presence of an empty cell, otherwise the table won't render correctly.
+
+
+# Spanning
+
+Sometimes you may need the entries in a table to stretch across more than one column, or row.
+Tables have two attributes for that: `colspan` and `rowspan`.
+
+`<td colspan="2">This will span in 2 columns.</td>`
+
+`<td rowspan="2">This will span in 2 rows.</td>`
+
+However, when you span elements across multiple columns or rows, you'll need to consider the amount of space they'll take in the overall structure of the table, which means that some rows/columns will have fewer elements in order to free some space for those that are spanning across. Here's an example with colspan:
+
+<CodePen id="QWOZVQb" title="Colspan" />
+
+
+
+Give it a try!
+
+
+# Long Tables
+
+There are three elements that help distinguish between the main content of the table and the first and last rows. These are suitable for screen readers and also allow you to style these sections in a different manner than the rest of the table (very handy with CSS).
+
+`<thead>`
+
+👆 The headings should be inside this element.
+
+`<tbody>`
+
+👆 All of the main table content should go inside this element.
+
+`<tfoot>`
+
+👆 This contains the final row in the instance where the final row summarises the above data e.g. for a total price, or to tell the user there's no more results
+
+Here's one we made earlier:
+
+<CodePen id="rNYqZvm" title="Structured table" />
+
+You might be asking "Isn't this overcomplicated?".
+Well, not really.
+
+Part of having separate `<thead>` and `<tfoot>` elements is so that, if you have a table that is taller than the screen, the browser can **keep the header and footer always visible**, while the **main content is scrollable**. Also great if you need to print the table.
+This is intended to make it easier for users to see which column the data is in.
+
+
+# Practical
+
+1. Back to your portfolio, and in the recently created `projects.html` page, add the basic html structure.
+2. Add a nice heading for the page.
+3. Add a new section called "projects".
+4. Create a table which has the name of each project, an image of what the project looks like and a brief description. So, as you might have guessed, you'll need 3 columns for this. Don't forget your headers!
+5. Once you're happy with the result, add the project files to the staging area, commit it with a meaningful message and push it to GitHub.
+
+Don't worry too much about the content, feel free to add some dummy data at the moment.
+You can always revisit as you progress in the course!
+The sole purpose of this exercise is for you to experiment with tables and get comfortable with their syntax.
+
+Once you have done this, proceed.

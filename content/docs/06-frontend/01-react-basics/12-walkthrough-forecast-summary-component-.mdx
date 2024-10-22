@@ -1,0 +1,92 @@
+---
+title: "Walkthrough: Forecast Summary Component 💡"
+---
+
+## Solution
+
+Let's check to see if you got this right!
+
+#### 1. Create relevant files.
+
+Create two new files in the appropriate locations:
+- `src/components/ForecastSummary.js`,
+- `src/tests/components/ForecastSummary.test.js`.
+
+Your dummy `<ForecastSummary />` component should look like this for now:
+
+```jsx
+import React from "react";
+
+function ForecastSummary() {
+  return <div class="forecast-summary"></div>;
+};
+
+export default ForecastSummary; 
+```
+
+Your new test file should look like this:
+
+```
+import React from "react";
+
+describe("ForecastSummary", () => {
+  it("renders", () => {});
+});
+```
+
+#### 2. Expected props.
+
+Now it's time to deconstruct the props in your new component: `date`, `temperature`, `description` and `icon`.
+
+```jsx
+import React from "react";
+
+function ForecastSummary(props) {
+  const {
+    date,
+    description,
+    icon,
+    temperature
+  } = props;
+
+  return <div class="forecast-summary"></div>;
+};
+
+export default ForecastSummary;
+
+```
+
+💡 It's good practice to list props in alphabetical order when you deconstruct them. It won't change how your application works, but will show you can write clean and organised code.
+
+#### 3. Add markup for each forecast summary.
+
+If you went with BEM naming convention, each forecast summary should have a class name following this pattern: `forecast-summary__**`, where `forecast-summary` is the part taken from the **block** name (here, the parent node), and `**` should be replaced with **element** name: either `date`, `icon`, `temperature`, or `description`. Now your component  should look something like this:
+
+```jsx
+function ForecastSummary(props) {
+  const {
+    date,
+    temperature,
+    description,
+    icon,
+  } = props;
+
+  return (
+    <div className="forecast-summary">
+      <div className="forecast-summary__date">
+        {date}
+      </div>
+      <div className="forecast-summary__icon">
+        {icon}
+      </div>
+      <div className="forecast-summary__temperature">
+        {temperature.max}
+        &deg;C
+      </div>
+      <div className="forecast-summary__description">
+        {description}
+      </div>
+    </div>
+  );
+};
+```

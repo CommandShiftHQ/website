@@ -1,0 +1,108 @@
+---
+title: "Walkthrough: Ship"
+---
+
+# Ship
+
+## Steps
+
+- Create a new instance of `Ship` inside the inline JS in `index.html`, passing in your itinerary.
+- Create a new `div` with the id `ship` inside the `#viewport` div.
+- In `style.css` add a new `#ship` ruleset. You want to use the `ship.png` background image, and specify a width and height that matches that image's dimensions. You should also specify a `position` of `absolute` as later on we will want to control our element's X/Y co-ordinates within the viewport.
+- Add a `renderShip` method to your `Controller.prototype`, which has a single parameter of `ship`.
+- Back in `index.html`, call `controller.renderShip` and pass in your `ship` from before.
+- In the `renderShip` method, find the index of the ship's `currentPort` inside of its `itinerary`. Use `document.querySelector` with an attribute selector to find a `.port` element that has a `portIndex` data attribute which corresponds to this index.
+- Prior to appending to the DOM, set the `top` and `left` CSS properties of your ship element to the [offsetTop](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetTop) and [offsetLeft](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetLeft) values for the port element.
+- Add or subtract from your `offsetLeft` and/or `offsetTop` values to position your ship so it's centered directly underneath the port.
+
+## Create a new instance of `Ship` inside the inline JS in `index.html`, passing in your itinerary.
+
+```html
+<script>
+  ...
+  const itinerary = new Itinerary([
+    new Port('New York City'), 
+    new Port('Grand Turk'),
+    new Port('San Juan'),
+    new Port('Amber Cove')
+  ]);
+  const ship = new Ship(itinerary);
+  ...
+</script>
+```
+
+## Create a new `div` with the id `ship` inside the `#viewport` div.
+
+```html
+<div id="viewport">
+  <div id="ports">
+  </div>
+  <div id="ship"></div>
+</div>
+```
+
+We will only have one ship so we use an id attribute, as ID selectors are unique.
+
+## In `style.css` add a new `#ship` ruleset. You want to use the `ship.png` background image, and specify a width and height that matches that image's dimensions. You should also specify a `position` of `absolute` as later on we will want to control our element's X/Y co-ordinates within the viewport.
+
+```css
+#ship {
+  width: 128px;
+  height: 64px;
+  background-image: url('../images/ship.png');
+  position: absolute;
+}
+```
+
+`position: absolute` will position the element _relative_ to the nearest outer element with a `position: relative` rule (or the `body` if one doesn't exist). In this case, we have `position: relative` set on the `#viewport` element so our ship element positions itself relative to this.
+
+## Add a `renderShip` method to your `Controller.prototype`, which has a single parameter of `ship`.
+
+```js
+Controller.prototype = {
+  ...
+  renderShip(ship) {},
+};
+```
+
+The ship parameter will accept an argument of a `Ship` object.
+
+## Back in `index.html`, call `controller.renderShip` and pass in your `ship` from before.
+
+```js
+controller.renderShip(ship);
+```
+
+## In the `renderShip` method, find the index of the ship's `currentPort` inside of its `itinerary.ports`. Use `document.querySelector` with an attribute selector to find a `.port` element that has a `portIndex` data attribute which corresponds to this index.
+
+```js
+const shipPortIndex = ship.itinerary.ports.indexOf(ship.currentPort);
+const portElement = document.querySelector(`[data-port-index='${shipPortIndex}']`);
+```
+
+This is where we start to go down through objects again. Remember that a Ship can have an Itinerary which can have Ports and that we can use dot notation in JavaScript to go down through this so `ship.itinerary` is the `Itinerary` object we passed in when we created our `ship`. `ship.itinerary.ports` is the array of `Port`s we passed in when we created our `itinerary`. `ship.currentPort` will be inside of `ship.itinerary.ports` as a `Ship` object uses its `itinerary.ports` array to determine its `currentPort`, so we know that `shipPortIndex` will always be what we want it to be.
+
+Next we use a data attribute selector inside of `document.querySelector` to find our port element. Read more about data attribute selectors [here](https://css-tricks.com/almanac/selectors/a/attribute/). We use template literals again to interpolate the port index. Remember that the `data-port-index` attributes our port DOM elements all correspond to the same array of ports we query in our `indexOf` here, so again there will always be a corresponding value.
+
+## Prior to appending to the DOM, set the `top` and `left` CSS properties of your ship element to the [offsetTop](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetTop) and [offsetLeft](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetLeft) values for the port element.
+
+```js
+const shipElement = document.querySelector('#ship');
+shipElement.style.top = `${portElement.offsetTop}px`;
+shipElement.style.left = `${portElement.offsetLeft}px`;
+```
+
+`offsetTop` and `offsetLeft` give us the X/Y co-ordinates of an object of how far it is from it's parent element's top and left co-ordinates. In this case, the parent of `portElement` is `#ports` so we position our ship in the same place as the DOM element representing its `currentPort`.
+
+- [offsetParent](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetParent)
+- [offsetTop](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetTop)
+- [offsetLeft](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetLeft)
+
+## Add or subtract from your `offsetLeft` and/or `offsetTop` values to position your ship so it's centered directly underneath the port.
+
+The above will leave your ship in a rather awkward position sat on top of a port. Add and subtract inside of your template literals to adjust the position to your liking:
+
+```js
+shipElement.style.top = `${portElement.offsetTop + 32}px`;
+shipElement.style.left = `${portElement.offsetLeft - 32}px`;
+```

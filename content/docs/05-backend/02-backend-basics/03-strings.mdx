@@ -1,0 +1,208 @@
+---
+title: "Strings"
+---
+
+Let's get started with passing the first test. In `__tests__/strings.test.js` change the first `xit` to `it`:
+
+```js
+it('returns "Hello, world!" when passed "world"', (done) => {
+```
+
+Once you've done that, save the file and run the tests again:
+
+You should see the test failing:
+
+```bash
+    expect(received).toEqual(expected) // deep equality
+
+    Expected: 200
+    Received: 404
+
+       8 |         .get('/strings/hello/world')
+       9 |         .then(res => {
+    > 10 |           expect(res.status).toEqual(200);
+         |                              ^
+      11 |           expect(res.body).toEqual({ result: 'Hello, world!' });
+      12 |           done();
+      13 |         });
+
+      at __tests__/strings.test.js:10:30
+```
+
+So why has that happened? Lets take a look at the test itself:
+
+```js
+/* tests/strings.test.js */
+it('returns "Hello, world!" when passed "world"', done => {
+  request(app)
+    .get('/strings/hello/world')
+    .then(res => {
+      expect(res.status).toEqual(200);
+      expect(res.body).toEqual({ result: 'Hello, world!' });
+      done();
+    });
+});
+```
+
+- We make a request to the `app` (`app` is our Express instance that we import at the top of the test file)
+- More specifically, we make a GET request to `/strings/hello/world`
+- `.get` sends the request
+- `.then` sends us back a response from the server
+- When the response comes back, we assert that the response has a status code of 200
+
+This is where our test is currently failing. Our test expected a HTTP status code of 200, but has received a 404 - do you know what this means?
+
+If you said *'404 NOT FOUND!'* - then well done.
+
+If you said *'It means our Express server doesn't know how to handle GET requests sent to `/strings/hello/world`!'* - then an even bigger well done.
+
+To fix this error, we will need to configure our first **route**
+
+## Express
+
+**Read** the [:books: Express Hello World example](https://expressjs.com/en/starter/hello-world.html)
+
+The entry point of our Express application is `index.js` - take a look in this file:
+
+```js
+/* index.js */
+const app = require('./src/app');
+
+const APP_PORT = 3000;
+
+app.listen(APP_PORT, () => {
+  console.log(`Now serving your Express app at http://localhost:${APP_PORT}`); // eslint-disable-line
+});
+```
+
+Not a lot going on here - we are importing an `app` object, and calling the `listen` method.  
+
+So what is `app`? To find out, we should look in `src/app.js`:
+
+```js
+/* src/app.js */
+const express = require('express');
+
+const app = express();
+
+module.exports = app;
+```
+
+This file is the main file where we configure and export our server.
+
+As we can see, `app` is an `express` application - when we call the `express` function, it returns to us an application that we can configure (although we haven't done any configuration to it yet).
+
+In `index.js` we just call the `listen` method on the `app` object - this actually starts the server - it tells the server to listen on the given port (`3000`).
+
+The reason we have these in two files is to separate the configuration of the server from the running of the server. This is so we can either:
+
+- Fire up the server locally (with `npm start`), which will allow us to make requests to our server in the browser or [Postman](https://www.postman.com).
+
+- Pass our Express instance (`app`) to `supertest`, which will fire up its own server to test our routes. This is great as it means we don't have to have a server running to run our tests...`supertest` does it all for us :nerd_face:.
+
+## Creating a route
+
+**Read** the [:books: Express docs on Routing](https://expressjs.com/en/guide/routing.html)
+
+When working with Express, we can view a lot of what we do as configuration - instead of writing a load of code ourselves, we are using the handy methods provided by Express to tell the server how to respond to different requests.
+
+By default, Express will respond to ALL requests with a 404 - the reason for this is because we need to tell Express how it should respond to different requests.
+
+We know that HTTP requests are made up of two fundamental parts - the **METHOD** (GET/POST/PUT etc) and the PATH (`/images/1234/comments`). These are the main things that Express will consider when figuring how to deal with a request.
+
+The process of configuring Express to handle different requests with different methods and paths is called routing.
+
+An example of registering a route is as follows:
+
+```js
+/* src/app.js */
+const express = require('express');
+const app = express();
+
+app.get('/', (req, res) => {
+  res.send('Hello, world!');
+});
+```
+
+Here, the app responds with “Hello, world!” for GET requests to the path `/` (called the root URL). For every other path, it will respond with a 404.
+
+**Read** the [:books: Express docs on the `app` object](https://expressjs.com/en/4x/api.html#app)
+
+`app` is our express application. It has a `get` method that routes HTTP GET requests to the path specified in the first parameter (`/` in our case). The second parameter is a callback function called a **route handler** or more commonly a **controller** function.
+
+The controller function is invoked by Express when it receives a request to the given route.
+
+Controller functions have two parameters `req` (which represents the http request that was sent) and `res` which represents the response we will send.
+
+**Read** the [:books: Express docs on the `res` object](https://expressjs.com/en/4x/api.html#res)
+
+We will look at `req` shortly.  
+
+In this case we are using the `send` method on the `res` object to send a response to the client. We are just sending the string `Hello, world`.
+
+## Challenge
+
+Can you register a route in your Express app that handles `GET` requests to `/strings/hello/world`? The controller function should use the `res.status()` method to send back a 200 status code, as required by the test.
+
+Don't forget to take a look at the documentation links above if you get stuck.
+
+***
+
+### :exclamation: Reminder
+
+Never spend more than 30 minutes stuck on a problem. Ask a member of the Command Shift Team - or one of your peers - for assistance in your cohort's Slack channel or via a DM.
+
+***
+
+Run the tests again. If your code is correct, you should now get a different error message. Don't despair - this is progress!
+
+You should have an error message like this:
+
+```bash
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected
+    + Received
+
+    - Object {
+    -   "result": "Hello, world!",
+    - }
+    + Object {}
+
+       9 |         .then(res => {
+      10 |           expect(res.status).toEqual(200);
+    > 11 |           expect(res.body).toEqual({ result: 'Hello, world!' });
+         |                            ^
+      12 |           done();
+      13 |         });
+      14 |     });
+
+      at __tests__/strings.test.js:11:28
+```
+
+A look at the tests to see what's wrong now:
+
+```js
+/* tests/strings.test.js */
+expect(res.body).toEqual({ result: 'Hello, world!' });
+```
+
+This is saying that the we should have received some data in the body of the response - an object `{ result: 'Hello, world!' }`
+
+## Challenge
+
+Can you update the controller function you wrote earlier to send the required JSON data to make the test pass? Use the documentation above to help you.
+
+If you've done everything correctly then your first test should now be passing...congratulations!
+
+### Extra credit
+
+Fire up your server locally with `npm start` and use Postman to visit your new route. 
+
+Hint: http://localhost:3000/your-route-goes-here
+
+## Solution
+
+Please try every avenue before resorting to the solution for the answer - they are only given for you to check your work against (and we won't always give them!).
+
+- **Find the solution** to the above challenges [here](https://hackmd.io/@Yr7Q8gzkQUaCcF02NXvGtw/Bk0yS_9eU).

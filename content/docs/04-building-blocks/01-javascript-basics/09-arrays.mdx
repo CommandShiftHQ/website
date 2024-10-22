@@ -1,0 +1,142 @@
+---
+title: "Arrays"
+---
+
+As well as the basic data types that we have covered, data can also be represented in a couple of more complex forms. The simplest of these is an array.
+
+An array is just a list of values. The look like this:
+
+```js
+[1, 2, 3];
+```
+
+The values in an array can be any valid JavaScript values - strings, booleans, numbers, objects etc. You can even have an array of arrays.
+
+```js
+[[1, 2, 3], [4, 5, 6]];
+```
+
+The items in an array do not have to be of the same type
+
+```js
+[1, 'Hello', false];
+```
+
+However, you would typically want the items to be of the same type.
+
+An item in an array is typically referred to as an **element**.
+
+The position of an item in an array is referred to as it's **index**.
+
+Arrays are **zero-indexed**, meaning that you start counting from zero (i.e. The first item in an array has index 0).
+
+You can refer to an element by its index by putting the index in square brackets after the array:
+
+```js
+const array = ['cat', 'dog', 'tree'];
+
+console.log(array[0]); // 'cat'
+console.log(array[1]); // 'dog'
+console.log(array[2]); // 'tree'
+console.log(array[3]); // undefined (because the array only contains 3 elements)
+```
+
+You can find how many elements an array has using the `length` property:
+
+```js
+const array = ['cat', 'dog', 'tree'];
+
+console.log(array.length) // 3
+```
+
+Arrays come with a lot of handy built in functions to do things like get individual items, or to add or remove items from the list.
+
+One of the most useful features of arrays are **iterator** or **enumerator** functions.
+
+These functions take another function as a parameter (this technique is called a callback, and is very common in JavaScript). The callback function is then applied to every element in the array, in order to perform some transformation on the array.
+
+The most common enumerators are:
+
+- `map` - transforms every item in the array.
+- `filter` - removes some items from the array, based on some criteria.
+- `reduce` - combines all of the array values into a single value.
+
+So say you had a function that added `1` to a number:
+
+```js
+const addOne = (n) => {
+  return n + 1;
+};
+```
+
+and an array of numbers:
+
+```js
+const numbers = [1, 2, 3];
+```
+
+You could use `map` to apply the `addOne` function to every element in the array:
+
+```js
+numbers.map(addOne);
+```
+
+Or if you weren't planning on using the `addOne` function anywhere else, you could omit its declaration:
+
+```js
+numbers.map(number => {
+  return number + 1;
+});
+```
+
+Both of these would return the same array: `[2, 3, 4]`.
+
+Strings also have a function to split the characters into an array:
+
+```js
+'Hello'.split(''); // returns ['H', 'e', 'l', 'l', 'o']
+```
+
+One important thing to be aware of with array functions is whether they mutate the original array (modify it), or return a new one:
+
+```js
+const a = ['a', 'b'];
+const b = a.push('c');
+
+console.log(a); // a is now ['a', 'b', 'c'];
+console.log(b); // b is 3 - the new length of the array;
+
+const c = [1, 2];
+
+const d = c.map((n) => {
+  return n + 1;
+});
+
+console.log(c) // c is still [1, 2]
+console.log(d) // d is [2, 3]
+```
+
+It is important to be aware of this because if the original array is altered unexpectedly, then you can easily introduce bugs into your code.
+
+There are 15 challenges to complete involving arrays, many of which involve using enumerators.
+
+To run the tests for this challenge, run `npm test -- arrays`
+
+In the same manner as before, try to fix all of the failing tests.
+
+- Run the tests
+- Read the error message
+- Write some code to fix that message
+- Repeat
+
+And again, commit to git regularly, and use the links provided and google to help you if you get stuck!
+
+Then move on to the next challenge, linked below.
+
+## Recommended Reading
+
+* [:zap: Array Iterators](https://hackmd.io/IQXJVNIaT5qd3RQSfqi69g)
+* [Arrays on MDN JavaScript docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)
+* [Callbacks](https://developer.mozilla.org/en-US/docs/Glossary/Callback_function)
+* [More Callbacks](http://javascriptissexy.com/understand-javascript-callback-functions-and-use-them/)
+* [Map, filter, reduce](https://code.tutsplus.com/tutorials/how-to-use-map-filter-reduce-in-javascript--cms-26209)

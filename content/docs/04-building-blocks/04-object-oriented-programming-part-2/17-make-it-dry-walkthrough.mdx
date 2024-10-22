@@ -1,0 +1,194 @@
+---
+title: "Make it DRY - Walkthrough"
+---
+
+## Steps
+
+- Identify the test specs in `Ship.test.js` that share the same setup actions. 
+- Create a new `describe` nested inside of the current `describe` `Ship` callback function, and move those test specs inside of it.
+- In your nested `describe`'s callback function cut the set up actions from the test specs and add them to a `beforeEach`. 
+- Run your tests and ensure they still pass.
+- Do the same DRYing up inside your `Port` test suite.
+- Add, commit with a meaningful message, and push to GitHub.
+
+## Identify the test specs in `Ship.test.js` that share the same setup actions
+
+First let's remind ourselves - using on of the specs - which part of the test is the _setup_:
+
+```js
+it('has a starting port', () => {
+  const dover = new Port('Dover');
+  const itinerary = new Itinerary([dover]);
+  const ship = new Ship(itinerary);
+
+  expect(ship.currentPort).toBe(dover);
+});
+```
+
+The setup here would be:
+
+```js
+const dover = new Port('Dover');
+const itinerary = new Itinerary([dover]);
+const ship = new Ship(itinerary);
+```
+
+The remainder of this test is the _verify_ phase. Note there isn't always an _exercise_ phase, as we don't always need to call a method - in this circumstance, our object is readied for the test purely through instantiation. Whereas in this test we have an exercise phase of `ship.setSail`:
+
+```js
+it('can set sail', () => {
+  const dover = new Port('Dover');
+  const calais = new Port('Calais');
+  const itinerary = new Itinerary([dover, calais]);
+  const ship = new Ship(itinerary);
+
+  ship.setSail();
+
+  expect(ship.currentPort).toBeFalsy();
+  expect(dover.ships).not.toContain(ship);
+});
+```
+
+Looking at all the tests, 4 of them share the same (or very similar) setup actions:
+
+```
+Ship  
+  can be instantiated
+  has a starting port
+  can set sail
+  gets added to port on instantiation
+```
+
+```js
+const dover = new Port('Dover');
+const calais = new Port('Calais');
+const itinerary = new Itinerary([dover, calais]);
+const ship = new Ship(itinerary);
+```
+
+This isn't very DRY, so lets do something about it.
+
+## Create a new `describe` nested inside of the current `describe` `Ship` callback function, and move those test specs inside of it.
+
+By now you should have read through [Setup and Teardown](https://facebook.github.io/jest/docs/en/setup-teardown.html) on the Jest docs, so you should now know that `beforeEach` blocks have scope inside of a `describe` block. Therefore - in order to stop our setup actions for the above actions affecting other tests - we need to create a new `describe` block inside of our current `describe` block:
+
+```js
+describe('Ship', () => {
+  describe('with ports and an itinerary', () => {
+  });
+
+  ...
+});
+```
+
+Then move the test specs identified above into the new `describe` block:
+
+```js
+describe('with ports and an itinerary', () => {
+  it('can be instantiated', () => {
+    const port = new Port('Dover');
+    const itinerary = new Itinerary([port]);
+    const ship = new Ship(itinerary);
+
+    expect(ship).toBeInstanceOf(Object);
+  });
+
+  it('has a starting port', () => {
+    const dover = new Port('Dover');
+    const itinerary = new Itinerary([dover]);
+    const ship = new Ship(itinerary);
+
+    expect(ship.currentPort).toBe(dover);
+  });
+
+  it('can set sail', () => {
+    const dover = new Port('Dover');
+    const calais = new Port('Calais');
+    const itinerary = new Itinerary([dover, calais]);
+    const ship = new Ship(itinerary);
+
+    ship.setSail();
+
+    expect(ship.currentPort).toBeFalsy();
+    expect(dover.ships).not.toContain(ship);
+  });
+
+  it('gets added to port on instantiation', () => {
+    const dover = new Port('Dover');
+    const itinerary = new Itinerary([dover]);
+    const ship = new Ship(itinerary);
+
+    expect(dover.ships).toContain(ship);
+  });
+});
+```
+
+:exclamation: Helpful hint - if you select one or many lines of code in VS Code, and hold down `Alt` and one of the up/down keys, you can move multiple lines up and down. When you have some spare time, check out the [Keyboard Reference Sheets](https://code.visualstudio.com/docs/getstarted/tips-and-tricks#_keyboard-reference-sheets) and learn to master your code editor!
+
+## In your nested `describe`'s callback function cut the set up actions from the test specs and add them to a `beforeEach`. 
+
+We previously identified the duplicate setup actions as being:
+
+```js
+const dover = new Port('Dover');
+const calais = new Port('Calais');
+const itinerary = new Itinerary([dover, calais]);
+const ship = new Ship(itinerary);
+```
+
+Let's create a `beforeEach` and move these actions out of the tests:
+
+```js
+describe('with ports and an itinerary', () => {
+  beforeEach(() => {
+    const dover = new Port('Dover');
+    const calais = new Port('Calais');
+    const itinerary = new Itinerary([dover, calais]);
+    const ship = new Ship(itinerary);
+  });
+
+  ...
+});
+```
+
+You'll notice we have a lot of linter errors here on our variables. If we hover over the first one we get the error:
+
+```
+[eslint] 'ship' is assigned a value but never used. (no-unused-vars)
+```
+
+And if we hover over another we get:
+
+```
+[eslint] 'ship' is not defined. (no-undef)
+```
+
+Can you guess why? If you guessed because of scope then you'd be correct. `let` and `const` are block scoped, meaning we can go outside of a block to look for a variable, but JavaScript can't go outside a block and into another block. So inside `beforeEach` we declare our `ship` variable. It only has scope in that block, hence we get the error the variable isn't being used. Then inside a test we get the error that the variable isn't defined because JavaScript goes up a level but can't then go into `beforeEach`. The solution is to use `let` outside of the `beforeEach` and then to assign to it inside:
+
+```js
+describe('with ports and an itinerary', () => {
+  let ship;
+  let dover;
+  let calais;
+  let itinerary;
+
+  beforeEach(() => {
+    dover = new Port('Dover');
+    calais = new Port('Calais');
+    itinerary = new Itinerary([dover, calais]);
+    ship = new Ship(itinerary);
+  });
+
+  ...
+});
+```
+
+## Run your tests and ensure they still pass.
+
+(They should).
+
+## Do the same DRYing up inside your `Port` test suite.
+
+:exclamation: You should be able to do this without the walkthrough.
+
+## Add, commit with a meaningful message, and push to GitHub.

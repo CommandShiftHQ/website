@@ -1,0 +1,70 @@
+---
+title: "Programming languages"
+---
+
+## Learning Objectives
+
+- Understand what we mean by a programming language
+- Understand that programming languages all have similar foundations and and provide similar tools to create programs
+- Understand that each programming language has its own syntactical rules and own ways of implementing basic functionality
+
+## What is a programming language?
+
+In the last lesson, we looked at how we need to change our thinking when asking a computer to complete a task and how we might approach the same problem differently as a human. In this lesson, we're going to look at programming languages - the tools that allow us to get these ideas out of our heads and into a format that a computer can understand.
+
+A programming language provides us with some basic tools that we can use to ask a computer to do basic tasks, as well as defining the rules governing how we can combine those basic tasks, and the syntax required to actually make that happen.
+
+Although all programming languages are based on the same set of building blocks, there are differences between all languages too:
+
+- not all languages give you the same complete set of tools
+- one language might implement a feature differently to how another language implements it
+- there will almost certainly be different syntactical rules between different languages
+
+
+## Exploring differences between languages
+
+One of the most basic tasks that you can ask a modern computer to do is to print some text to the screen. Let's take a look at how we can do that in two popular programming languages, to highlight how the implementations and syntax can vary from language to language.
+
+First up is **Ruby**, which is the simplest example:
+
+```rb
+stock = 10
+if stock < 1
+  puts "Sorry, we are out of stock!"
+end
+```
+
+Compared to the equivalent **JavaScript**:
+
+```js
+let stock = 10;
+if (stock < 1) {
+    console.log("Sorry, we are out of stock!");
+}
+```
+
+Let's break down the differences of each language line by line.
+
+The first line of these examples both do the exact same thing, they create a variable called `stock` with an **integer** (aka **number**) value of `10`.
+
+The next line checks to see if the value of `stock` is below `1` (so, if it's `0`). Note how these lines differ from each other, JavaScript requires that the comparison is inside of brackets whereas Ruby doesn't have this requirement.
+
+The line after this prints a message to the console, in this case `Sorry, we are out of stock!`.
+
+Every programming language implements a similar set of basic building blocks, but they do so in quite different ways, and each language has it's own syntax. So although we can rely on the same programmatic style of thinking to help us write code in any language, to actually write that code, we're going to have to learn how to use a specific language, with its own syntax, its own ways of doing things and its own quirks.
+
+## Why JavaScript?
+
+So why, out of all the programming languages, JavaScript?
+
+JavaScript is the most popular programming language in the world, and a big reason for this is because it's the only language that can be executed inside of a web browser (such as Chrome or Firefox).
+
+Most programming languages are only able to be executed by a special program designed specifically to execute code written in that language. These are the sort of programs that run in the background on a computer and process data. We normally call this **server-side** or **back-end** code.
+
+While JavaScript can be executed server-side, it is unique in that it can also be used in a browser. It can be used alongside HTML and CSS to make plain websites do amazing things. If you want to work with websites, you will almost certainly find yourself using JavaScript.
+
+And because it can also be used server-side, by learning JavaScript, you will be able to write code anywhere, to do anything.
+
+In the future, you might be interested to learn more languages, but JavaScript is a great, beginner friendly language to start out with.
+
+In the next lesson we'll take a look at how you can start actually writing some JavaScript code of your own.

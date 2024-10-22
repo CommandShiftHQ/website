@@ -1,0 +1,181 @@
+---
+title: "Walkthrough: External Data & Component Lifecycle 💡"
+---
+
+## Solution
+
+### Rewire app
+
+#### 1. In your `index.js` file, remove the imported JSON file, and remove the props you are passing into `<App />`
+
+```jsx
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./components/App";
+import "./styles/index.css";
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
+```
+
+#### 2. In `<App />` component, replace the `forecasts` and `location` props with new state variables of the same name
+
+Use the `useState()` hook to create `forecasts` and `location`. Set their values to an empty array for `forecasts`, and an object with `city` and `country` properties with a value of an empty string for `location`.
+
+Make sure all references to `forecasts` and `location` in this component are correct.
+
+```jsx
+const App = () => {
+  const [forecasts, setForecasts] = useState([]);
+  const [location, setLocation] = useState({ city: "", country: "" });
+  const [selectedDate, setSelectedDate] = useState(forecasts[0].date);
+
+  const selectedForecast = forecasts.find(
+    (forecast) => forecast.date === selectedDate
+  );
+
+  const handleForecastSelect = (date) => {
+    setSelectedDate(date);
+  };
+
+  return (
+    <div className="weather-app">
+      <LocationDetails city={location.city} country={location.country} />
+      <ForecastSummaries
+        forecasts={forecasts}
+        onForecastSelect={handleForecastSelect}
+      />
+      {selectedForecast && <ForecastDetails forecast={selectedForecast} />}
+    </div>
+  );
+};
+```
+
+#### 3. Set `selectedDate` to 0 - this is just a default/initial value
+
+The app no longer has any forecasts when it loads (we have to wait for the data to load from the API), so our old approach will not work - the forecast we were referring to will no longer exists.
+
+```jsx
+const [selectedDate, setSelectedDate] = useState(0);
+```
+
+#### 4. Add conditional rendering for the `<ForecastDetails />` component
+
+One other thing we need to fix is in the usage of the `<ForecastDetails />` component.
+
+Our `<ForecastDetails />` component is expecting a selected forecast to be passed in. We are selecting that forecast using the following code in `<App />` component:
+
+```js
+const selectedForecast = forecasts.find(
+  (forecast) => forecast.date === selectedDate
+);
+```
+
+`Array.find()` will return either a matching item, or `undefined`. When our app initially mounts and is rendered, we set the `forecasts` array to be empty - this means that `find()` will always return `undefined` (since there is nothing to find), and so we will always be passing `undefined` into our `<ForecastSummary />` component. Looking back at the error messages, can you see that is what it is telling us?
+
+To fix this, we can use [**conditional rendering**](https://reactjs.org/docs/conditional-rendering.html). This allows us to use *if statements*, *ternaries* and *logical operators* to render one thing or another (or nothing at all), based on the state of the component.
+
+In this case, we only want to render the `<ForecastDetails />` if there is a `forecast` with the `selectedDate`.
+
+In your `<App />` components JSX block change `<ForecastDetails forecast={selectedForecast} />` to the following:
+
+```jsx
+{selectedForecast && (<ForecastDetails forecast={selectedForecast} />)}
+```
+
+Because we are using actual JavaScript, not just JSX, we have to wrap this block in curly braces. We are then leveraging the truthiness/falsiness of `selectedForecast` in combination with the `&&` operator to conditionally render the `<ForecastDetails />` component. If `selectedForecast` is `undefined`, then the statement will evaluate to `false` and React will not render anything.
+
+If `selectedForecast` is a truthy value (which it will be if it is a forecast object), then the statement will evaluate to true and return its right hand side operand. Thus the `<ForecastDetails />` component will be rendered.
+
+### Fetch Weather App API
+
+If you've got this far, then you've successfully rewired your app so that instead of reading data from the static JSON file that was passed in from outside as props, the data is now completely contained within the local state of the `<App />` component. This means that `<App />` is ready to be in charge of its own data once it receives it from the API.
+
+#### 5. Use npm to install the [`axios` library](https://www.npmjs.com/package/axios), and import this into your `<App />` component
+
+No magic here, you know how to do it 😉.
+
+#### 6. Create `getForecast()` method that will make a call to forecast API with `axios`.
+
+This method meant to be very simple, it should only make a call to APIs and `console.log()`, so you can verify you get expected data.
+
+```jsx
+const getForecast = () => {
+  const endpoint = "https://cmd-shift-weather-app.onrender.com/forecast";
+
+  axios.get(endpoint).then((response) => console.log(response.data));
+};
+```
+
+#### 7. Call `getForecast()` in `useEffect()` hook.
+
+Add a `useEffect()` hook to your `<App />` component, the same way you did it for `useState()`.
+In the `useEffect()`, use the `axios` request `getForecast()` you just created to make an HTTP request for some weather data from the above API, at the right moment of component lifecycle.
+
+```jsx
+useEffect(() => {
+  getForecast();
+}, []);
+```
+
+#### 8. Set the values of `forecasts`, `location`, and `selectedDate` appropriately within the `getForecast()` request
+
+Now when `<App />` receives some data, you can set actual values for `forecasts` and `location` state variables. Use the `setForecasts()`, `setLocation()`, and `setSelectedDate()` methods to so. `setSelectedDate()` should set the `selectedDate` to the date of the first forecast, just as we did before with the static data.
+
+```jsx
+const getForecast = () => {
+  const endpoint = "https://cmd-shift-weather-app.onrender.com/forecast";
+
+  axios.get(endpoint).then((response) => {
+    setSelectedDate(response.data.forecasts[0].date);
+    setForecasts(response.data.forecasts);
+    setLocation(response.data.location);
+  });
+};
+```
+
+### Tidy up
+
+Our app should now work as before, but our work is not finished yet.
+
+#### 9. Check browser console for any warnings and fix them
+
+Most likely console will display an error for an icon we pass to `<ForecastSummaries />`. The reason is the strings, which can be coerced to numbers, are getting coerced to that type when we do our request for forecast data. The way to fix it is to change the expected type in props validation to a number in the first component that receives the prop, but convert the number back to a string when passing it down to the child component (`<ForecastSummary />`). You can do this in `<ForecastSummaries />`:
+
+- In the JSX block change `icon={forecast.icon}` to `icon={forecast.icon.toString()}`.
+
+We do this because we still want to pass the `icon` value as a string because the 3rd party component `<WeatherIcon />` (which we use in `<ForecastSummary />`) expects a string and not a number.
+
+#### 10. Move `getForecast()` to a separate `src/requests/getForecast.js` file
+
+This will make your component cleaner, easier to read and more reusable, as well as the `getForecast()` request itself. This way our app will follow **Separation of Concerns (SoC)** and **Single Responsibility Principle (SRP)** principles. Your new file should look like this:
+
+```js
+import axios from "axios";
+
+const getForecast = (setSelectedDate, setForecasts, setLocation) => {
+  const endpoint = "https://cmd-shift-weather-app.onrender.com/forecast";
+
+  axios.get(endpoint).then((response) => {
+    setSelectedDate(response.data.forecasts[0].date);
+    setForecasts(response.data.forecasts);
+    setLocation(response.data.location);
+  });
+};
+
+export default getForecast;
+```
+
+Make sure you're passing all `set**()` methods to `getForecast()` in `<App />`!
+
+```jsx
+useEffect(() => {
+  getForecast(setSelectedDate, setForecasts, setLocation);
+}, []);
+```
+
+If you managed all that, then congratulations! You should see the live weather data being displayed in your app instead of static data from the JSON file.

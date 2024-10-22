@@ -1,0 +1,55 @@
+---
+title: "Set Sail - Walkthrough"
+---
+
+## Steps
+
+- Discuss with your classmates how the domain model for Ship might be added to with the above user story.
+- Create a new test spec for the user story.
+- Write the code that makes this test pass.
+- Add, commit with a meaningful message, and push to GitHub.
+
+## Domain Model
+
+From the user story:
+
+```
+As a cruise ship captain,
+So I can get passengers started on their journey,
+I want a ship to be able to set sail from a port.
+```
+
+The domain model for `Ship` now might look like this:
+
+| Object | Methods    | Properties   |
+|--------|------------|--------------|
+| Ship   | setSail    | startingPort |
+
+A `setSail` method has been assumed from the doing words `set sail` in the user story.
+
+## `it can set sail`
+
+Now we need to write the test for our new `setSail` method. In order to be able to test the method works, the state of our Ship object is going to have to change. The state in question is the `startingPort` property.
+
+Lets see how a test might look:
+
+![setSail test](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/cruise-ships%2Fset_sail.png?alt=media&token=880687d7-f0ce-4663-867f-f0ecbdfbc019)
+
+Here we have an example of a [Four-Phase Test](https://robots.thoughtbot.com/four-phase-test):
+
+- setup `const ship = new Ship('Dover');`
+- exercise `ship.setSail();`
+- verify `expect(ship.startingPort).toBeFalsy();`
+- teardown - Jest handles teardown for us automatically
+
+We've used a new Jest matcher here: [toBeFalsy](https://facebook.github.io/jest/docs/en/using-matchers.html#truthiness). This does exactly what it says on the tin - expects the return value to be [falsy](https://developer.mozilla.org/en-US/docs/Glossary/Falsy).
+
+Run your test. It should fail with :red_circle: `TypeError: ship.setSail is not a function`.
+
+## Write the code that makes the test pass
+
+:exclamation: You should be able to do this without the walkthrough. Once you've passed the test, then proceed.
+
+## Add, commit with a meaningful message, and push to GitHub
+
+Look at the last walkthrough for an example of a meaningful commit message.

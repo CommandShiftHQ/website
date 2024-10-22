@@ -1,0 +1,256 @@
+---
+title: "Creating Readers"
+---
+
+We can now connect to our database instance and serve our Express API after connecting. Let's progress to create our first endpoint, `POST /readers`.
+
+We are going to create a `Reader` model. This is in essence a JavaScript representation of our Readers table. In Sequelize, all of our models will be exported from `src/models/index.js`:
+
+```js
+/* reader.test.js */
+const { Reader } = require('../src/models');
+
+describe('/readers', () => {
+// Our first set of tests will go here
+})
+```
+
+This will allow us to perform operations on that part of the database, such as checking that the data we expect has actually been uploaded. We can also use it in the cleanup after our tests have run. For this, you'll notice we have an `beforeEach`. The purpose of the `beforeEach` is to clean out the `Reader` table, so we don't get any interference from previous tests.
+
+You'll notice that all the interactions with the database are through methods we call on the model object. If we want to create a `Reader`, then we need to call `Reader.create()`.
+
+```js
+/* reader.test.js */
+describe('/readers', () => {
+  before(async () => await Reader.sequelize.sync({force: true}));
+
+  beforeEach(async () => {
+      await Reader.destroy({ where: {} });
+  })
+```
+
+## Our First Test
+
+In our test we need to do a few things: run a version of our app in memory, send a request to our app and then run our assertions against the response. To do that we will need to require `supertest` as `request`, and the `expect` function from `chai`.
+
+```js
+/* tests/reader.test.js */
+const { expect } = require('chai');
+const request = require('supertest');
+const { Reader } = require('../src/models');
+const app = require('../src/app');
+
+describe('/readers', () => {
+  before(async () => await Reader.sequelize.sync({force: true}));
+
+  beforeEach(async () => {
+      await Reader.destroy({ where: {} });
+  })
+
+  describe('with no records in the database', () => {
+    describe('POST /readers', () => {
+      it('creates a new reader in the database', async () => {
+        const response = await request(app).post('/readers').send({
+          name: 'Elizabeth Bennet',
+          email: 'future_ms_darcy@gmail.com',
+        });
+
+        expect(response.status).to.equal(201);
+      });
+    });
+  });
+});
+```
+
+Note that we are using the { expect } function from the `[Chai](https://www.npmjs.com/package/chai)` library. `Chai` is an `assertion` library, which gives us more ways to check our app is doing what we expect it to.
+
+Have a quick skim through this code and try and work out what it's doing.
+
+Our test is actually creating a new reader by sending some reader data (the name and email) to the `/readers` endpoint, then asserting that a new record gets added in the `Readers` table in our database (Sequelize pluralises model names, so a `Reader` model would create a `Readers` table).
+
+Okay let's get started on the code...
+
+To start, run the tests with `npm test`.
+
+At first you will get a few errors that look something like:
+
+```bash
+ ...
+TypeError: Cannot read property ‘sequelize’ of undefined
+  at Context.<anonymous> (/Users/User/Projects/ManchesterCodes/book-library-api/tests/reader.test.js:10:26)
+  at callFn (/Users/User/Projects/ManchesterCodes/book-library-api/node_modules/mocha/lib/runnable.js:358:21)
+  at Hook.Runnable.run (/Users/User/Projects/ManchesterCodes/book-library-api/node_modules/mocha/lib/runnable.js:346:5)
+  at next (/Users/User/Projects/ManchesterCodes/book-library-api/node_modules/mocha/lib/runner.js:454:10)
+  at Immediate._onImmediate (/Users/User/Projects/ManchesterCodes/book-library-api/node_modules/mocha/lib/runner.js:516:5)
+  at processImmediate (internal/timers.js:456:21)
+...
+```
+
+This is because our `src/models/index.js` file is trying to create the tables in our database, but does not have any `Models` to do this with. So let's create a model.
+
+With `SQL` databases, we need to have a plan for what our database is going to look like. In the case of the `Readers` table, it is simply going to have a `name` and a `email`. Both of these are going to be `string` values.
+
+We can define these in `src/models/reader.js` with the following code:
+
+```js
+/* src/models/reader.js */
+module.exports = (connection, DataTypes) => {
+  const schema = {
+    name: DataTypes.STRING,
+    email: DataTypes.STRING,
+  };
+
+  const ReaderModel = connection.define('Reader', schema);
+  return ReaderModel;
+};
+
+```
+Here we are exporting a function which takes a connection to a database, and a set of `DataTypes`. We then define a schema object and pass it to `connection.define`, along with what we want the table in our database to be called.  
+
+Next, we need to import the `ReaderModel` into `models/index.js`, then after we have connected to the database we pass our `connection` to it, along with the `Sequelize` module. Finally we call `connection.sync()` and return an object containing our `Reader` object. 
+
+In short, your `models/index.js` should look like this:  
+
+```js
+const Sequelize = require('sequelize');
+const ReaderModel = require('./reader');
+
+const { PGDATABASE, PGUSER, PGPASSWORD, PGHOST, PGPORT } = process.env;
+
+const setupDatabase = () => {
+  const connection = new Sequelize(PGDATABASE, PGUSER, PGPASSWORD, {
+    host: PGHOST,
+    port: PGPORT,
+    dialect: 'postgres',
+    logging: false,
+  });
+
+  const Reader = ReaderModel(connection, Sequelize);
+
+  connection.sync({ alter: true });
+  return {
+    Reader
+  };
+};
+
+module.exports = setupDatabase();
+```
+
+Now when we run the tests, we get this error:
+
+```bash
+  1) readers
+       POST /readers
+         creates a new reader in the database:
+
+      AssertionError: expected 404 to equal 201
+      + expected - actual
+
+      -404
+      +201
+      
+      at Context.it (tests/reader.test.js:20:40)
+      at process._tickCallback (internal/process/next_tick.js:68:7)
+```
+
+Success! Our test is running, and failing! This is because haven't created a `/readers` route in our Express app - as we know, if a route doesn't exist then we get a 404 status code back.
+
+## Challenge
+
+You're going to tackle the first issue failing test, which is that our route gives back a 404 status code instead of a 201.
+
+Using your existing knowledge of Express, create a route handler that handles POST requests to `/readers`. The controller for this route handler should send back a `201` status code to the client. You should put the route handler (i.e. `app.post`) in `src/app.js`, and create and export a controller function from `src/controllers/reader.js`, passing it into the route handler.
+
+Once you have done that, re-run the tests. You should see the status code error has now disappeared, but we still have to actually create the entry to our `Readers` table. Add the following assertions to your test:
+
+```js
+// tests/reader.test.js
+...
+const newReaderRecord = await Reader.findByPk(response.body.id, { raw: true });
+
+expect(response.body.name).to.equal('Elizabeth Bennet');
+expect(newReaderRecord.name).to.equal('Elizabeth Bennet');
+expect(newReaderRecord.email).to.equal('future_ms_darcy@gmail.com');
+...
+```
+
+```bash
+  1 failing
+
+  1) readers
+       POST /readers
+         creates a new reader in the database:
+     AssertionError: expected undefined to equal 'Elizabeth Bennet'
+      at Context.it (tests/reader.test.js:21:43)
+      at process._tickCallback (internal/process/next_tick.js:68:7)
+```
+
+Back in the test, we are doing the following:
+
+- sending a `POST` request to `/reader` :white_check_mark:
+- asserting that we get a `201` response :white_check_mark:
+- getting the `id` property from the response body
+- using the `find` method to query the database for the item with this id
+- asserting that the reader exists in the database, and has the correct name and genre
+
+
+The plan of attack is as follows:
+
+- Import our `Reader` model into our express app
+- update our endpoint to create and save a new `Reader` to the database
+- update our endpoint to send the `id` of the new Reader back to the client
+
+---
+
+:bulb:
+
+Getting a timeout error? Have you set your DB connection string in both `.env` and `.env.test` files?
+
+---
+
+Update your controller as follows:
+
+```js
+/* src/controllers/reader.js */
+const { Reader } = require('../models');
+
+exports.create = async (req, res) => {
+  const newReader = await Reader.create(req.body);
+  res.status(201).json(newReader);
+};
+```
+
+If you've done everything correctly, your first test should now pass. 
+
+---
+
+:bulb:
+
+Not passing? Take the time to carefully read and go through the above steps again, and if you are still struggling to get your test to pass then ask for help.
+
+---
+
+Because your test is passing, you should now be able to use the new `/readers` endpoint in Postman. Fire up your API with `npm start` and send a `POST` request to the `/readers` endpoint with the following request body.
+
+```js
+{
+  "name": "Elizabeth Bennet",
+  "email": "future_ms_darcy@gmail.com"
+}
+```
+
+When the request succeeds you should see the created object returned to you. Pay attention to the `id` key, this is the unique identifier for the created object. Our database generates this key automatically.
+
+What if we want to have a look inside the database and check the records are there? You can use the `pgAdmin` to do so. Connect to your database container, then run the following query:
+
+```bash
+SELECT * FROM Readers;
+```
+
+---
+
+:bulb:
+
+Readers name and email not appearing in the DB record? Have you definitely sent the data correctly in Postman? You want to select the Body tab and if there's orange text saying `Text`, click it and select JSON. Make your request again and you should be okay.
+
+---

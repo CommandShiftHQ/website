@@ -1,0 +1,29 @@
+---
+title: "Blocks"
+---
+
+## Learning Objectives
+
+- Understand what we mean by a **code block**
+- Understand how to create a block in JavaScript
+
+## Code Blocks
+
+Sometimes when we give instructions, it makes sense to group a certain subset of the instructions together.
+
+Going back to the cake-baking example at the start of this course, our recipe might be divided into two sections - one for preparing the cake mixture, and one for preparing the icing.
+
+Similarly when we give instructions to a computer, there might be set of statements that makes sense grouped together.
+
+In JavaScript, these groups of statements are called **blocks**. We define a block by wrapping the statements in a pair of curly braces:
+
+```js
+{
+  const name = prompt('What is your name?');
+  console.log('Your name is ' + name);
+}
+```
+
+The code inside a block is usually indented by a couple of spaces, to make it easier to read and distinguish from code outside of the block.
+
+When used in this way, there isn't much practical benefit to using blocks, but there are a number of tools that we can use in conjunction with blocks to make our programs a lot smarter, which we will look at in the coming chapters.

@@ -1,0 +1,67 @@
+---
+title: "Ship Object ;TLDR"
+---
+
+A _user story_ outlines one piece of functionality an application should have, from the perspective of the person using that functionality. Applications are typically made up of many user stories that will be outlined before development starts. As developers, it's our job to translate these user stories into objects, methods and properties. We call this _domain modelling_.
+
+Let's have a look at a user story:
+
+```
+As an animal shelter worker,
+So I can keep track of all the animals,
+Each animal should have a name.
+```
+
+The first and second lines of the user story give us some context about who is using the functionality and why. The third line is what we'll translate:
+
+```
+Each animal should have a name.
+```
+
+Firstly we look for nouns. These are usually our objects. However, if a noun is possessive (it has ownership of another noun) then the noun possessed could be a property. Lets see how the above line might translate into an object:
+
+| Object | Methods | Properties |
+|--------|---------|------------|
+| Animal |         | name       |
+
+If we come across verbs then these often indicate methods. Lets have a look at another example:
+
+```
+As a cashier,
+So I can charge a customer for their products,
+I want to be able to add products to a basket. 
+```
+
+The line we look at here is:
+
+```
+I want to be able to add products to a basket. 
+```
+
+This could be translated to:
+
+| Object | Methods    | Properties |
+|--------|------------|------------|
+| Basket | add        | products   |
+
+An `add` method is assumed here because of the verb `add`. `products` is assumed as a property, as `Basket` possesses `products`.
+
+## Challenge
+
+Your challenge is to use domain modelling to translate the following user story into an object with properties and/or methods, to write any tests necessary for the user story, and to write the code that makes the test(s) pass. The user story is:
+
+```
+As a cruise ship captain,
+So I can get passengers aboard a ship,
+I want a ship to have a starting port.
+```
+
+## To complete this challenge, you will need to:
+
+- Discuss with your classmates what the domain model would look like for the above user story. Would recommend a pen and paper for this step.
+- Create a new test file, which should `describe` your constructor.
+- Create a new test spec (`it`) for ensuring an instance of your object can be created.
+- Write the code that makes this test pass.
+- Create another test spec for each property and/or method you identify.
+- Write the code that makes this test pass.
+- Add, commit with a meaningful message, and push to GitHub.

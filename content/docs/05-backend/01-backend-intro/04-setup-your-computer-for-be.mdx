@@ -1,0 +1,71 @@
+---
+title: "Setup your computer for BE"
+---
+
+Although we will let you know which tools you need to install prior to the lectures where you will be introduced to them, you can always try to set things up beforehand, which will help speed things up. If you have any problems, we are on hand to help, so just ask for help :) 
+
+The 3 main programs you will need to install for the backend module are:
+
+- Postman
+- Docker
+- PgAdmin
+
+## Postman
+Postman, is a program we can use to send `requests` and `receive` responses. This is what we already defined before as a `client`. We can play around with requests and responses in a variety of ways, which we will discover together, but Postman has nice features to display the `response` data nicely and make the process of interacting with APIs and backend servers more human friendly and intuitive. 
+
+Please note you **do NOT** need to sign up/create an account in order to use Postman. That is just if you wanted to have a shared team space, which, for our use case there is no need.
+
+Ubuntu and Mac/Windows users can install it from [here](https://www.postman.com/downloads/). 
+
+⚠️ If you have a Mac, ensure you download the correct version for your computer (either Apple Chip or Intel Chip).
+
+Once downloaded and installed, free feel to open Postman to ensure you can run it correctly.
+
+## Docker 
+We will be using Docker throughout the module for starting and maintaining our database. 
+There are details for how to install Docker in the Docker section of the track as well, so if you set Docker up now, feel free to skip it later, or viceversa.
+
+### Install Docker on Ubuntu
+Follow the next steps and run the associated commands in your terminal:
+
+1. Update your software database: `sudo apt update`
+2. Remove any old versions of docker that might be on your system: `sudo apt remove docker docker-engine docker.io`
+3. Install latest version of docker: `sudo apt install docker.io`
+4. Once installed, ensure all is good by check the docker version: `docker --version`
+
+### ⚠️ How to fix `Got permission denied while trying to connect to the Docker daemon socket`
+Once installed you will likely run into daemon issues and need to run docker with sudo. 
+In order to correct that we can adjust Docker permissions as per [Bobby lliev’s solution here](https://www.digitalocean.com/community/questions/how-to-fix-docker-got-permission-denied-while-trying-to-connect-to-the-docker-daemon-socket) which is also on the Docker documentation.
+
+That should be it :) 
+
+### Install Docker on Mac and Windows
+Docker requires a Linux kernel in order to run. This can be emulated on Windows and Mac. 
+The easiest way to do this is to install [Docker Desktop from the official website](https://docs.docker.com/get-docker/). 
+You will need to have Docker Desktop running in order to use docker commands in your terminal, like `docker version`. 
+
+⚠️ If you have a Mac, ensure you download the correct version for your computer (either Apple Chip or Intel Chip).
+
+## PgAdmin
+
+We will be learning about and using PostgreSQL to interact with containerised PostgreSQL databases in Docker. 
+Just like with Docker, there are details for how to install pgAdmin in the Docker section of the track as well, so if you set PgAdmin up now, feel free to skip it later, or viceversa.
+
+Once installed, PgAdmin will ask you to set up a `master` password. This is the password that protects others from accessing the databases you will set up in PgAdmin. Make sure to set it to something you can remember (or save it in a safe place like a password manager) because you will be asked for it every once in awhile.
+
+Apart from ensuring pgAdmin is installed, you don't have to worry about setting any database or server connection up. We will do that together throughout the module and the track.
+
+### Installing PgAdmin on Ubuntu
+Ubuntu users can either download it from the software app on Ubuntu or:
+
+```bash
+sudo apt install pgadmin4
+```
+
+### Installing PgAdmin on Mac and Windows
+Windows and Mac users can download it from [https://www.pgadmin.org/download/](https://www.pgadmin.org/download/).
+
+## Almost there...
+Done with the setup, and almost finished with the intro. Almost... 
+
+<img src="https://media.giphy.com/media/m3864rBwwBTKMAbpn3/giphy.gif" />

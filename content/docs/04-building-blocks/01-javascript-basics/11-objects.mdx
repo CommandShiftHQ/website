@@ -1,0 +1,82 @@
+---
+title: "Objects"
+---
+
+The most powerful data structure in JavaScript is an object. These can be used to represent **entities**.
+
+Let's look at why we might use objects. 
+
+Imagine you are storing data about yourself within your code:
+
+* Your name can be represented in JavaScript by a string.
+* Whether you like spicy food can be represented by a boolean.
+* Your age can be represented by a number.
+* Your favourite books can be represented by an array.
+
+```js
+const michaelsName = 'Michael';
+const michaelsAge = 27;
+const doesMichaelLikeSpicyFood = true;
+const michaelsFavouriteBooks = ['The old man and the sea', 'You dont know JS'];
+```
+
+But how do you group all of these facts about a person together? How do you represent a person?
+
+The answer is to use **objects** - an object is a set of **key-value pairs** that is used to represent...anything!
+
+```js
+const michael = {
+  name: 'Michael',
+  age: 27,
+  likesSpicyFood: true,
+  favouriteBooks: ['The old man and the sea', 'You dont know JS'],
+};
+```
+
+That's instantly a much clearer representation of a person than the 4 seperate values we created above:
+
+* The `michael` object has 4 **keys** - `name`, `age`, `likesSpicyFood`, `favouriteBooks`.
+* The **values** of those keys are `'Michael'`, `27`, `true`, and `['The old man and the sea', 'You dont know JS']` respectively.
+
+You can add as many keys as you like, and they can have any values you like.
+
+To access the value of a key, you can use **dot notation**:
+
+```js
+michael.name; // 'Michael'
+michael.age; // 27
+michael.likesSpicyFood; // true
+michael.favouriteBooks; // ['The old man and the sea', 'You dont know JS']
+```
+
+It's also possible to use square bracket notation
+
+It's worth repeating that objects are the most powerful data structure available in JavaScript. They allow us to model the real world in a simple and flexible way, and are the foundation of **Object Oriented Programming**, which we will be focussing on in the next few weeks.
+
+As the W3Schools article linked to at the bottom says:
+
+```
+In JavaScript, objects are king. If you understand objects, you understand JavaScript.
+```
+
+There are 10 object-related challenges for you to complete with your pair. Most of these build on the concepts from the provious challenges.
+
+To run the tests for this challenge, run `npm test -- objects`
+
+In the same manner as before, try to fix all of the failing tests.
+
+- Run the tests
+- Read the error message
+- Write some code to fix that message
+- Repeat
+
+And again, commit to git regularly, and use the links provided and google to help you if you get stuck!
+
+[You can find the finished example repo here (dont use before you attempt whole exercise on your own ;))](https://github.com/joestephens/javascript-basics-solutions)
+
+## Recommended Reading
+
+- [:zap: Objects](https://hackmd.io/Rxf1oBboRJyxosqnAXuTag)
+- [Objects on MDN JavaScript docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)
+- [Working with objects](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Working_with_Objects)
+- [Objects on W3Schools](https://www.w3schools.com/js/js_object_definition.asp)

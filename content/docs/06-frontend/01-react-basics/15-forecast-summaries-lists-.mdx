@@ -1,0 +1,36 @@
+---
+title: "Forecast Summaries (lists) 💡"
+---
+
+## Requirements
+
+Let's check again the requirements we mentioned in the "Forecast Summary" step:
+
+**_Users should be able to see a summary of each day of the forecast, including the date, general description, an icon for the weather that day, and maximum temperature._**
+
+We've broken it down into two problems:
+
+* We need to render the date, description, icon and max temperature for a day -> this was completed.
+* We need to repeat this for each day of the forecast.
+
+The second point is the next one to do!
+
+## Technical task breakdown
+
+We now have a single summary component. The next step of the feature we are working on is to repeat this component for each day of our forecast.
+
+Take a look at the annotated mockup of the app we are trying to create:
+
+![App](https://s3.eu-west-2.amazonaws.com/mcrcodes/weather/annotated-app.png)
+
+The component we just made corresponds to the yellow boxes. If the whole picture represents our `<App />` component, you'll notice that the `<App />` directly contains three components (red, blue, green) - the yellow boxes are contained within the blue component.
+
+In this challenge, we are going to make a component which does exactly that - it will be rendered inside of our `<App />` component, take the forecast list data as props, and it will use that list to render a `<ForecastSummary />` component for each item in the array.
+
+### Instructions:
+1. Create a new dummy component `<ForecastSummaries />`, give it an appropriate `className`.
+2. Render an instance of this new component in `<App />`.
+3. Pass the `forecasts` data to `<App />` as a prop.
+4. Pass `forecasts` prop to `<ForecastSummaries />`.
+5. Render a `<ForecastSummary />` component in `<ForecastSummaries />` for each entry in `forecasts` data.
+6. Check the console for any errors, there might be one referring to a `key` prop. Check what you should do and fix it.

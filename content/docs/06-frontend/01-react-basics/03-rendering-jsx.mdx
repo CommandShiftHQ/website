@@ -1,0 +1,11 @@
+---
+title: "Rendering JSX"
+---
+
+In React, we don't write HTML, we write JSX, even if they look almost the same. The important difference is that JSX will be **transpiled** to JavaScript at the end, so it can contain plain JS. HTML cannot, therefore it requires JavaScript code be wrapped in `<script>` tags to make it accessible. Read the following byte and follow along with the examples: [:zap: Rendering JSX](https://hackmd.io/s/H1zhMrWKE).
+
+It's important to mention that although we write in JSX it's common to see React files with a `.js` extension and not a `.jsx` extension. 
+
+The reason for this is that some applications have [Babel](https://babeljs.io/docs/en/) built in. It is a compiler which transpiles modern JS code to backwards-compatible JS that can be read by different browsers (It "converts ECMAScript 2015+ code into a backwards compatible version of JavaScript", see the [official documentation](https://babeljs.io/docs/en/)). Recent versions of Babel are smart enough to recognise React code and compile it accordingly, hence there is no reason to specify the `.jsx` extension, which we would have had to do in earlier builds.
+
+An application built with [Create React App](https://create-react-app.dev/) comes with Babel as a build dependency, and that's what you're going to use for this exercise.

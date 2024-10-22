@@ -1,0 +1,247 @@
+---
+title: "Functions - Parameters"
+---
+
+## Learning Objectives
+
+- Understand what is meant by the term parameter
+- Understand what is meant by the term argument
+- Understand how to utilise parameters to make functions more generic
+
+## Function parameters
+
+In this lesson, we're going to look at how we can make the processes defined in our functions more generic and flexible by using a powerful feature called **parameters**.
+
+### A new problem to solve
+
+The manager of the cake factory decides that the business should now start making more than just one type of cake.
+
+The recipe for the new cake looks like this:
+
+- Heat oven to 180 celsius
+- Add 100g flour, 175g sugar, 3 eggs, 175g butter, 50g cocoa powder to mixing bowl
+- Mix ingredients together
+- Put ingredients in tin
+- Put tin in oven
+- Bake for 25 minutes
+- Take tin out of oven
+
+The problem is that your cake making machine only knows how to make one kind of cake. It can only follow the one recipe that it knows. To start making the new cakes, the manager says they are going to buy a new set of machines that know how to follow the new recipe. This will be expensive, and it seems pretty unnecessary - after all, the recipes are basically the same! There are a few differences - what ingredients to use, what temperature to heat the oven to, and how long to bake the cake for - but both recipes follow the same process.
+
+We've already made a big improvement to the machines by installing a single button to run the entire baking process. If we could tell the machines what ingredients to use, what temperature to use, and how long to bake the cake for, then we would be able to make the new cakes using the old machines.
+
+In effect, we want the machine to follow the following recipe:
+
+- Heat oven to *a given temperature*
+- Add *the given ingredients* to mixing bowl
+- Mix ingredients together
+- Put ingredients in tin
+- Put tin in oven
+- Bake for *the given number* of minutes
+- Take tin out of oven
+
+And we want to be able to control the given values.
+
+In programming, we can achieve this flexibility in our functions by using **parameters**.
+
+### Parameters and Arguments
+
+#### Recap - Variable declarations and assignments
+
+Let's recap on an important point we covered when learning about variables - that **variable declarations** and **variable assignments** are separate operations. This means we can create variables without assigning a value to them immediately. When we create a variable without assigning a value, the value of the variable is `undefined`.
+
+So far, we've only seen this when using `let` to create a variable:
+
+```js
+let myVariable;
+myVariable; // undefined
+myVariable = 8;
+myVariable; // 8
+```
+
+The expression `let myVariable` is a variable declaration. It creates the variable.
+The expression `myVariable = 8` is a variable assignment.  It assigns a value to that variable.
+
+#### Parameters
+
+When we use parameters in a function, we are declaring a variable to be used inside of the function.
+
+Instead of using `let` or `const`, we create these variables by listing their names inside of the round brackets in the function declaration, separated by commas:
+
+```js
+function myFunction(parameter1, parameter2) {};
+```
+
+This function has two parameters, named `parameter1` and `parameter2`. (You can call the parameter anything you like, just like you can with variables).
+
+We can now use these parameters inside the function code block like we would use a normal variable:
+
+```js
+function myFunction(parameter1, parameter2) {
+  console.log('Parameter 1 is', parameter1);
+  console.log('Parameter 2 is', parameter2);
+};
+```
+
+But what happens if we call this function? What will the values of `parameter1` and `parameter2` be?
+
+```js
+function myFunction(parameter1, parameter2) {
+  console.log('Parameter 1 is', parameter1);
+  console.log('Parameter 2 is', parameter2);
+};
+
+myFunction();
+```
+
+Both parameters are undefined!
+
+When we declare parameters, a similar thing is happening to when we declare a variable without assigning a value.
+
+We can assign a value to the parameter when we **call** the function.
+
+#### Arguments
+
+The term **parameter** refers to the **variable** created in a function declaration. The term **argument** refers to the **value** we assign to that variable when the function is called.
+
+To call a function with arguments, we put the argument values between the round brackets in the function call expression. Each argument should be separated with a comma.
+
+In this example, there are no values in the brackets - no arguments are given, so no values are assigned to the variables, and they are `undefined`.
+
+```js
+myFunction();
+```
+
+When we add arguments to the function call, the parameters take on these values, and these values will be printed out.
+
+```js
+myFunction('Hello', 'World');
+```
+
+We can call the function as many times as we like, with whatever arguments we like, and the parameters will take on different values each time.
+
+```js
+myFunction('Hello', 'World');
+myFunction(123, 456);
+```
+
+The order in which we list the arguments is important - the first argument will be assigned to the first parameter, the second argument to the second parameter etc:
+
+```js
+myFunction('Hello', 'World');
+myFunction('World', 'Hello');
+```
+
+If we don't give the function call enough arguments, then the unused parameters will remain `undefined`:
+
+```js
+myFunction('Hello');
+```
+
+And if we give too many arguments, then the extra ones will have no effect - the value will just get lost in the JavaScript ether:
+
+```js
+myFunction('Hello', 'World', 'EXTRA');
+```
+
+Let's use these new skills to improve our cake machines!
+
+### Baking cakes in JavaScript - Version 3
+
+The latest version of our `bakeSpongeCake` function looked like this:
+
+```js
+function bakeSpongeCake() {
+  console.log('Heating oven to 190 celsius');
+  console.log('Adding 200g flour, 200g sugar, 4 eggs, 200g butter, 1tsp baking powder to mixing bowl');
+  console.log('Mixing ingredients together');
+  console.log('Putting ingredients in tin');
+  console.log('Putting tin in oven');
+  console.log('Baking for 20 minutes');
+  console.log('Taking tin out of oven');
+};
+```
+
+To make our new cake (a chocolate cake), we could write a second function as follows:
+
+```js
+function bakeChocolateCake() {
+  console.log('Heating oven to 180 celsius');
+  console.log('Adding 200g flour, 200g sugar, 4 eggs, 200g butter, 1tsp baking powder to mixing bowl');
+  console.log('Mixing ingredients together');
+  console.log('Putting ingredients in tin');
+  console.log('Putting tin in oven');
+  console.log('Baking for 25 minutes');
+  console.log('Taking tin out of oven');
+};
+```
+
+This would be the equivalent of buying a new machine, which only knew how to make chocolate cakes - the scenario we wanted to avoid.
+
+Our aim is to write a single function with the ability to bake any type of cake by making use of parameters. Instead of `bakeSpongeCake` and `bakeChocolateCake`, we want a single function `bakeCake`.
+
+The first part we wanted to have more control over was the oven temperature. Let's re-define the existing `bakeSpongeCake` function, and add the ability to set a temperature to our function:
+
+```js
+function bakeCake(temperature) {
+  console.log('Heating oven to 190 celsius');
+  console.log('Adding 200g flour, 200g sugar, 4 eggs, 200g butter, 1tsp baking powder to mixing bowl');
+  console.log('Mixing ingredients together');
+  console.log('Putting ingredients in tin');
+  console.log('Putting tin in oven');
+  console.log('Baking for 20 minutes');
+  console.log('Taking tin out of oven');
+};
+```
+
+Here we have added a parameter called `temperature` to the function declaration - the equivalent of adding a temperature dial to the machine.
+
+Now when we start the cake machine by calling our function, we can set the temperature dial to whatever we like by giving the required temperature as an argument.
+
+Let's try baking two cakes at different temperatures now - one at the old temperature of 190, and one at 180 (the temperature on the new recipe):
+
+```js
+function bakeCake(temperature) {
+  console.log('Heating oven to 190 celsius');
+  console.log('Adding 100g flour, 175g sugar, 3 eggs, 175g butter, 50g cocoa powder to mixing bowl');
+  console.log('Mixing ingredients together');
+  console.log('Putting ingredients in tin');
+  console.log('Putting tin in oven');
+  console.log('Baking for 20 minutes');
+  console.log('Taking tin out of oven');
+};
+
+bakeCake(190);
+bakeCake(180);
+```
+
+The first function call worked - the temperature was 190. But it was also 190 on the second function call, and we wanted it to be 180.
+
+![image](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/images%2Fcf3b859ead5bfbe34523317c10d2fbd2a6836c010cc365e82fb40585b248.png?alt=media&token=de88b1f6-42cb-4622-aa56-f04f12c81f94)
+
+This is because we're not using that value inside of the function! Although we've attached a temperature dial to the machine, at the moment that dial doesn't *do* anything. The temperature of the oven is always set to the literal value `190` in the string `'Heating oven to 190 celsius'`. When our programs rely on literal values in this way, we say the values are **hard coded**.
+
+To make our cake machine more flexible, we need to replace the hard-coded `190` with the value of the `temperature` parameter:
+
+```js
+function bakeCake(temperature) {
+  console.log('Heating oven to ' + temperature + ' celsius');
+  console.log('Adding 200g flour, 200g sugar, 4 eggs, 200g butter, 1tsp baking powder to mixing bowl');
+  console.log('Mixing ingredients together');
+  console.log('Putting ingredients in tin');
+  console.log('Putting tin in oven');
+  console.log('Baking for 20 minutes');
+  console.log('Taking tin out of oven');
+};
+
+bakeCake(190);
+bakeCake(180);
+```
+
+Now we can really control the temperature of our machine!
+
+In a similar fashion, we can control the ingredients and baking time used by the machine by parameterising those values too:
+
+![final](https://a.storyblok.com/f/79570/1312x1080/31ff42f576/final.png)
+
+By adding parameters to the function definition, we have been able to adapt our sponge cake machine into a generic cake machine. As long as we tell the machine the correct temperature, ingredients and baking time to use, it can bake whatever cake we like!

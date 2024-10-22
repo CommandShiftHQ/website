@@ -1,0 +1,164 @@
+---
+title: "Walkthrough: Itinerary/Ports"
+---
+
+# Itinerary/Ports - Walkthrough
+
+## Steps
+
+- Include in your `Itinerary.js` and `Port.js` files into `index.html` using `script` tags.
+- In the inline `script` block, create some new `Port` instances and add them to a new `Itinerary` instance.
+- Create a new div with the id `ports` nested inside the `viewport` div.
+- In `style.css`, add a new selector for `#ports`. Specify a width of `0px`, a `margin-top` of `96px`, a display of `flex` and a `justify-content` of `space-around`.
+- Add a new selector for `#ports > .port`. Specify a width of `64px`, a height of `32px` and set the background image to the `port.png` image file.
+- Add a new method to the `Controller` prototype called `renderPorts`. It should have a parameter of `ports` which will receive an array as an argument. 
+- Inside `renderPorts`, use `document.querySelector` to find the `ports` div and assign it to a variable named `portsElement`. Set `portElement`'s width to `0px`.
+- You should then iterate over the array passed to the `ports` parameter using `forEach` and for each one should render a new `div` to the DOM with the class `port`
+- Each new port element should have a data attribute of `portIndex` set to the port's index in the `ports` array
+- Add 256px to the `#ports` div every time a new port element is appended to it
+- In the inline `script` block in `index.html`, call the `controller.renderPorts` method, passing in your `Itinerary` instance's `ports`.
+
+
+## Include in your `Itinerary.js` and `Port.js` files into `index.html` using `script` tags.
+
+```html
+...
+<body>
+  ...
+  <script src="src/Controller.js"></script>
+  <script src="src/Port.js"></script>
+  <script src="src/Itinerary.js"></script>
+  ...
+</body>
+...
+```
+
+## In the inline `script` block, create some new `Port` instances and add them to a new `Itinerary` instance.
+
+This is similar to how we created itineraries in our tests (before we stubbed ports):
+
+```html
+...
+<body>
+  ...
+  <script src="src/Controller.js"></script>
+  <script src="src/Port.js"></script>
+  <script src="src/Itinerary.js"></script>
+  <script>
+    const controller = new Controller();
+    const itinerary = new Itinerary([
+      new Port('New York City'), 
+      new Port('Grand Turk'),
+      new Port('San Juan'),
+      new Port('Amber Cove')
+    ])
+  </script>
+</body>
+...
+```
+
+## Create a new div with the id `ports` nested inside the `viewport` div.
+
+We will use this as a container for individual port elements.
+
+```html
+<div id="viewport">
+  <div id="ports">
+  </div>
+</div>
+```
+
+## In `style.css`, add a new selector for `#ports`. Specify a `margin-top` of `96px`, a display of `flex` and a `justify-content` of `space-around`.
+
+```css
+#ports {
+  margin-top: 96px;
+  display: flex;
+  justify-content: space-around;
+}
+```
+
+`space-around` will give equal spacing around each of the element's children.
+
+## Add a new selector for `#ports > .port`. Specify a width of `64px`, a height of `32px` and set the background image to the `port.png` image file.
+
+```css
+#ports > .port {
+  width: 64px;
+  height: 32px;
+  background-image: url('../images/port.png');
+}
+```
+
+`#ports > .port` means **select all elements with a class of `port` which are a direct child of an element with an id of `ports`**
+
+## Add a new method to the `Controller` prototype called `renderPorts`. It should have a parameter of `ports` which will receive an array as an argument. 
+
+```js
+Controller.prototype = {
+  ...
+  renderPorts (ports) {}
+};
+```
+
+## Inside `renderPorts`, use `document.querySelector` to find the `ports` div and assign it to a variable named `portsElement`. Set `portElement`'s width to `0px`.
+
+```js
+const portsElement = document.querySelector('#ports');
+portsElement.style.width = '0px';
+```
+
+We set a width of `0` as we want JS to manipulate the width of this container every time we add a child element. 
+
+## You should then iterate over the array passed to the `ports` parameter using `forEach` and for each one should render a new `div` to the DOM with the class `port`
+
+```js
+ports.forEach((port, index) => {
+  const newPortElement = document.createElement('div');
+  newPortElement.className = 'port';
+
+  portsElement.appendChild(newPortElement);
+})
+```
+
+Firstly we create a new DOM element with `document.createElement`. At this point **it does not** exist on the page, only in JavaScript.
+We set it's `className` attribute to our `.port` selector. Note that in JS we reference to `className` despite the fact the HTML attribute is `class`. This is because `class` is a reserved word in JavaScript.
+Lastly, we call `appendChild` on `portsElement` (the `#ports` div). This will insert our new element `newPortElement` into the DOM as a child of the `#ports` div.
+
+## Each new port element should have data attributes of `portName` and `portIndex` set to the name of the port and the port's index in the `ports` array respectively.
+
+[Data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes) allow us to store our own custom attributes on HTML elements. This will be handy for differentiating each port we add to the `ports` array.
+
+```js
+newPortElement.dataset.portName = port.name;
+newPortElement.dataset.portIndex = index;
+```
+
+This can be placed after the declaration of `newPortElement` and before `newPortElement` is mounted to the DOM. It will render a port div that looks something like this:
+
+```html
+<div class="port" data-port-name="New York City" data-port-index="0"></div>
+```
+
+Note also that we are using the `index` in this example. This is because we know this will always be unique.
+
+## Add 256px to the `#ports` div every time a new port element is appended to it
+
+```js
+const portsElementWidth = parseInt(portsElement.style.width, 10);
+portsElement.style.width = `${portsElementWidth + 256}px`;
+```
+
+This should be placed inside the `forEach` (as we want it to repeat for every port) and should take place after you've appended `newPortElement` to the DOM. There are some new concepts here. If you call [parseInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/parseInt) with a string such as `256px` then it will automatically extract the number part of the string. The `10` is a radix - you don't need to remember this (it's all very mathematical) but a radix of `10` indicates that we want to convert from a decimal number. We now have an integer (whole number) of `256` assigned to `portsElementWidth`. We use the power of [template literals](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals) to do a JavaScript expression within a string, which evaluates to our previous width plus `256`, and then we add `px` on the end (as we're setting a CSS property).
+
+## In the inline `script` block in `index.html`, call the `controller.renderPorts` method, passing in your `Itinerary` instance's `ports`.
+
+```js
+controller.renderPorts(itinerary.ports)
+```
+
+You should add this after you've instantiated your Itinerary.
+
+If you open up your page in the browser, you should now have some ports:
+
+![Ports](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/cruise-ships-gui%2Fports.png?alt=media&token=97c8f2d2-018d-423b-8ae8-5e179f6ccfbb)

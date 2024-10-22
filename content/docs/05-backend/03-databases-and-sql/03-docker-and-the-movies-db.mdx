@@ -1,0 +1,255 @@
+---
+title: "Docker and the Movies DB"
+---
+
+This week we will be working through a set of exercises where we write queries to interact with a pre-made database.
+
+## Docker
+
+We will manage this database using **Docker**. Docker is a tool designed to make it easier to create, deploy and run applications by using **containers** and **images**.
+
+**Containers** are similar to **virtual machines**. A virtual machine is just like a mini computer running inside of your computer. You can install software and run programs on a virtual machine (just like you can with any computer), and when you are finished, you can just delete it. It takes away a lot of the hassle of installing and managing lots of complicated software on your own laptop.
+
+The main difference between a normal virtual machine and a docker container is the docker containers are able to share resources with the host operating system (e.g. with your laptop). This makes them a lot less intensive for your computer to run. You can read more about them [here](https://www.docker.com/resources/what-container).
+
+A Docker image is a pre-configured application. It contains all of the software and files that you need to run an application. To use a Dockerized application, we just have to download its image, and then run the image in a container.
+
+- **Watch** [📺 Docker in 5 minutes](https://www.youtube.com/watch?v=_dfLOzuIg2o)
+
+- **Watch** [📺 PostgreSQL in 10 minutes](https://www.youtube.com/watch?v=FAb3kB2LO2Y)
+
+### Installing Docker
+
+If you have already installed Docker recently, you can skip the installation instructions below.
+
+You can check whether you already have Docker installed by running
+
+```
+docker --version
+```
+
+#### Ubuntu
+
+Update your software database:
+```
+sudo apt update
+```
+
+Remove any old versions of docker that might be on your system:
+```
+sudo apt remove docker docker-engine docker.io
+```
+
+Install docker:
+```
+sudo apt install docker.io
+```
+
+Check docker version:
+```
+docker --version
+```
+
+#### Windows and Mac
+
+Docker requires a Linux kernel in order to run. This can be emulated on Windows and Mac. The easiest way to do this is to install [Docker Desktop](https://docs.docker.com/get-docker/). You will need to have Docker Desktop running in order to use docker commands in your terminal.
+
+
+### Getting to grips with docker
+
+Before we get into the track, it's probably a good idea to learn a bit about how to start, stop and manipulate containers:
+
+[A practical starter guide to docker](https://rollout.io/blog/docker-basics-a-practical-starter-guide/)
+
+
+## Install pgAdmin4
+
+For this challenge we will be using pgAdmin4. 
+Regardless of your operating system, you should be able to download the client from or find instructions to do so from https://www.pgadmin.org/download/.
+
+If you're a Linux user you may install the client by running the following commands from the [official guide](https://www.pgadmin.org/download/pgadmin-4-apt):
+
+```
+# Install the public key for the repository:
+curl -fsS https://www.pgadmin.org/static/packages_pgadmin_org.pub | sudo gpg --dearmor -o /usr/share/keyrings/packages-pgadmin-org.gpg
+
+# Create the repository configuration file:
+sudo sh -c 'echo "deb [signed-by=/usr/share/keyrings/packages-pgadmin-org.gpg] https://ftp.postgresql.org/pub/pgadmin/pgadmin4/apt/$(lsb_release -cs) pgadmin4 main" > /etc/apt/sources.list.d/pgadmin4.list && apt update'
+
+#
+# Install pgAdmin
+#
+
+# Install for both desktop and web modes:
+sudo apt install pgadmin4
+```
+
+## Pulling the Database Docker Image
+
+The main source of docker images is a site called `docker-hub`. Much like `git-hub` or `npm`, developers can create and share images that they have created. We have built a database image for this exercise. You can have docker grab it with the following command:
+
+```
+docker pull commandshifthq/movies-db-postgres
+```
+
+:exclamation: If you are working on linux you may get a permission error. This means that docker does not have permission to run the processes it needs to work. You can fix that by following [this guide](https://www.digitalocean.com/community/questions/how-to-fix-docker-got-permission-denied-while-trying-to-connect-to-the-docker-daemon-socket).
+
+Note that the convention is to prefix the name of the image with the name of the user who made it.
+
+You can learn more about basic docker usage [here](https://docker-curriculum.com/).
+
+### Dockerfile
+
+Docker images are defined with `Dockerfile`. The application we are using in this exercise is defined in [this GitHub repository](https://github.com/CommandShiftHQ/be-moviesdb-postgres).
+
+In the repository you can see the Dockerfile we used to build our image:
+
+```
+FROM  postgres:latest
+
+COPY *.sql /docker-entrypoint-initdb.d/
+RUN chmod a+r /docker-entrypoint-initdb.d/*
+```
+
+Dockerfiles are a lot like bash commands. In this one we simply build upon a pre-made `postgres` image, and then copy some `bash` scripts into it. Those scripts are placed in a folder in a directory that is automatically run when the container starts.
+
+:lock: Be aware that anybody can host an image on dockerhub. Always make sure you use trustworthy images. :lock:
+
+Another image you may want to play around with is [wernight/funbox](https://github.com/wernight/docker-funbox). You can pull it with:
+
+```
+docker pull wernight/funbox
+```
+
+## Getting the Database Running
+
+Start by pulling the image:
+```
+docker pull commandshifthq/movies-db-postgres
+```
+
+Run the container by typing this command:
+```
+docker run -d -p 5433:5432 --name movies_db -e POSTGRES_PASSWORD=password commandshifthq/movies-db-postgres
+```
+
+Let's look what that did:
+
+1. It asked docker to run start a movies container in detached mode (`docker run -d ... commandshifthq/movies-db-postgres`)
+2. Made it accessible on port 5433 (`-p 5433:5432`)
+3. Named the docker container (`--name movies_db`)
+4. Set an environment variable, which is the password for the default `postgres` user to `password` (`-e POSTGRES_PASSWORD=password`)
+
+Let's confirm the container is built and running by opening a shell inside it. This uses the `exec` command:
+```
+docker exec -it movies_db bash
+```
+
+The `-it` option asks docker to open an interactive shell, and then we set the terminal prompt to `bash`.
+
+We are now inside the terminal of the docker container - of the computer inside our computer.
+
+From here we can open postgres command line and check the database has been created. 
+On this image we already have a database called `movies` and the default user is postgres so let's connect to it:
+```
+psql -d movies -U postgres
+```
+
+This should connect automatically, but if you are prompted for the postgres user password, type in `password` and hit return. (characters you entered won't be shown on terminal, just type away and hit enter)
+
+Let's see what databases are on this postgres instance:
+```
+SELECT datname from pg_database;
+```
+
+You should see the following:
+
+```
+movies=# SELECT datname from pg_database;
+  datname
+-----------
+ movies
+ template1
+ template0
+(3 rows)
+```
+
+That's everything we need to do inside the container. Type in `exit;` to close `psql` and then again (without the `;`) to exit the container. It will continue to run in the background.
+
+Note that if you now try to run the `psql -d movies -U postgres` command again, it won't work. This is because you're running the command from your own terminal, and you don't have `psql` installed (unless you've installed it yourself outside of this class!). It's only installed in the Docker container.
+
+## Working on the database
+
+Open up pgAdmin and let's add this postgres server connection so we can work with it from a nicer interface.
+⚠️ If this is the first time you started pgAdmin, you will be asked for a "master password". This ensures only you can connect to the connections set and encrypts the credentials locally, so please ensure you do this and remember the password for next time.
+
+Then find the "Add new server" quick link on the dashboard or from the left hand side pane, right click on `Servers -> Register -> Server...`.
+
+A pop-up window will appear, and we'll need to change thing in two tabs:
+1. Under the `General` Tab:
+	- Give your server a name, like `movies`
+	- Leave everything as default
+2. Under the `Connection` Tab:
+	- Hostname: `localhost`
+	- Port: change it to `5433` (note this is the port we've set when we started the docker container)
+	- Maintenance database: `movies`
+	- Username: `postgres`
+	- Password: `password`
+
+Click `Save`. PgAdmin should automatically connect to the new server and the interface should refresh.
+
+In the left hand side of the screen, in the sidebar, you will see the `movies` server. 
+
+- Press the arrow to expand it and you will see there is a `movies` database present as well. 
+- This action will also expand with more information and options for the database, but do not worry - at this point we are only interested in the `movies` schema (under Schemas).
+- Schemas are analogous to directories (or folders) at the operating system level except that schemas cannot be nested. 
+- There is also a `public` schema, however there are no tables in here. Please note this is the default schema for most Postgres Databases. 
+
+Check that you are able to send queries to the database by right clicking on the `movies` schema and selecting the `Query Tool`. Then in the newly opened pane, enter some thing like:
+
+```
+SELECT * FROM movie;
+```
+
+#### Relation does not exist?
+If you are getting an error similar to this:
+
+```sql
+ERROR:  relation "movie" does not exist
+LINE 1: SELECT * FROM movie;
+                      ^
+SQL state: 42P01
+Character: 15
+```
+
+Then do not fret. It's all good and we are one step closer to querying the database. The reason the movie relation does not exist is because by default, the queries are run in the `public` schema, however, our tables are in the `movies` one. 
+To solve this we can either change the default schema going forward or always be dilligent in specifying which schema we want to query.
+
+#### Option 1️⃣: Changing the default schema
+
+----------
+
+Our first and most straighforward option is to set the default schema for the current user to the `movies` schema. 
+You can do this by running the following SQL statements:
+
+```sql
+SET search_path = movies, "$user", public;
+ALTER ROLE postgres SET search_path = movies, "$user", public; -- Persistent, for role
+```
+
+Now go ahead and run the `SELECT` statement from before. You should now be able to retrieve data.
+
+#### Option 2️⃣: Always specify the schema in your SQL statement
+
+----------
+
+How would we specify the schema when running a SQL statement? As follows:
+
+```
+SELECT * FROM movies.movie;
+```
+Please note: We are first specifying the schema, followed by a `.`, and finally the table we want to query i.e the schema is `movies` and `movie` is the table.
+
+Click the play button and confirm that the query returns movie information.
+
+Now on to the exercises!

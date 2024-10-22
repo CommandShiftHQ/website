@@ -1,0 +1,206 @@
+---
+title: "Variables"
+---
+
+## Learning Objectives
+
+- Understand what a variable is and why they are useful
+- Understand how to create JavaScript variables using `const` and `let`
+- Understand the difference between `const` and `let`
+- Understand how to collect user data using `prompt` and `confirm`
+
+## Towards more interesting programs
+
+We now have an understanding of the basic types of data that can exist in our JavaScript programs. But so far we've only seen examples where we've typed out the data manually and explicitly - we have **hard coded**  the data.
+
+The statement `5 + 5;` will never really do anything interesting by itself. The evaluated value of the expression is immediately forgotten by JavaScript.
+
+It would be more useful  if we could remember the result of one statement, and then use it to do something else in our program. Even more useful would be if we could somehow get our data from an external source - so that our program could respond in different ways, depending on how a user interacted with it.
+
+And what would be really really useful would be if we could somehow get our data from an external source - so that our program could respond in different ways, depending on how a user interacted with it.
+
+In this lesson, we'll cover how we can do this in JavaScript.
+
+## Variables
+
+Variables give us the ability to remember values in our programs, so that we can use them later. They also give us the ability to change these stored values at a later date.
+
+In JavaScript, variables are like a box that can hold any value you like. When you create the box, you give it a name. In the future, if you want to use the contents of the box, you just need to refer to its name.
+
+To create a variable in JavaScript, we can use the keywords `const` and `let`.
+
+Let's take a look at some code:
+
+![declaration](https://a.storyblok.com/f/79570/434x310/6943ed5205/1.png)
+
+Here, we use the `const` keyword to create a variable called `myNumber`. We **assign** a value to the variable using the **assignment operator** `=` (a single equals sign). The value we assigned to the variable is `10`.
+
+Note that the statement where we create and assign the variable evaluates as `undefined`!
+
+On the following line, we refer to the variable we just created. This line evaluates to `10`, which is the value we assigned to the variable when we created it!
+
+We just made the program remember a value for us, and then we accessed the saved value later in the program.
+
+This simple technique will open up a whole world of possibilities to us in the future.
+
+It would be more useful  if we could remember the result of one statement, and then use it to do something else in our program. Even more useful would be if we could somehow get our data from an external source - so that our program could respond in different ways, depending on how a user interacted with it.
+
+### Variable declaration
+
+Declaring a variable is like teaching JavaScript a new word.
+
+Take a look at this example, where we try to refer to a variable that doesn't exist.
+
+![reference error](https://a.storyblok.com/f/79570/894x266/6a62b69f16/2.png)
+
+Running that code gives us a **Reference Error**, and says that `myVariable` is not defined. JavaScript is telling us that it doesn't know what we're talking about. It doesn't know what the word `myVariable` refers to.
+
+We saw above that we can define variables using the `const` keyword. We can also use the `let` keyword to create variables. So let's try that:
+
+![let declaration](https://a.storyblok.com/f/79570/886x346/c3640fa87a/3.png)
+
+Now when we try to refer to `myVariable`, we should not see the error, and instead see the line evaluated as the string `Hello`:
+
+![let evaluation](https://a.storyblok.com/f/79570/882x412/667f125a13/4.png)
+
+We just taught our program what the word `myVariable` means!
+
+You can only *declare* a variable once in your code. If you run the example above again `let myVariable = 'Hello';` you'll get another error. This is because the variable already exists.
+
+In your browser console, you can clear all of your declared variables and start again by refreshing the page.
+
+So what is the difference between `const` and `let`, and when should we choose one over the other?
+
+#### `const` and `let`
+
+Both of these keywords allow us to create variables and store values in our program. The difference comes when we want to change the value stored in the variable.
+
+- Variables declared with `const` **cannot** change their value
+- Variables declared with `let` **can** change their value
+
+Let's take a look at this in action with `let`:
+
+![let-reassignment](https://a.storyblok.com/f/79570/430x460/96d2b89cca/5.png)
+
+Here we create a variable `variable1` and assign it a value of `5`. We then assign a new value of `7` to the variable, and we can see that the value stored in `variable1` has indeed changed.
+
+Now let's try the same experiment with `const`:
+
+![const-reassignment](https://a.storyblok.com/f/79570/900x418/dc304d98fa/6.png)
+
+Here, when we try to assign a different value to our variable that was declared with `const`, JavaScript raises an error and says we can't do that.
+
+With `let`, we are also able to create the variable without a value - it's value will just be `undefined`. We can assign and reassign new values afterwards:
+
+```js
+let variable3;
+variable3; // undefined
+variable3 = 8;
+variable3; // 8
+```
+
+If we try this with `const`, we will get another error - because we aren't able to reassign the value later, `const` variables need to be assigned a value when they are created.
+
+However, this illustrates an interesting point that will be important later on - that **variable declaration** and **variable assignment** are two separate operations in JavaScript.
+
+#### When to use `const` and `let`
+
+##### `const`
+
+One thing variables are good for is giving names to pieces of data, to give them more meaning when we read our code with human eyes. We often do this in real life with concepts that are confusing or difficult to remember.
+
+And the number `299792458` is more commonly known as **The Speed of Light** - because it's easier to remember.
+
+As an example, let's take Albert Einstein's famous equation `E = mc²`.
+
+Here `E` refers to the the energy (in joules) of an object. `m` refers the mass (in kg) of the object. And `c` refers to speed of light (in meters per second) - `299792458`.
+
+In the equation, we use these letters `E`, `m` and `c` in place of these more complicated definitions, because they make it easier to say and easier to remember.
+
+Now imagine that we had a object that weighed 80kg and we wanted to use JavaScript to work out this object's energy.
+
+We can use `*` to multiply numbers in JavaScript, so our code might look like this:
+
+```js
+const energy = 80 * 299792458 * 299792458;
+```
+
+From this it's not immediately obvious what the numbers `80` or `299792458` mean, or why we're multiplying them together.
+
+By using variables, we can make the intention of the code a lot clearer:
+
+```js
+const speedOfLight = 299792458;
+const mass = 80;
+
+const energy = mass * speedOfLight * speedOfLight;
+```
+
+OR
+
+```js
+const c = 299792458;
+const m = 80;
+
+const E = m * c * c;
+```
+
+The intention of the code here is now a lot clearer.
+
+Because the speed of light is a constant value, it is especially appropriate to use `const` in this case - its value will definitely not change.
+
+##### `let`
+
+A good example of when to use `let` is when we want to count how many times something happens. For example, imagine we wanted to count how many times someone clicked their mouse.
+
+To begin, we would create a variable with a value of 0:
+
+![clicks](https://a.storyblok.com/f/79570/420x238/48eef1a70f/7.png)
+
+Then every time the mouse was clicked, we could increment the value of `clicks` by `1`:
+
+![clicks](https://a.storyblok.com/f/79570/420x380/9455120c75/8.png)
+
+As a rule of thumb, it's better to use `const` unless you are intending that the value will change. When you're writing a program, you can always go back and change the `const` to a `let` if you need to!
+
+#### `var`
+
+When you're on your JavaScripting adventures, you might also see another keyword being used to create variables: `var`. This is an old way of doing things. In 2015 `const` and `let` were introduced to JavaScript to replace `var`, and you should always try to use the new ones!
+
+### Global Variables
+
+JavaScript has a number of built-in variables available for you to use wherever you like in your program. You don't have to define them, and you don't have to tell JavaScript what them mean - JavaScript already has a value for these variables!
+
+These are called **global variables** and include things such as `console` (as in `console.log`), `prompt`, `confirm` and `alert` (which we will go over in the very next section!)
+
+## Collecting User Input
+
+Now we've seen how we can use variables to store information, let's take a look at how we can take some data from a user, which we can use to add a level of interactivity to our programs.
+
+Similar to how JavaScript provides us with `console.log` to output messages to the developer console, we also have a couple of simple ways to collect input from a website user: `prompt` and `confirm`.
+
+### `prompt`
+
+We can use `prompt` to collect string data from a user. try this in your console:
+
+![prompt](https://a.storyblok.com/f/79570/700x332/eccb73e1f2/9.png)
+
+You should see a pop-up box appear in your browser asking `'What is your name?'`. If you fill in the input box and click OK, the value you entered should be saved to a variable called `name`.
+
+### `confirm`
+
+To collect boolean data, we can use `confirm` in a similar way:
+
+![confirm](https://a.storyblok.com/f/79570/888x312/373ae1e016/10.png)
+
+You should see a pop-up box appear in your browser asking `'Do you like JavaScript?'`. If you click OK, the `likesJavaScript` variable should be `true`. If you click cancel, the value should be `false`.
+
+### `alert`
+
+Closely related to these is `alert`, which we can use to display messages to the user in a dialog box, similar to `prompt` and `confirm`. It's a more prominent alternative to `console.log`.
+
+![alert](https://a.storyblok.com/f/79570/1836x850/1061a51639/11.png)
+
+Note that when you click OK, the `alert` statement evaluates to `undefined`. We can't collect any input from the user in this way, we can only display messages.
+
+We can use these three tools to make our programs much more interesting!

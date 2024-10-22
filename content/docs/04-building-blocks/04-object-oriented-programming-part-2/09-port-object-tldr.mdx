@@ -1,0 +1,30 @@
+---
+title: "Port Object ;TLDR"
+---
+
+```
+As a cruise ship captain,
+So I can get passengers to a new destination,
+I want a ship to be able to dock at a different port.
+```
+
+## Challenge
+
+In this user story, a `ship` doesn't possess a `port` - it docks at one. Therefore, your domain model likely needs a new `Port` object. 
+
+Since our application now has more than one port, we need a way to differentiate between them, so lets assume a `Port` has a `name`.
+
+There is also another doing word for a `Ship`: `dock`.
+
+## To complete this challenge, you will need to:
+
+- Discuss with your classmates how the domain model might be added to in this scenario.
+- Create a new test file, which should `describe` a new `Port` object.
+- Create a new test spec to check the new `Port` object can be instantiated. 
+- Write the code that makes this test pass.
+- Create a new test spec to check the new `Port` object has a `name` property. 
+- Write the code that makes this test pass.
+- Refactor the `Ship` test suite so a `Ship` takes a `Port` object instead of a string and check tests still pass.
+- Create a new test spec inside `Ship.test.js` to test a `dock` method.
+- Write the code that makes this test pass.
+- Add, commit with a meaningful message, and push to GitHub.

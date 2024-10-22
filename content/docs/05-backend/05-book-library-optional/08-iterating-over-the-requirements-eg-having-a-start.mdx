@@ -1,0 +1,41 @@
+---
+title: "Iterating over the requirements, e.g. having a start"
+---
+
+If we look at our list of requirements after digesting our user stories we know that we want the following to happen:
+
+```
+Reader:
+	- name:  String
+	- email:  String
+		* Check if email address is valid
+	- password: String
+		* Check if password is at least 8 characters long
+
+```
+
+At the moment we're not doing any of the checks (validating) on email or password, but more glaring, one field is missing - `password`.
+
+1. Go ahead and add the field `password` to the Reader model
+2. Update the tests to reflect this change
+3. Don't worry about validation at this stage (ie, checking if the data exists, if it has the correct format etc)
+4. Create a Book model, controller and route that matches our requirements:
+
+```
+Book:
+	- title: String
+		* Check if title exists
+	-  author: String
+		* Check if author exists
+	- genre: String
+	- ISBN: String
+```
+5. Once again do not worry at this stage about the checks on the individual fields of our Model.
+6. Use Reader as an example of how to create Book. Below is a flow that might come handy:
+	* Create a model Book file in `/src/models`
+	* Plug that model to the main `sequelize` function in `/src/models/index.js`
+	* Create a bookController in `/src/controllers`
+	* Create a bookRouter in `/src/routes`
+	* Add your route to `app` in `/src/app.js`
+	* Create tests for your Book functionality in `/tests`
+

@@ -1,0 +1,217 @@
+---
+title: "Walkthrough: Testing Forecast Summary Component 🔬"
+---
+
+## Overview
+
+Let's go through the questions we asked earlier:
+
+#### 1. Which values could you test here?
+
+The `<ForecastSummary />` component should display 4 elements (for now): date, icon, max temperature, and description. We want to check if the UI presents them to the end user.
+
+#### 2. Which RTL queries will be suitable here?
+
+That depends on the type of information we want to display:
+
++ Description is the most obvious one - it should display a string, as it is with no change.
++ Temperature is a bit complicated, as we want to display value and unit, so our test should account for that.
++ Date should display a value that is human readable, but it returns a value in milliseconds. For now we will assume that it is what we want to see, but once we format the date to a human readable value, we will update our test.
++ Icon is the most difficult one and will be treated differently than others.
+
+Bearing that in mind `getByText()` should be sufficient for description, temperature, and date, but icon requires `getByTestId()`.
+
+#### 3. Can/Should you use the same assertions as you did in `<LocationDetails />`?
+
+In `<LocationDetails />` we used the `getByText()` query and `toBeTruthy()` / `toBeInstanceOf()` matchers within our assertions. You can and should use the same queries and matchers within different test files, so long as they suit your testing needs.
+
+#### 4. How many tests you might need here?
+
+We need at least 2 tests. One for snapshot testing, and one for values. The second test should have 4 assertions, one for each value we want to display.
+
+## Solution
+
+### Snapshot testing
+
+#### 1. Props.
+
+Our component renders each of the 4 values in their own `<div>`s as we provide 4 different props. To do snapshot testing we need to use the `asFragment()` method to get the component rendered as a `DocumentFragment` (more on that [here](https://testing-library.com/docs/react-testing-library/api#asfragment)), and we need to pass some stub props. The important thing here is to pass props with the correct data types.
+To do so create a const `validProps` that is an object storing all 4 props. This should sit within the `describe` block.
+
+💡 Please note, we could pass values directly to the `<ForecastSummary />` component, but we might be using them for other tests too, so let's store them in one place.
+
+🤔 Why do you think we named our variable `validProps` here, and not just `props`?
+
+```js
+import React from "react";
+
+describe("ForecastSummary", () => {
+  const validProps = {
+    date: 1111111,
+    description: "Stub description",
+    icon: "stubIcon",
+    temperature: {
+      min: 12,
+      max: 22,
+    },
+  };
+
+  it("renders correctly", () => {});
+});
+```
+
+#### 2. Component rendering.
+
+Now it's time to render our component using `asFragment()` and our props:
+
+```js
+import React from "react";
+import { render } from "@testing-library/react";
+import ForecastSummary from "../../components/ForecastSummary";
+
+describe("ForecastSummary", () => {
+  const validProps = {
+    date: 1111111,
+    description: "Stub description",
+    icon: "stubIcon",
+    temperature: {
+      min: 12,
+      max: 22,
+    },
+  };
+
+  it("renders correctly", () => {
+    const { asFragment } = render(
+      <ForecastSummary
+        date={validProps.date}
+        description={validProps.description}
+        icon={validProps.icon}
+        temperature={validProps.temperature}
+      />
+    );
+  });
+});
+```
+
+#### 3. Assertion.
+
+Now that we have our component being rendered as a `DocumentFragment` we can write our assertion using `toMatchSnapshot()`. The final snapshot test will look like:
+
+```js
+import React from "react";
+import { render } from "@testing-library/react";
+import ForecastSummary from "../../components/ForecastSummary";
+
+describe("ForecastSummary", () => {
+  const validProps = {...};
+
+  it("renders correctly", () => {
+    const { asFragment } = render(
+      <ForecastSummary
+        date={validProps.date}
+        description={validProps.description}
+        icon={validProps.icon}
+        temperature={validProps.temperature}
+      />
+    );
+
+    expect(asFragment()).toMatchSnapshot();
+  });
+});
+```
+
+#### 4. Run tests.
+
+Run test for this file by using `npm test src/tests/components/ForecastSummary.test.js`. You should see a snapshot file being created. Feel free to check what this file looks like. You won't be ever changing it manually, as it's generated, but it's good for you to know what it looks like. Remember to commit all changes, including the snapshot.
+
+### Values testing
+
+#### 1. Add simple test with `getByText()`.
+
+Props/values tests are different than snapshot test, so it might be a good idea to group them within another describe block.
+
+For props/values tests we need to use different methods. Let's start with `getByText()`. Create a new test "render correct values for props" and make sure your component is rendered with `getByText()` and write assertions:
+
+```js
+import React from "react";
+import { render } from "@testing-library/react";
+import ForecastSummary from "../../components/ForecastSummary";
+
+describe("ForecastSummary", () => {
+  const validProps = {...};
+
+  it("renders correctly", () => {...});
+
+  it("renders correct values for props", () => {
+    const { getByText } = render(
+      <ForecastSummary
+        date={validProps.date}
+        description={validProps.description}
+        icon={validProps.icon}
+        temperature={validProps.temperature}
+      />
+    );
+
+    expect(getByText("1111111")).toHaveAttribute("class", "forecast-summary__date");
+    expect(getByText("Stub description")).toHaveAttribute("class", 
+        "forecast-summary__description
+    );
+    expect(getByText("stubIcon")).toHaveAttribute("class", "forecast-summary__icon");
+    expect(getByText("22°C")).toHaveAttribute("class", "forecast-summary__temperature");
+  });
+});
+```
+
+You can use the `toHaveAttribute()` method to check for the existence of any html attribute. 
+
+In this example we checked for the `class` attribute to illustrate how to use the `toHaveAttribute()` method (once our code is compiled the react specific `className` attribute will become `class`). Though you'd typically want to avoid testing implementation details such as class names, more info [here](https://kentcdodds.com/blog/making-your-ui-tests-resilient-to-change).   
+
+#### 2. Modify the test for icon - add `data-testid` attribute.
+
+Do you remember when we said this one requires a different test? When we come to use the real icons in the future, they won't display any text, so we need to use something else to find it. `getByTestId()` is the most appropriate choice here. The docs in [RTL cheatsheet](https://testing-library.com/docs/dom-testing-library/cheatsheet) are not the most comprehensive for this query, but let's start with adding `data-testid` to the icon `<div />` in `<ForecastSummary />`, with the value of `"forecast-icon"`:
+
+```js
+      <div className="forecast-summary__icon" data-testid="forecast-icon">
+        {icon}
+      </div>
+```
+
+#### 3. Modify test for icon - update snapshot.
+
+Check what happened with the tests. The snapshot test should fail now as we changed the markup. This is desired, as we know **we've made that change**. To fix the snapshot test you need to **update** it. If you see this:  `Watch Usage: Press w to show more.` as the last line in your tests, press "w" and you should see the list of short commands, one of them being `Press u to update failing snapshots.` Follow this instruction! Now you should have only the second test to fix.
+
+#### 4. Modify test for icon - fix failing test.
+
+Now it's time to alter our icon test. Add `getByTestId` to methods accessible from `render()` and modify the assertion in the `ForecastSummary.test.js` file. Remember to pass the right value to `getByTestId()`. The test should look like this:
+
+```js
+import React from "react";
+import { render } from "@testing-library/react";
+import ForecastSummary from "../../components/ForecastSummary";
+
+describe("ForecastSummary", () => {
+  const validProps = {...};
+
+  it("renders correctly", () => {...});
+
+  it("render correct values for props", () => {
+    const { getByText, getByTestId } = render(
+      <ForecastSummary
+        date={validProps.date}
+        description={validProps.description}
+        icon={validProps.icon}
+        temperature={validProps.temperature}
+      />
+    );
+
+    expect(getByText("1111111")).toHaveClass("forecast-summary__date");
+    expect(getByText("Stub description")).toHaveClass(
+      "forecast-summary__description"
+    );
+    expect(getByTestId("forecast-icon")).toHaveClass("forecast-summary__icon");
+    expect(getByText("22°C")).toHaveClass("forecast-summary__temperature");
+  });
+});
+```
+
+Check tests are running in the console. Is it sorted?

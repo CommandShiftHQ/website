@@ -1,0 +1,170 @@
+---
+title: "Walkthrough: Testing Forecast Summaries (lists) 🔬"
+---
+
+## Overview
+
+Let's go through the questions we asked earlier:
+
+#### 1. What could be the most important thing to test here? Please remember that tests for particular values already have been tested.
+
+Think first what `<ForecastSummaries />` is rendering? A list of items nested in a `<div/>`! What we care about here is whether or not it renders the right number of elements and if it renders the outer `<div/>`.
+
+#### 2. What should be tested first?
+
+Let's keep tests consistent and test for snapshots first, then we can test this component further.
+
+#### 3. What type of queries and assertions might you want use this time?
+
+We can't really try to find elements here by text, as by default each of the items will display different data. We can reach all elements by providing them with a shared attribute instead. In this case we might want to use `getAllByTestId()`. To count how many elements are rendered we can use `toHaveLength()`.
+
+For snapshot testing we will use the same query and assertion as before.
+
+## Solution
+
+### Snapshot testing
+
+#### 1. Create test file, add describe block with `validProps`.
+
+Let's have a look at how we might test multiple props that have been passed into a component via an array before being rendered. There is no big difference in how many objects this array will have, but would be good if it was more than 1.
+
+```jsx
+describe("ForecastSummaries", () => {
+  const validProps = [
+    {
+      date: 1111111,
+      description: "Stub description 1",
+      icon: "stubIcon1",
+      temperature: {
+        max: 22,
+        min: 12,
+      },
+    },
+    {
+      date: 2222222,
+      description: "Stub description2",
+      icon: "stubIcon2",
+      temperature: {
+        max: 24,
+        min: 13,
+      },
+    },
+  ];
+});
+```
+
+#### 2. Add snapshot testing.
+
+Here we are making an array of stubbed forecast objects. In the test, we pass this array into the `<ForecastSummaries />` component, and use the `asFragment` method from `react-testing-library` to compare against our snapshot test, as before.
+
+```jsx
+import React from "react";
+import { render } from "@testing-library/react";
+import ForecastSummaries from "../../components/ForecastSummaries";
+
+describe("ForecastSummaries", () => {
+  const validProps = [
+    {
+      date: 1111111,
+      description: "Stub description 1",
+      icon: "stubIcon1",
+      temperature: {
+        max: 22,
+        min: 12,
+      },
+    },
+    {
+      date: 2222222,
+      description: "Stub description2",
+      icon: "stubIcon2",
+      temperature: {
+        max: 24,
+        min: 13,
+      },
+    },
+  ];
+
+  it("renders correctly", () => {
+    const { asFragment } = render(<ForecastSummaries forecasts={validProps} />);
+    expect(asFragment()).toMatchSnapshot();
+  });
+});
+```
+
+#### 3. Run the test.
+
+You may run into an error here warning you about a failed prop in your App component. Take a look at your `App.js` and compare it with your `App.test.js`, what if anything may be missing here? 
+
+### List testing
+
+Next, we want to check that the array of props we've passed in is rendering the correct number of elements, which should be 2 elements with 2 versions of our props.
+
+#### 1. Prepare `<ForecastSummary />`.
+
+To begin with, we will need to add test ids to our `<ForecastSummary />` so we can target them to check length of the list.
+Open `ForecastSummary.js` and add the following `data-testid` to outer `<div>`. We could add these attributes to each forecast detail, but we're already testing for it in `ForecastSummary.test.js`.
+
+```jsx
+const ForecastSummary = (props) => {
+  const { date, icon, temperature, description } = props;
+
+  return (
+    <div className="forecast-summary" data-testid="forecast-summary">
+      <div className="forecast-summary__date">{date}</div>
+      <div className="forecast-summary__icon" data-testid="forecast-icon">
+        {icon}
+      </div>
+      <div className="forecast-summary__temperature">
+        {temperature.max}
+        &deg;C
+      </div>
+      <div className="forecast-summary__description">{description}</div>
+    </div>
+  );
+};
+
+```
+
+#### 2. Fix failing tests.
+
+Once you save this, the test for `<ForecastSummaries />` should fail in the console. Think first about these questions:
+
+- **Do you know why `<ForecastSummaries />` has failed?** Because we already had a snapshot generated, and when we added a new attribute to the `<ForecastSummary />` component that is rendered by `<ForecastSummaries />` it means the DOM fragment is different now. Update the snapshot and commit it.
+
+- **What other tests should fail if you run them?** The test for `<ForecastSummary />`, should also fail. To fix it, just like you had for `<ForecastSummaries />` you'd need to update the snapshot.
+
+#### 3. Test for list length.
+
+Now we've done that, we can test that `<ForecastSummaries />` renders `<ForecastSummary />` multiple times depending on how many forecasts are in the `forecasts` array.
+
+**Have a go at writing the tests for this yourself.**
+
+You should use the `getAllByTestId()` and expect the length to be 2.
+
+Let's look at how we would test this component's props:
+
+```js
+import React from "react";
+import { render } from "@testing-library/react";
+import ForecastSummaries from "../components/ForecastSummaries";
+
+describe("ForecastSummaries", () => {
+  const validProps = [...];
+
+  it("renders correctly", () => {...});
+
+  it("renders the correct number of ForecastSummary instances", () => {
+    const { getAllByTestId } = render(
+      <ForecastSummaries forecasts={validProps} />
+    );
+
+    expect(getAllByTestId("forecast-summary")).toHaveLength(2);
+  });
+});
+```
+
+What we've done here is used the `getAllByTestId()` method that is included in `react-testing-library` to find all the `data-testid`s with the value of `"forecast-summary"` within the DOM rendered from `<ForecastSummaries />`, and compiled them into an array. We then expect that array to have a length of 2 as we have passed two objects in `validProps`.
+
+#### 4. Check tests again.
+
+Can you see one more test that passed in the test summary in console? Good job! Now, double check tests for `<ForecastSummary />` and make amendments if needed.

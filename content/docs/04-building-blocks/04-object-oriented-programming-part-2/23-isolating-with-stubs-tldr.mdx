@@ -1,0 +1,17 @@
+---
+title: "Isolating with stubs ;TLDR"
+---
+
+[:zap: Stubs](https://hackmd.io/s/SyR-1Kh8V)
+
+## Challenge
+
+Incorporate stubs into your test suites in places where they could be used instead of a real object. 
+
+Hint: the only test suite that isn't isolated currently is `Ship.test.js`, as it uses the `Itinerary` object.
+
+## To complete this challenge, you will need to:
+
+- Look for any places in the test suite where objects are passed into methods where it would be straightforward to stub those objects. 
+- Replace them with stubs.
+- Run your tests again to ensure they still pass (might be better to run tests after every change).

@@ -1,0 +1,109 @@
+---
+title: "Numbers"
+---
+
+Open up the file `src/numbers.js` in your text editor and take a look inside.
+
+This file contains empty function definitions. 
+
+Your challenge is to fill in the function blocks to make the tests pass.
+
+N.B. you can ignore the `module.exports` keyword for now - this is used to make the functions available outside of the file they are defined it, so that the tests can see them.
+
+Remember you need to find the corresponding test for each function and change the *xit* to *it* in order to un-skip it. Head to `__tests__/numbers.test.js`. We want to find a test that calls our `add` function. We can see this is actually in the first `describe` call. Therefore you need to change:
+
+```js
+xit('adds the two numbers together', () => {
+  ...
+})
+```
+
+***
+
+:bulb:
+
+Note that the `...` here shouldn't be typed. 
+It signifies that the code it references is irrelevant in the given context and only the code surrounding it should be changed.
+
+***
+
+To:
+
+```js
+it('adds the two numbers together', () => {
+  ...
+})
+```
+
+Back in your Terminal, run `npm test` again. One test should have failed:
+
+![Failing test](https://s3.eu-west-2.amazonaws.com/mcrcodes/course/failing-test.png)
+
+You can see a few things here:
+
+- `Expected value to equal: 3 Received: undefined`
+- `Comparing two different types of values. Expected number but received undefined.`
+
+You can also see an arrow pointing to line 17: `expect(add(2, 1)).toEqual(3);`
+
+What can you take from this information?
+
+- the `add` function should take two parameters, both numbers.
+- the return value of the `add` function should be a number.
+- when the parameters are 2 and 1, the return value should be 3.
+
+In the body of the `add` function (back in `src/numbers.js`), add the following code:
+
+```js
+return 3;
+```
+
+Then run the tests again using the same command as before.
+
+You should now see the same failing test at the top but with a new error message -  don't worry, just read the new message:
+
+- `Expected value to equal: 91 Received: 3`
+- an arrow pointing to line 18 - `expect(add(15, 76)).toEqual(91);`
+
+We now know a bit more about the requirements of the function:
+
+- the `add` function should take two parameters, both numbers.
+- the return value of the `add` function should be a number.
+- when the parameters are 2 and 1, the return value should be 3.
+- when the parameters are 15 and 76, the return value should be 91.
+
+Looking at the test file (`__tests__/numbers.test.js`), you can see the full requirements:
+
+```js
+expect(add(2, 1)).toEqual(3);
+expect(add(15, 76)).toEqual(91);
+expect(add(12, 0)).toEqual(12);
+expect(add(10, -5)).toEqual(5);
+```
+
+To fix this problem, you're going to have to add a couple of parameters to the function, and use those along with the `+` arithmetic operator. Edit your `add` function to look like this (make sure you type the solution, don't just copy and paste!)
+
+```js
+const add = (a, b) => {
+  return a + b;
+};
+```
+
+Arithmetic operators are used to combine two numbers to return a new value. 
+When you're working with numbers in JavaScript, you will normally end up working with these, or the [Math](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math) object.
+
+If you run the tests again, you should see a big green tick at the top... congratulations! You passed your first ever unit test!
+
+However, there are still 10 more number-based problems for you to solve.
+
+Using the documentation links below and google, solve the remaining number-based problems.
+
+**You should only be modifying code inside the `src/` folder to make the tests pass - the only changes you should be making in the `__tests__` folder is un-skipping tests by changing `xit` to `it`.**
+
+After you solve each problem, add and commit the changes to git and push them to Github. Once you have solved everything, move onto the next page.
+ 
+## Recommended Reading
+
+- [Number on MDN JavaScript documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)
+- [Math on MDN JavaScript documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math)
+- [Arithmetic Operators on MDN JavaScript documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Arithmetic_Operators)

@@ -1,0 +1,264 @@
+---
+title: "Arrays"
+---
+
+## Learning Objectives
+
+- Understand what an array is and what they are used for
+- Understand how to create arrays in JavaScript
+- Understand what we mean by an **element** and an **index** when talking about arrays
+- Understand how we can use for-loops and arrays together
+- Become familiar with a some common functions we can use when working with arrays
+
+## What is an array?
+
+So far all the code we have written has used three **primitive** data types - **strings**, **numbers** and **booleans**.
+
+These data types are the most fundamental in all programming languages. In almost every situation while we are programming, we will come across these three data types. But it can quickly become very complicated to build programs using these three data types alone. We could end up with data and variables all over the place, and it could end up very messy and unorganized.
+
+In the real world, we often want to group related pieces of data together to make them more organized and easier to work with. One common way we do this is by making lists of things. For example, we could have a list of test scores for a student, or a list of people's names.
+
+We can do this sort of thing in programming too, using something called **data structures**. The data structure we use in JavaScript to organize data into lists is called an **array**.
+
+## JavaScript Arrays
+
+To create an array in JavaScript, we use square brackets (`[]`).
+
+Let's create an array:
+
+```js
+const myArray = [];
+```
+
+This array is empty. It is a list that contains nothing.
+
+Let's create another array, a list of test scores:
+
+```js
+const scores = [10, 8, 9, 6];
+```
+
+This array contains four pieces of data, four numbers.
+
+How about an array of strings - a list of three names:
+
+```js
+const names = ['Eric', 'Betty', 'Rodney'];
+```
+
+Arrays can contain any type of data - not only strings, numbers and booleans, but other complicated data structures too. We can even have an array of arrays:
+
+```js
+const arrayOfArrays = [[], [], []];
+```
+
+This array contains three arrays. All of the arrays in the array are empty.
+
+And the items in an array don't have to be the same type:
+
+```js
+const mixed = [10, 'Hello', false, []];
+```
+
+It's more common to have an array that contains the same type of data though.
+
+## Array Length
+
+We can tell how many items are in an array by looking at the `length` **property** of the array:
+
+```js
+const names = ['Eric', 'Betty', 'Rodney'];
+names.length;
+```
+
+The length of `names` is `3`.
+
+We will learn more about **properties** in the next lesson.
+
+## Elements and Indexes
+
+Even though we have data organized into lists, we still want to be able to access the individual bits of data.
+
+The pieces of data stored in an array are called the **elements** of the array.
+
+One of the most important features of arrays is that the data they store is ordered.
+
+Look at the following code:
+
+```js
+const array1 = ['Hello', 'World'];
+const array2 = ['World', 'Hello'];
+```
+
+Here we have two arrays, both contain the strings `'Hello'` and `'World'`, but the arrays are not equivalent, because the elements are in a different order.
+The first element of `array1` is `'Hello'`, but the first element of `array2` is `'World'`.
+
+The position of an element in an array is called its **index**. The index of an element is a number which represents its position.
+
+In JavaScript (and in most programming languages), arrays are **zero-indexed**. This means that the first item in the array has an index of `0`, not `1`.
+
+To obtain the value of an element in an array, we can put its index into square brackets (more square brackets!) after the array:
+
+```js
+const myArray = ['Hello', 'World'];
+myArray[0];
+myArray[1];
+```
+
+And what happens if we try to refer to the element at index 4 in the array?
+
+```js
+myArray[4];
+```
+
+The list only contains two items - index 4 doesn't refer to anything - and so we get `undefined`.
+
+## Loops and Arrays
+
+Sometimes we want to perform a task on each element of an array. As a simple example, let's print out all of the names in this array of names:
+
+```js
+const names = ['Francois', 'Janet'];
+```
+
+We could do this by accessing each element individually:
+
+```js
+console.log(names[0]);
+console.log(names[1]);
+```
+
+But what if we actually had 1000 names? We don't want to write out 1000 log statements.
+
+Thankfully, arrays pair very naturally with for-loops to provide a way to solve this problem:
+
+```js
+const names = ['Francois', 'Janet'];
+
+for (let i = 0; i < names.length; i += 1) {
+  const name = names[i];
+  console.log(name);
+}
+```
+
+Let's do another step-by-step breakdown of this loop:
+
+- **`i`** is `0` - meaning the loop has run 0 times
+- the **condition** `i < names.length` is checked. `names.length` is 2 because there are 2 elements in the array. `0 < 2` is `true`, so the loop continues
+- the code in the **code block** is executed:
+  - we use the counter `i` (`0`) to access the element at position `0` in the array and save it to a variable called `name`
+  - we print the value of this new `name` variable
+- the **step** (`i += 1`) runs and the `i` variable is increased by 1
+
+- **`i`** is now `1` - meaning the loop has run 1 times
+- the **condition** `i < names.length` is checked. `names.length` is 2 because there are 2 elements in the array. `1 < 2` is `true`, so the loop continues
+- the code in the **code block** is executed:
+  - we use the counter `i` (`1`) to access the element at position `1` in the array and save it to a variable called `name`
+  - we print the value of this new `name` variable
+- the **step** (`i += 1`) runs and the `i` variable is increased by 1
+
+- **`i`** is now `2` - meaning the loop has run 2 times
+- the **condition** `i < names.length` is checked. `names.length` is 2 because there are 2 elements in the array. `2 < 2` is `false`, so the loop ends
+
+We can use this pattern to do lots of things. For example, we can add up the total of a list of numbers:
+
+```js
+const testScores = [10, 8, 6, 9];
+let totalScore = 0;
+
+for (let i = 0; i < testScores.length; i += 1) {
+  totalScore += testScores[i];
+}
+
+console.log(totalScore);
+```
+
+## Array Identity
+
+When we compare two primitive types, such as two numbers, it's quite predictable what result we will get:
+
+```js
+1 === 1;
+1 === 2;
+```
+
+Here the first statement is obviously `true` and the second is obviously `false`.
+
+But what about when we compare arrays?
+
+```js
+[40, 6, 35, 12, 20] === [40, 6, 35, 12, 20];
+```
+
+Here, the outcome might seem a little unexpected. The arrays look identical, so why does JavaScript say they aren't equal?
+
+We have to think about what those two arrays represent. The first array could be a list of exam scores, and the second could be a list of lottery numbers. One list could represent the weights of the top five horses in the 1984 Grand National.
+
+The values contained in each of those lists might happen to be the same, but the lists are certainly different to each other.
+
+If you got two pieces of paper and wrote those 5 numbers onto each piece of paper, you could not say that they were the same piece of paper.
+
+When JavaScript compares arrays (and other data structures) this is the approach it takes. Two arrays might contain the same values, in the same order, but unless they are literally the same list, they will not be considered the same.
+
+## Editing arrays
+
+We've already seen instances where we want to change the value of a variable - such as the counter in a for-loop. It's also really common to want to edit an array by adding and removing items from it, or by reordering items.
+
+The example we will use is that of a shopping basket for an online shop.
+
+We could represent the basket using an array - it's just a list of the items that the user wants to buy.
+
+But the user should be able to add items to the basket, and they should be able to remove items from the basket too.
+
+Let's take a look at some simple ways that JavaScript provides for editing arrays.
+
+### Adding to arrays with `push` and `unshift`
+
+Let's create an array that represents an empty shopping basket:
+
+```js
+const basket = [];
+```
+
+We can add items to the end of an array using the `push` function:
+
+```js
+basket.push('Banana');
+basket.push('Cheese');
+```
+
+This adds the strings `'Banana'` and `'Cheese'` to the array. If we check the value of the array now, we will see it is different to the original value!
+
+```js
+console.log(basket);
+```
+
+We now have two items in the shopping basket, and they are in the order that we `push`ed them to the array.
+
+We can also add items to the start of the array using `unshift`:
+
+```js
+basket.unshift('Apple');
+console.log(basket);
+```
+
+The array now contains the string `'Apple'`, but this time the new value went to the beginning of the array.
+
+One thing to note about the `push` and `unshift` functions is that their return value is the new length of the array!
+
+### Removing items with `pop` and `shift`
+
+The opposites of `unshift` and `push` are `shift` and `pop`. These two functions remove items from the beginning and end of an array.
+
+Continuing the above example, where the `basket` was `['Apple', 'Banana', 'Cheese']`:
+
+```js
+basket.pop();
+console.log(basket);
+basket.shift();
+console.log(basket);
+```
+
+After calling `pop`, the string `'Cheese'` was removed from the end of the array. And when we called `shift`, the string `'Apple'` was removed from the start.
+
+This time, the return values of the functions were the values that had been removed.

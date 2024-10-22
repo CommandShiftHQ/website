@@ -1,0 +1,166 @@
+---
+title: "Walkthrough: Forecast Summaries (lists) 💡"
+---
+
+## Solution
+
+#### 1. Create the new component.
+
+First up, let's do some plumbing - we have the top level `<App />` and we have the bottom level `<ForecastSummary />`, but the `<ForecastSummary />` is not being rendered anywhere. We want to connect them via **this new component**, so let's just create **SOMETHING** that can be rendered from the `<App />` component. Then as we build, we will be able to see our work in the browser.
+
+Create a file `src/components/ForecastSummaries.js` and add some skeleton code:
+
+```jsx
+import React from 'react';
+
+function ForecastSummaries() {
+  return (
+    <div className="forecast-summaries" />
+  );
+};
+
+export default ForecastSummaries;
+```
+
+🤔 Do you remember what we've mentioned earlier about self closing tags in React?
+
+#### 2. Use new component in `<App />`.
+
+Next, import this file into `<App />`, and render it below the `<LocationDetails />` component:
+
+```jsx
+import React from 'react';
+import LocationDetails from './LocationDetails';
+import ForecastSummaries from './ForecastSummaries';
+
+function App(props) {
+  const { location } = props;
+  return (
+    <div className="App">
+      <LocationDetails city={location.city} country={location.country} />
+      <ForecastSummaries />
+    </div>
+  );
+};
+```
+
+If you look in your browser devtools now, you should see the `<ForecastSummaries />` component being rendered in the DOM.
+
+#### 3. Use `forecasts` data.
+
+Next, we want to use the list of forecasts in the `<ForecastSummaries />` component, but where does that data come from? It comes from `<App />`. And where does `<App />` get it from? It receives it as props when we initially render it in `index.js`
+
+So first, we need to import the forecasts data from the JSON file in `index.js` and pass it into `<App />` as a `forecasts` props:
+
+```jsx
+...
+import forecast from "./data/forecast.json";
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(
+  <React.StrictMode>
+    <App location={forecast.location} forecasts={forecast.forecasts} />
+  </React.StrictMode>
+);
+```
+
+#### 4. Pass `forecasts` to `<ForecastSummaries />`
+
+Next, we need to pass the list of forecasts into the `<ForecastSummaries />` component as props.
+
+```jsx
+function App (props) {
+  const { forecasts, location } = props;
+  return (
+    <div className="App">
+      <LocationDetails city={location.city} country={location.country} />
+      <ForecastSummaries forecasts={forecasts} />
+    </div>
+  );
+};
+```
+
+Do you remember how we deconstructed props as params before? You can try to do the same here:
+
+```jsx
+function App({location, forecasts}) {
+  return (
+    <div className="forecast">
+      <LocationDetails
+        city={location.city}
+        country={location.country}
+      />
+
+      <ForecastSummaries forecasts={forecasts} />
+    </div>
+  );
+};
+```
+
+#### 5. Use `<ForecastSummary />`.
+
+And now the plumbing is done - we are rendering the `<ForecastSummaries />` from `<App />`, and passing in the right data. Now we just need to build the `<ForecastSummaries />` component so it meets our requirements.
+
+Inside of the `<ForecastSummaries />` we are going to use `Array.map()` on the `forecasts` array to transform each `forecast` into a `<ForecastSummary />` component and .
+
+```jsx
+import React from 'react';
+import ForecastSummary from './ForecastSummary';
+
+function ForecastSummaries ({forecasts}) {
+  return (
+    <div className="forecast-summaries">
+      {forecasts.map(forecast => (
+        <ForecastSummary
+          date={forecast.date}
+          description={forecast.description}
+          icon={forecast.icon}
+          temperature={forecast.temperature}
+        />
+      ))}
+    </div>
+  )
+};
+
+export default ForecastSummaries;
+```
+
+#### 6. "key" prop.
+
+A final thing with this step - if you look in the browser console, you should see a warning:
+
+```
+Each child in an array or iterator should have a unique "key" prop.
+```
+
+You can read about this error here: [Lists & Keys in React](https://reactjs.org/docs/lists-and-keys.html#keys) (that whole doc is worth a read actually...)
+
+The way React works is that it only tries to make changes to the DOM when they are necessary. When we use `map()` to render a list of components, and an item gets added or removed from the array, it is more efficient for React to only update the item that has been added or removed, rather than re-rendering the full array. Similarly, if the array is re-ordered, it is more efficient to only update the items that have moved position.
+
+Because of this, it is good practice to pass a `key` prop to the component that is being rendered in the iterator (in our case `<ForecastSummary />`) as it helps React identify which element is which more easily.
+
+There are a couple of rules for what values these keys should have:
+
+- They should be unique to that item - if two items have the same key, React will only render the component for the first item. So if you are rendering a list of people, don't use the first name as a key, as there may be more than one Joe in your list (but only the first Joe will be rendered).
+
+- The key should not be the array index - this is the most tempting option for what to pass as a key - the first item in the list has key 0, the second item in the list has key 1 etc. But what happens if you add a new item to the middle of the list, so item 5 becomes item 6 etc. Or if you shuffle the items around? Doing this can cause React to get confused, so try to avoid it, especially if it's possible that your array might change.
+
+With this in mind, can you see a property of each forecast which might be unique to the individual forecast? I would say that the date is a good candidate in this particular case. So lets pass this into the `<ForecastSummary />` as the `key` prop:
+
+```jsx
+const ForecastSummaries = ({forecasts}) => (
+  <div className="forecast-summaries">
+    {forecasts.map(forecast => (
+      <ForecastSummary
+        key={forecast.date}
+        date={forecast.date}
+        description={forecast.description}
+        icon={forecast.icon}
+        temperature={forecast.temperature}
+      />
+    ))}
+  </div>
+);
+```
+
+The console warning should now be gone - lets move on and look at applying some styles to our components.

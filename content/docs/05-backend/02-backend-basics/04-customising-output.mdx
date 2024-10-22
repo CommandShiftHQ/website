@@ -1,0 +1,57 @@
+---
+title: "Customising Output"
+---
+
+In this step, you'll write a test, and the code to make that test pass.
+
+In the last step you wrote some code for an API endpoint that output Hello world! What if instead we could pass in any string {{string}} to our endpoint, and get it to respond with `"Hello, {{string}}!".`
+
+You have already written the code to do this in JavaScript Basics - the `sayHello` function in the strings module.
+
+To achieve this, you will need to modify the existing endpoint, but firstly you should write a second test.
+
+```js
+/* tests/strings.test.js */
+describe('GET /hello/{string}', () => {
+  it('returns "Hello, world!" when passed "world"', done => {
+    ...
+  });
+
+  it('returns "Hello, turtle!" when passed "turtle"', done => {
+    request(app)
+      .get('/strings/hello/turtle')
+      .then(res => {
+        expect(res.status).toEqual(200);
+        expect(res.body).toEqual({ result: 'Hello, turtle!' });
+        done();
+      });
+  });
+});
+```
+
+This test is basically the same as the previous one (note we've hidden some of the previous test above with `...` for brevity) - but it sends the request to a slightly different path, and expects a slightly different response.
+
+- **Recap** the [:books: Express docs on routing](https://expressjs.com/en/guide/routing.html)
+- **Read** the [:books: Express docs on the `req` object](https://expressjs.com/en/4x/api.html#req)
+- **Read** the [:books: Express docs on request route params](https://expressjs.com/en/4x/api.html#res)
+
+## Challenge
+
+Can you parameterise your existing route using route parameters to make the routes `/strings/hello/world` and `/strings/hello/turtle` both match the same route handler, with `world` or `turtle` available from the parameter's value?
+
+Once you've done that, can you access the parameter and pass the value into your `sayHello` method, in order to return the appropriate data?
+
+You will need to `require` the `sayHello` function from the `./lib/strings` file.
+
+### Extra credit
+
+Fire up your server locally with `npm start` and use Postman to visit your new routes.
+
+- [/strings/hello/world](http://localhost:3000/strings/hello/world)
+- [/strings/hello/turtle](http://localhost:3000/strings/hello/turtle)
+
+## Solution
+
+Try your best to solve the above first without looking at the solution.
+
+- **Find the solution** to the above challenge [here](https://hackmd.io/@Yr7Q8gzkQUaCcF02NXvGtw/Sy4PVPig8).

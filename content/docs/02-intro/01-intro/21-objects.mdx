@@ -1,0 +1,228 @@
+---
+title: "Objects"
+---
+
+## Learning Objectives
+
+- Understand what an object is and what they are used for
+- Understand how to create objects in JavaScript
+- Understand what we mean by an **property** and a **method** when talking about objects
+
+We have seen how we can describe data structures as a way to group related pieces of data together to make them more organized and easier to work with.
+We looked at arrays as one type of data structure that allows us to make ordered lists of related data.
+
+Objects are another type of data structure available to us in JavaScript. They are actually the main type of data structure in JavaScript - ultimately every data value in JavaScript is an object. Arrays, and even numbers, strings and booleans are all objects.
+
+So understanding objects is crucial to understanding JavaScript - you can't escape from them!
+
+## What is an object?
+
+We can use objects to represent...anything at all really! Like arrays, we use objects to group together related pieces of data.
+
+However, we use arrays when we want to store data of the same type, and when the order is important.
+
+We might have three related pieces of data - three test scores:
+
+```js
+const score1 = 10;
+const score2 = 9;
+const score3 = 7;
+```
+
+This data would be appropriate in an array:
+
+```js
+const scores = [10, 9, 7];
+```
+
+- The *first* test score is `10`
+- The *second* test score is `9`
+- The *third* test score is `7`
+
+But what about three different pieces of data - a person's name, their age and their height:
+
+```js
+const name = 'Michael';
+const age = 29;
+const height = 195;
+```
+
+Would it be appropriate to store these in an array?
+
+```js
+const person = ['Michael', 29, 195];
+```
+
+These pieces of data aren't the same type. They aren't all test scores. They aren't even all numbers. And would it make sense to refer to *'the first property of a person'* rather than *the person's name*?
+
+It might be a little tidier than having them stored as separate variables, but it's definitely not clear what the number 195 means anymore!
+
+These objects are not related because they all are the same type of thing, but because when we put them together, they all *describe* a single thing - an individual person!
+
+This is the purpose of objects - the allow us to store this kind of data. We can use them to represent all kinds of things from the real world.
+
+## JavaScript Objects and Properties
+
+To create an object in JavaScript, we use curly brackets (`{}`).
+
+```js
+const myFirstObject = {};
+```
+
+The data stored in objects are called its **properties**. A property is a **key/value** pair. The **key** is the name of the property and the **value** is ... the value of that property!
+
+The properties on an object are separated with commas. It's quite common to write each property on a new line, and to include a comma even after the final property!
+
+```js
+const person = {
+  name: 'Michael',
+};
+```
+
+This object has a property with a key of `name` and a value of `'Michael'`.
+
+The value of a property can be literally anything - strings, numbers, booleans, arrays, even other objects!
+
+```js
+const person = {
+  name: 'Michael',
+  age: 29,
+  examResults: [10, 10, 10, 10],
+  address: {
+    street: '1 Example Road',
+    town: 'Example Town',
+    postcode: 'EX11PL',
+  },
+};
+```
+
+We can also set variable values as object property values:
+
+```js
+const personsName = 'Michael';
+
+const person = {
+  name: personsName,
+};
+```
+
+### Accessing Properties
+
+When we want to access a certain property on an object, we do so using **dot notation** - we write the objects name, followed by a dot (`.`), followed by the property name:
+
+```js
+console.log(person.name);
+console.log(person.age);
+console.log(person.examResults);
+console.log(person.address);
+```
+
+The address property here is an object itself, so we can also use dot notation to refer to the properties on that object:
+
+```js
+console.log(person.address.street);
+console.log(person.address.town);
+console.log(person.address.postcode);
+```
+
+If we refer to a property that doesn't exist, we will get `undefined`:
+
+```js
+console.log(person.favouriteBook);
+```
+
+An alternative option is to use square bracket notation, in a similar way to how we access array elements. However, instead of using the index, we use the property key as a string:
+
+```js
+console.log(person['name']);
+```
+
+This is an indication that arrays are actually objects. They are like objects where the property keys are numbers! We also mentioned in the last lesson that arrays have a `length` property - `[1, 2, 3].length` - and this is also an indication that they are objects!
+
+### Updating Properties
+
+To update the value of an object property is very similar to updating the value of any variable - we can use an assignment operator:
+
+```js
+const person = {
+  name: 'Michael',
+};
+
+person.name = 'Joe';
+
+console.log(person.name);
+```
+
+Here we changed the person's name from Michael to Joe.
+
+We can also add new properties to an object in this way:
+
+```js
+const person = {
+  name: 'Michael',
+};
+
+console.log(person.age);
+
+person.age = 29;
+
+console.log(person.age);
+```
+
+The `person` object was created without an age property - the property was `undefined`. The statement `person.age = 29` creates that property and sets its value. When we print the age property a second time, we now see the new value.
+
+## Methods
+
+Throughout the course, we have seen instances where we have used dot notation when using functions. A few examples:
+
+- `console.log('Hi!')`
+- `'Hello World'.toUpperCase()`
+- `'[1, 2, 3].push(4)`
+
+In each of these cases, the functions `log`, `toUpperCase` and `push` are all properties of objects! `console`, `'Hello World'` and `[1, 2, 3]` are all objects.
+
+A function that is a property of an object is called a **method** on that object.
+
+In JavaScript, functions are values just like any other type of data (functions are actually objects too!). Although they have the special property of being callable, functions can be stored in variables, they can be used as arguments for other functions and they can be used as properties on objects.
+
+All of the built in data types we have seen so far - strings, numbers, booleans, arrays, objects and functions - come with lots of out-of-the-box **methods** to allows us to do things with them.
+
+We can also add methods to our own objects.
+
+If we have a function called `sayHello`, which prints a greeting to the console:
+
+```js
+function sayHello() {
+  console.log('Hello!');
+}
+```
+
+We can add this to a person object like we can set any other property:
+
+```js
+function sayHello() {
+  console.log('Hello!');
+}
+
+const person = {
+  sayHello: sayHello,
+};
+```
+
+We can then call the function as a method on the `person` object:
+
+```js
+person.sayHello();
+```
+
+Alternatively, we could create the function directly in the object definition:
+
+```js
+const person = {
+  sayHello: function sayHello() {
+    console.log('Hello!');
+  },
+};
+```
+
+Both ways of defining and adding the function to the object are completely valid and you're likely to see both used.

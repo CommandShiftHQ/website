@@ -1,0 +1,48 @@
+---
+title: "Sequelize"
+---
+
+To get our express app talking to our PostgreSQL database, we will be using [Sequelize](https://sequelize.org/). Sequelize is an ORM (Object Relational Mapper) for SQL databases. 
+
+Sequelize takes care of communicating with our database, and converting our JavaScript data into something PostgreSQL can store.
+
+Now it's time to get our app talking to our development database. As mentioned before, we're going to do this with `Sequelize`, but first we need to set a few things up:
+
+- Install Sequelize with `npm i -S sequelize`
+
+- Create a folder inside your `src` folder, and call it `models`. Add a file inside `models` called `index.js`:
+    - Require `sequelize` at the top of this file
+
+    - Declare a function as `setupDatabase`. Declare a `const` called `connection` and assign a `new Sequelize()` to it. Pass it the connection information from your `.env`
+
+    - Still inside the function, call `connection.sync({alter: true})`. This gives sequelize permission to alter our tables to fit the `models` that we are going to create. This is useful during development because our tables are going to be changing as we add more features to the app.
+
+    - Have the function return an empty object for now.
+
+    - At the bottom of the file, `module.exports = setupDatabase()`
+
+For now your `models/index.js` should look like: 
+
+```js
+const Sequelize = require('sequelize');
+
+const { PGDATABASE, PGUSER, PGPASSWORD, PGHOST, PGPORT } = process.env;
+
+const setupDatabase = () => {
+  const connection = new Sequelize(PGDATABASE, PGUSER, PGPASSWORD, {
+    host: PGHOST,
+    port: PGPORT,
+    dialect: 'postgres',
+    logging: false,
+  });
+
+  connection.sync({ alter: true });
+  return {};
+};
+
+module.exports = setupDatabase();
+```
+There is a lot going on, but for now we are just connecting to the database. We will add more to this file later as we start to define our database tables.
+
+
+- **Read** [:books: Tutorial - Sequelize with Express](https://www.codementor.io/@mirko0/how-to-use-sequelize-with-node-and-express-i24l67cuz)

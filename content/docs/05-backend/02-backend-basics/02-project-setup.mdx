@@ -1,0 +1,31 @@
+---
+title: "Project Setup"
+---
+
+## To complete this challenge, you will need to:
+
+- Fork and clone [this Javascript Basics in Express repository](https://github.com/CommandShiftHQ/javascript-basics-express)
+- Follow the setup instructions in the repository's README.
+- Run `npm test` in your terminal - you should see a list of pending tests, ready for you to implement solutions to... exciting!
+
+To start with, take a look at the tests in `__tests__/strings.test.js`.
+
+What do you notice about these tests?
+
+1. Some things should look familiar: `describe`, `it`, `expect` and `done`. These are part of Jest.
+
+2. In the tests you have seen up to now, you have been testing pieces of code in isolation, and mocking any external dependencies. This type of testing is called **unit testing**. Here, we are performing a different type of testing called **end-to-end** testing (you could think of this as _start to finish_). End-to-end testing verifies (or tests) parts of your application from start to finish.
+
+We have **unit tests** for our `javascript-basics` code already - your mission earlier on in the course was to write the code to pass these tests. The challenge for this week is to take that code and integrate it into an Express application in order to pass **end-to-end** tests. Some of these tests have been written for you already - it's up to you to fill in any blanks! 
+
+In a nutshell, we are testing:
+
+**When you send an HTTP request to your Express server, does it send back the correct HTTP response?**
+
+Each test in this test suite will send a request to an actual server (using [supertest](https://github.com/visionmedia/supertest), which carries out a task similar to _Postman_, with the addition of firing up a server to test our routes), wait for the response and then make assertions about the response.
+
+Before you move on, make sure you are comfortable with the difference here between unit testing and end-to-end testing. 
+Take a look at the structure of the tests and make sure you understand what is happening.
+
+- **Read** about _end to end testing_ on [Freecodecamp](https://medium.freecodecamp.org/why-end-to-end-testing-is-important-for-your-team-cb7eb0ec1504)
+- **Find out more** about _supertest_ on their [GitHub README](https://github.com/visionmedia/supertest)

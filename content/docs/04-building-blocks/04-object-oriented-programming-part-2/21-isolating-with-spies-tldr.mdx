@@ -1,0 +1,67 @@
+---
+title: "Isolating with spies ;TLDR"
+---
+
+Read [:zap: Stubs](https://hackmd.io/s/SyR-1Kh8V) first.
+
+A spy or a mock is a function that records the interactions our application has with it. In Jest, a mock function becomes a spy when we use a `toHaveBeenCalled` or `toHaveBeenCalledWith` matcher.
+
+`.toHaveBeenCalled()` - expect a mock function to have been called as part of the test.
+
+`.toHaveBeenCalledWith(arg1, arg2)` - expect a mock function to have been called with one or more arguments as part of the test.
+
+Let's look at an example:
+
+```js
+function VendingMachine () {
+  this.total = 0;
+}
+
+VendingMachine.prototype.purchaseSnack = function purchaseSnack (snack) {
+  this.total += snack.price;
+
+  snack.addSale()
+}
+
+function Snack (name, price) {
+  this.name = name
+  this.price = price
+  this.sales = 0
+}
+
+Snack.prototype.addSale = function addSale () {
+  this.sales += 1
+}
+
+test('snack can be purchased', () => {
+  const vendingMachine = new VendingMachine();
+  const snack = { name: 'Milkybar', price: 0.60, addSale: jest.fn() }; // stub with spy method
+
+  vendingMachine.purchaseSnack(snack);
+
+  expect(snack.addSale).toHaveBeenCalled();
+})
+```
+
+In the above example, assume that our `test` is part of the test suite for `VendingMachine`. We don't want to pass a real `Snack` object into our `VendingMachine`'s `purchaseSnack` method, as this wouldn't be an isolated test, so instead we stub `snack`, ensuring the interface matches that of our `Snack` prototype/constructor. When our stub does get passed into `purchaseSnack`, the `addSale` method gets called, which in this case is our spy. The assertion below `expect(snack.addSale).toBeCalled()` therefore passes, as the `addSale` method was called.
+
+## Challenge
+
+We have a problem in our `Ship` test suite currently in that 3 tests directly test the `Port` object:
+
+```
+Ship
+  can set sail
+  gets added to port on instantiation
+  can dock at a different port
+```
+
+Refactor these tests so that they incorporate spies.
+
+## To complete this challenge, you will need to:
+
+Note many of the changes below will happen in the `beforeEach` function callback. You will need to use the matcher `toHaveBeenCalledWith`.
+
+- In `can set sail` you will need to remove the assertion on `port.ships` and instead assert that `ship.setSail` calls `port.removeShip` (where `port` is a stub, and `removeShip` is a method on that stub).
+- In `gets added to port on instantiation` you will need to remove the assertion on `port.ships` and instead assert that `port.addShip` has been called (again, `addShip` will be a spy on a `port` stub).
+- In `can dock at a different port` you will need to remove the assertion on `calais.ships` and instead assert that `calais.addShip` has been called with `ship` (again, `addShip` will be a spy on a `port` stub).

@@ -1,0 +1,96 @@
+---
+title: "External Data & Component Lifecycle ⭐️"
+---
+
+## Overview
+
+The first iteration of the App is now pretty much complete. However, we are still only displaying the static data defined in the `forecast.json` file. It would be much cooler if we could make the app display real weather data. That's exactly what we're going to do next using external APIs. Knowing about the component lifecycle will play an important role here.
+
+### External data
+
+To help with this, we have created a web API for you to use, at:
+
+- [cmd-shift-weather-app.onrender.com/](https://cmd-shift-weather-app.onrender.com/) default API,
+- [cmd-shift-weather-app-alt.onrender.com/ ](https://cmd-shift-weather-app-alt.onrender.com/) alternative API (just in case main API is not working).
+
+Take a look at the API documentation provided (click links above). Using Postman, you should be able to make a HTTP request to retrieve some live weather data from the API - give it a go!
+
+### Component Lifecycle
+
+While our App is running, the components that make up the App can go through various changes.
+
+All of the components that are visible in the DOM don't appear by magic, they go through a process of being created and rendered. Once they are rendered, we might want to update them when the state or props change. Sometimes, we might want to remove a component from the DOM.
+
+These three categories of events make up what is known as the **component lifecycle**:
+
+- creation, **mounting** in React language,
+- **updating**,
+- removal, a.k.a. **unmounting**.
+
+#### Lifecycle Methods
+
+In previous releases of React, in conjunction with **class components** we would have access to **lifecycle methods**, which can be used to control what happens at each stage of the component's lifecycle.
+
+The main lifecycle methods we have to worry about are:
+
+* `constructor()`
+* `componentWillMount()`
+* `render()`
+* `componentDidMount()`
+* `componentWillReceiveProps()`
+* `shouldComponentUpdate()`
+* `componentWillUpdate()`
+* `componentDidUpdate()`
+* `componentWillUnmount()`
+
+When a component **mounts**, the `constructor()`, `componentWillMount()`, `render()` and `componentDidMount()` methods will be called in that order.
+
+When a component **updates**, `componentWillReceiveProps()`, `shouldComponentUpdate()`, `componentWillUpdate()`, `render()` and `componentDidUpdate()` get called in that order.
+
+When a component will **unmount**, unsurprisingly it is `componentWillUnmount()` that gets called.
+
+As we're using hooks in our build of Weather App, we don't need to worry about these lifecycle methods right now as they've largely been replaced with hooks. It is, however, important that you recognise them when you see them as there's a good chance that most workplaces began their projects before hooks were released, which means that lifecycle methods will be prevalent throughout legacy code.
+
+#### React Hooks
+
+For this exercise, however, we are going to use the `useEffect()` hook. The `useEffect()` hook is seen as a combination of the `componentDidMount()` and `componentDidUpdate()` lifecycle methods. 
+
+## Requirements
+
+This time the requirements are rather simple:
+
+1. App should display data from external API
+
+## Technical task breakdown
+
+This task is split into two parts: fetching external data and rewiring our app to consume that data correctly:
+
+#### Rewire app
+
+1. In `index.js` file, remove the imported JSON file and remove the props you are passing into `<App />`.
+2. In the `<App />` component, replace `forecasts` and `location` props with new state variables of the same name. Think what their initial values and types should be.
+3. Set `selectedDate` to 0 - this is just a default/initial value.
+4. Add conditional rendering for `<ForecastDetails />` component.
+
+#### Get Data from API
+
+6. Use npm to install the [`axios` library](https://www.npmjs.com/package/axios), and import this into your `<App />` component.
+7. Create `getForecast()` method that will make a call to forecast API with `axios`.
+8. Call `getForecast()` in `useEffect()` hook.
+9. Set the values of `forecasts`, `location`, and `selectedDate` appropriately within `getForecast()` request using axios.
+
+#### Tidy up
+
+10. Move `getForecast()` to separate `src/requests/getForecast.js` file.
+
+## Recommended Reading
+
+* [useState() Hook](https://reactjs.org/docs/hooks-state.html)
+* [useEffect() Hook](https://reactjs.org/docs/hooks-effect.html)
+* [Conditional Rendering](https://reactjs.org/docs/conditional-rendering.html)
+* [Axios Documentation](https://github.com/axios/axios)
+
+## Further Reading
+
+* [Lifecycle Methods](https://reactjs.org/docs/react-component.html#the-component-lifecycle)
+* [How and when to use Lifecycle Methods](https://engineering.musefind.com/react-lifecycle-methods-how-and-when-to-use-them-2111a1b692b1)

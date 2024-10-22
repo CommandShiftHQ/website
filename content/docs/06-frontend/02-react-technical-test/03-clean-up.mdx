@@ -1,0 +1,83 @@
+---
+title: "Clean Up"
+---
+
+Now we've got our boilerplate `create-react-app` set up and ready to go, you should see something that looks like this:
+
+![Learn React](https://i.imgur.com/LYXAB4x.png)
+Now let's open our repo and clean up some of the things we don't need. This will break your app at first but don't worry, once we've finished cleaning up everything will be working fine.
+
+Let's start by looking inside our `src` folder:
+
+- We won't be needing `logo.svg` so we can delete that.
+
+Now let's open `App.js`.
+
+It should look like this: 
+
+```jsx
+import React from 'react';
+import logo from './logo.svg';
+import './App.css';
+
+function App() {
+  return (
+    <div className="App">
+      <header className="App-header">
+        <img src={logo} className="App-logo" alt="logo" />
+        <p>
+          Edit <code>src/App.js</code> and save to reload.
+        </p>
+        <a
+          className="App-link"
+          href="https://reactjs.org"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Learn React
+        </a>
+      </header>
+    </div>
+  );
+}
+
+export default App;
+```
+
+Let's remove all the unnecessary code in here and define the component using a function declaration so it looks like this:
+
+```jsx
+import React from "react";
+import "./app.css";
+
+const App = () => {
+  return (
+    <div className="app">
+      <p>Hello World!</p>
+    </div>
+  );
+}
+
+export default App;
+```
+
+*A quick note on CSS naming conventions:*
+Established convention dictates that CSS files and classes should be in written in `kebab-case` (all lower case with words separated by a hyphen). There are differing opinions and approaches, for example BEM which uses underscores, and the React team who prefer capitalised kebab case combined with BEM. Whichever approach is chosen the most important factor is consistency across the project. For this project, we will adopt the `kebab-case` approach for all CSS files and classes.
+
+Now, inside our `src` folder, create a folder called `components`, a folder called `styles`, a folder called `__tests__`, and another folder called `requests`.
+
+Once you've done that, move `App.js` to your `components` folder, `App.css` to your `styles` folder, and `App.test.js` to your `__tests__` folder. We also need to rename `App.css` to `app.css` as we changed the import statement (look carefully at the import of the file in the two snippets above).
+
+This will break your app so we will have to update the location paths found in `index.js`, `App.js`, and `App.test.js`.
+
+In `index.js` make sure your App component is imported from the following location `import App from './components/App';`, make sure that in your App component, your `app.css` file is imported from the following location `import "../styles/app.css";`, and finally, make sure the import path for `App.js` in `App.test.js` is `import App from '../components/App';`.
+
+Next, go to our styles folder and open `app.css`. Remove everything inside here and hit save. We'll add our own styles later. Then open our `App.test.js` file and remove the test in here as it's now testing a link that no longer exists.
+
+Once you've done that, our app should be in fine working order again. Let's have a quick look in our `public` folder. In here you'll see a file called `index.html` and `favicon.ico` along with other files. These two are important as our `favicon.ico` is the small bookmark image that we can see in our browser tab, if you wish you can change this later. Open `index.html` and you'll see a very familiar-looking HTML boilerplate.
+
+We're not going to do much here, but you can remove all the commented out code if you wish to, however for now all we are going to do is update our `<title>` tag as that will update the name of our app in the browsers tab.
+
+Change it from `React App` to `React Technical Test`.
+
+Hit save and we're ready to begin.

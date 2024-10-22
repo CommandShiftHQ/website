@@ -1,0 +1,13 @@
+---
+title: "Multiple Component Mapping"
+---
+
+Okay, at the moment we’re only rendering one image inside of our `<SearchResults />` component when really we need as many of them as there are in our request.
+
+Inside our conditional render block in `SearchResults` where we say if `results` exists render an image, we’re going to make a change.
+
+We will keep, our conditions of, if `results.length` and after we will say, take `results` and `map` over our state and return an `img` with the `src` passed into it.
+
+If you manage to successfully do this you’ll get multiple images returned on your page when you complete a search. You will also notice it doesn’t look great so you will have to do some styling to make things more presentable.
+
+This is tricky if you’ve never done it before but have a go at trying to work it out before moving on to the walkthrough. Good luck!

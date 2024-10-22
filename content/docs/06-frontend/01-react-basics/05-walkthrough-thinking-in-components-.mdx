@@ -1,0 +1,29 @@
+---
+title: "Walkthrough: Thinking in Components 💡"
+---
+
+## Components
+Looking at the screenshot of the UI we want to build, I would say that we could break the application down into 4 logical components, like this:
+
+![Components](https://s3.eu-west-2.amazonaws.com/mcrcodes/weather/annotated-app.png)
+
+🟥 `<LocationDetails />` - the name and country of the city the forecast is for (red outline)
+
+🟦 `<ForecastSummaries />` - a list of forecast summaries (blue outline)
+
+🟨 `<ForecastSummary />` - a card with the summary of the forecast for a particular day (yellow outline)
+
+🟩 `<ForecastDetails />` - contains the full details of the forecast for the selected day (green outline)
+
+These components each have a clear and distinct responsibility.
+
+## Props
+In terms of props each of these components will need:
+
+`<LocationDetails />` - the city and country that the forecast is for, so we would have a `city` and a `country` prop. These would come from the `location` object in `forecast.json`.
+
+`<ForecastSummaries />` - a list of forecasts to summarise - so we would have a prop called `forecasts`, which would be an array - the `forecasts` attribute from `forecast.json`
+
+`<ForecastSummary />` - details about the date, the temperature, the description and which icon it should display. So we would have `date`, `temperature`, `description` and `icon` props, which would come from the corresponding attributes in the JSON data.
+
+`<ForecastDetails />` - details about the date, the temperature, the wind and humidity for the selected date. So we would have `date`, `temperature`, `wind` and `humidity` props. Again, this is all available in the JSON data.

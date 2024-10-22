@@ -1,0 +1,41 @@
+---
+title: "03 - First Command"
+---
+
+The terminal allows you to interact with your computer by navigating through the file system, and executing commands in the current **directory** - which is another word for *folder*.
+
+Executing commands is fairly simple - **you type something in, and you get something back**.
+
+You can visualise the computer's file system as a tree, made of branches and leaves:
+
+- Each branch (directory) has a *parent* branch, as well as *child* branches, leaves (files), or a mix of the two.
+- The trunk of the tree is just a branch with no parent, and we call it the **root directory**.
+
+The directory your current terminal session is in is known as the **working directory**. If, at any point, you’re unsure about what your working directory is, you can find out by:
+
+1. Typing `pwd` (short for print working directory) into the terminal.
+2. Press enter.
+
+You should see something like this, where *michaelharrison* is replaced by your own username:
+
+![pwd Image](https://s3.eu-west-2.amazonaws.com/mcrcodes/precourse-images/cli/2-pwd.png "pwd")
+
+**Congratulations! You just executed your first terminal command!**
+
+A few notes:
+
+- The text that got printed to the terminal is the path to your **home directory**. This is the default directory that the terminal will open in, and it represents your personal part of the computer’s file system. Everything outside this directory is a system file.
+- Even though you need to know the difference between home and root directories, you don't have to remember the file path of your home directory, since you can normally refer to it by the shortcut `~`.
+- The root has a path of /.
+
+
+# Getting Help
+
+If you’re ever unsure about a specific command, you can use the `man` command and retrieve some terminal wisdom.
+
+In your terminal, type `man pwd`.
+Your terminal should be displaying the man page for the pwd command, which briefly describes what it does. Quite handy, right?
+
+![man pwd image](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/images%2F19ca10f8cda1fd9a707fc9e112d00ca1079c5ff21a030e9c48d24f783ed7.png?alt=media&token=fbdc33ae-f610-4486-943e-a076ae686433 "man pwd")
+
+Feel free to close this view by pressing `q` and proceed to the next chapter.

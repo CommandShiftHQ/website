@@ -1,0 +1,73 @@
+---
+title: "Project Setup "
+---
+
+In light of our requirements, we know that we will need to cater for *at least* two data structures - **Reader** and **Book**, with the corresponding controllers, routes and tests.
+
+## Getting set up
+
+We are going to set up an `express` app which uses `Sequelize` to interact with a `Postgres` database. The steps assume you have `Postgres` running in a `docker` container on your machine. It also references the `music-library-api`. If you get stuck, it would be a good idea to check back there for examples.
+
+We will start by setting up the repository, a basic express app and a mocha/chai/supertest test suite.
+
+### Repository Setup
+1. Create a new directory for the project on your computer
+
+1. Create a new `README.md` file in the root of your project
+
+1. Initialise a git repo in the new directory with `git init`
+
+1. Add an empty `.gitignore` file
+
+1. Create a repository for the project on Github
+
+1. Connect your local repository to the remote GitHub repository
+
+1. Initialise a new `NPM` project in your project directory with `npm init`
+
+1 Add `node_modules` to your `.gitignore` file
+
+## Application Setup
+
+1. Install `express`, and `pg` as dependencies
+
+1. Set up your basic `index.js` and `src/app.js` similar to how you did in the `Music API` project
+    1. `src/app.js` should configure and export a basic Express application.
+    1. `index.js` should call `app.listen()` and then `console.log()` the port that the app is listening on.
+
+1. Install `dotenv` and `nodemon` as development dependencies
+
+1. Add a `start` script to your `package.json` file with the following command: `nodemon -r dotenv/config index.js`. This uses `nodemon` to execute the `index.js` file with the environment variables loaded from a `.env` file.
+
+1. Create a scripts folder, and copy the `create-database.js` and `drop-database.js` scripts from the `music-library`. Your `create database` script only needs to create the database. We will use `Sequelize` to handle setting up our tables.
+
+1. Add a `prestart` script to your `package.json`. Set the command to `node scripts/create-database.js`. This will run before the `npm start` command, and will create your database if it doesn't already exist.
+
+1. Create a `.env` file with the following variables:
+
+```
+    PGPASSWORD=password
+    PGDATABASE=book_library_dev
+    PGUSER=postgres
+    PGHOST=localhost
+    PGPORT=5433
+```
+
+At this point you should be able to run `npm start` in your terminal, and get a listening express server.
+
+## Test Environment Setup
+1. Install `mocha`, `chai`, and `supertest` as dev dependencies.
+
+1. Copy across the `test-setup.js` from the `music-library-api`
+
+1. Add a `.env.test` with the same environment variables as your `.env`. Make sure to give your test database a different name.
+
+1. Add `.env.test` to your `.gitignore`
+
+1. Add a `test` script to your `package.json` file: `mocha tests/**/*.js --exit --recursive --timeout 60000 --file ./tests/test-setup.js`
+
+1. Add a `pretest` script to your `package.json`. Set the command to: `node scripts/create-database.js test`. Note that this time we pass the `test` option at the end of the command. This tells the script to load the variables from `.env.test` instead of `.env`.
+
+1. Add a `posttest` script, set the command to: `node scripts/drop-database.js test`. This will delete your test database after your tests have finished running.
+
+At this point, you should be able to run `npm test` in your terminal. Mocha should run and inform you that there are no tests yet. Commit your work to Github.

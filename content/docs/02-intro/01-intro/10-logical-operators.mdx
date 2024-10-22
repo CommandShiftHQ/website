@@ -1,0 +1,145 @@
+---
+title: "Logical operators"
+---
+
+## Learning Objectives
+
+- Understand how to ask questions about multiple boolean values at the same time
+- Understand how we can use the **not** operator (`!`) to write logical expressions in different ways
+
+We have seen how we can use comparison and arithmetic operators to combine two values into a new value. Most of the operators we've seen so far have mainly been useful when working with numbers, and a few we have been able to use with strings.
+
+But what about booleans? In what circumstances might we want to use operators with boolean values, and how can we do that in JavaScript?
+
+The answer is to use **logical operators**. These operate on two boolean values, and evaluate to give a new boolean value.
+
+## When to use logical operators
+
+We've seen previously that we can use boolean values to make decisions using **conditional logic** and **if statements**.
+
+![prompt](https://a.storyblok.com/f/79570/1936x986/3ed9b56125/12.png)
+![success](https://a.storyblok.com/f/79570/718x430/8585ab094c/13.png)
+
+In this example, we're checking that the password entered by the user matches the secret password in our program.
+
+But what if we wanted to check more than one thing?
+
+Maybe we could also ask them for a username, then we would only grant access if the username was correct **AND** the password was correct.
+
+Or maybe we could also the option to enter a PIN number instead of a password. We would grant access to the user if the PIN was correct **OR** if the password was correct.
+
+Let's take a look at how we can implement these two features using JavaScript.
+
+## And Operator (`&&`)
+
+When we use this operator with two boolean values, it will only evaluate to `true` when both values are `true`. Otherwise it will evaluate to `false`.
+
+That is, it will be `true` if the left-hand side **AND** the right-hand side are `true`.
+
+Try the following in your console:
+
+![and-logic](https://a.storyblok.com/f/79570/422x462/9abccdebb3/14.png)
+
+The only time we got `true` was the first example, when both values were `true`.
+
+To solve the problem of how to check both a username and password, we already know how to check the password and the username individually:
+
+![username](https://a.storyblok.com/f/79570/874x464/49f4788b18/15.png)
+
+Here, the user entered the correct password, but the wrong username.
+
+To check that both of these checks evaluate as `true`, we can combine these two individual checks using the `&&` operator:
+
+![username-password](https://a.storyblok.com/f/79570/1020x350/9a0c1954bd/16.png)
+
+We could then put that statement into the if-statement to make our program run as we want:
+
+![username-password-full](https://a.storyblok.com/f/79570/1034x478/ca6f7e816f/17.png)
+
+## Or Operator (`||`)
+
+When we use this operator with two boolean values, it will only evaluate to `false` if both values are `false`. That means if at least one value is true, the whole statement will be true.
+
+That is, it will be `true` if the left-hand side **OR** the right-hand side are `true`.
+
+Try the following in your console:
+
+![or-logic](https://a.storyblok.com/f/79570/426x456/7e6056b290/18.png)
+
+To solve the second problem of how to accept either a password or a PIN number, we can take a similar approach to the previous problem.
+
+We already know how to check the password and the PIN number individually:
+
+```js
+const correctPassword = 'SecretPassword';
+const correctPin = '1234';
+const password = prompt('What is your password?'); // hint: enter the wrong password
+const pin = prompt('What is your PIN number?'); // hint: enter the correct PIN!
+
+password === correctPassword; // false
+pin === correctPin; // true
+```
+
+To check that at least one of these checks evaluate as `true`, we can combine these two individual checks using the `||` operator:
+
+```js
+const correctPassword = 'SecretPassword';
+const correctPin = '1234';
+const password = prompt('What is your password?'); // hint: enter the wrong password
+const pin = prompt('What is your PIN number?');  // hint: enter the correct PIN!
+
+password === correctPassword || pin === correctPin; // true
+```
+
+This evaluates as `true`, since the second part `pin === correctPin` is `true`.
+
+We could then put that statement into the if-statement to make our program run correctly:
+
+```js
+const correctPassword = 'SecretPassword';
+const correctPin = '1234';
+const password = prompt('What is your password?');
+const pin = prompt('What is your PIN number?');
+
+if (password === correctPassword || pin === correctPin) {
+  console.log('Access Granted!');
+} else {
+  console.log('Access Denied!');
+}
+```
+
+## Not Operator (`!`)
+
+This handy little operator is unusual because it only works with a single value. When we use it with a boolean value, it will evaluate as the opposite boolean value:
+
+```js
+!true; // false
+!false; // true
+```
+
+It's useful because it allows us to express logical statements in an alternative way.
+
+For example, we might want to check that somebody is at least 18 years. In English, different people might express this idea in two different ways:
+
+- 'Check that their age is greater than or equal to 18.'
+- 'Check that their age is not less than 18.'
+
+In JavaScript, we could write the first statement as follows:
+
+```js
+const age = 16;
+
+age >= 18; // false
+```
+
+Or alternatively, we could express it in the second way:
+
+```js
+const age = 16;
+
+!(age < 18); // false
+```
+
+Because `age < 18` is `true`, by using the `!` operator, we can obtain the opposite value.
+
+N.B. here we are using brackets to make the statement a little clearer. We'll see more about this in the next lesson.

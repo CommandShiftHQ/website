@@ -1,0 +1,186 @@
+---
+title: "Walkthrough: Search 💡"
+---
+
+## Solution
+
+### Basic static form
+
+#### 1. Create a new file, and create a new component `<SearchForm />` in this file
+
+```jsx
+import React from "react";
+
+function SearchForm() {
+  return <div className="search-form" />;
+};
+
+export default SearchForm;
+```
+
+#### 2. `<SearchForm />` should render a text input, and a button with the text "Search".
+
+```jsx
+import React from "react";
+
+function SearchForm() {
+  return (
+    <div className="search-form">
+      <input type="text" />
+      <button type="submit">Search</button>
+    </div>
+  );
+};
+
+export default SearchForm;
+```
+
+#### 3. Render `<SearchForm />` component in your `<App />` component, between the `<LocationDetails />` and `<ForecastSummaries />`
+
+```jsx
+return (
+  <div className="weather-app">
+    <LocationDetails city={location.city} country={location.country} />
+    <SearchForm />
+    <ForecastSummaries
+      forecasts={forecasts}
+      onForecastSelect={handleForecastSelect}
+    />
+    {selectedForecast && <ForecastDetails forecast={selectedForecast} />}
+  </div>
+);
+```
+
+### Make form interactive
+
+#### 4. Capture information typed into the `<input>` field.
+The next thing we wanted to implement was to be able to enter text into the `<input>` field. You should already be able to do this if you try.
+
+However, the next step requires us to do something with that value. At the moment, when text is entered into the text box, we have no way of referencing the value in the text box. To be able to use the value, we first need to capture it in the component's state.
+
+To do this we need to add an `onChange` event handler function to the text input. Start by adding a method called `handleInputChange()`, which just `console.log`s some message.
+
+Now in your browser, when you enter some text into the input field, you should see your message being logged to the browser console.
+
+So how do we get the value of the text entered into the input field? When an event handler function is called, it receives as a parameter an **event** object, which describes exactly the event that triggered the function.
+
+You will probably never need 99% of the information in this event object. Most of the time, you will be interested in the element that triggered the event (the `<input>` field), and - more specifically - the value contained within that element (the text). We can access the DOM element that triggered the event by referring to `event.target`. We can access the value of this element by accessing its `value` property.
+
+Give your `handleInputChange()` method a parameter called `event`, and then instead of logging a message, log `event.target.value`.  
+
+Now as you type into the box, you should see the text being logged to the console.
+
+```jsx
+function SearchForm() {
+  const handleInputChange = (event) => console.log(event.target.value);
+
+  return (
+    <div className="search-form">
+      <input type="text" onChange={handleInputChange} />
+      <button type="submit">Search</button>
+    </div>
+  );
+};
+```
+
+#### 5. Store information from the `<input>` field in a state variable in `<App />`.
+
+Now we need to store this value in state:
+
+- Add a new state variable `searchText` in `<App />` and set its initial state to an empty string.
+
+```jsx
+const [searchText, setSearchText] = useState("");
+```
+
+- pass `searchText` and `setSearchText` to `<SearchForm />` as props. Remember to validate them.
+
+```jsx
+function SearchForm({ searchText, setSearchText }) {
+  const handleInputChange = (event) => console.log(event.target.value);
+
+  return (
+    <div className="search-form">
+      <input type="text" onChange={handleInputChange} />
+      <button type="submit">Search</button>
+    </div>
+  );
+};
+
+export default SearchForm;
+
+```
+
+- In `handleInputChange()` use `setSearchText()` to set the value of `searchText` in `<App />` state, so it will be equal to the text entered into the search box.
+
+```jsx
+const handleInputChange = (event) => setSearchText(event.target.value);
+```
+
+- Add a `value` prop to the `<input>` element, with the value of `searchText` from <App />.
+
+```jsx
+<input type="text" onChange={handleInputChange} value={searchText} />
+```
+
+#### 6. Create `handleCitySearch()` in `<App />`, which should make another `getForecast()` request.
+
+What should happen when we click "Search" button? We should get new results for our forecasts! This is why we need to call `getForecast()` again:
+
+```jsx
+const handleCitySearch = () => {
+  getForecast(setSelectedDate, setForecasts, setLocation);
+};
+```
+
+#### 7. Modify endpoint in `getForecast()` so it can return the forecast for a particular city (example of endpoint with param: `https://cmd-shift-weather-app.onrender.com/forecast?city=Leeds`)
+
+Now we know `handleCitySearch()` can use our axios request, let's make sure we're getting the right results:
+
+- add `searchText` param to `getForecast()`, make sure to update each usage of it,
+- modify endpoint so it has a `city` param when `searchText` holds value.
+
+```jsx
+const getForecast = (
+  searchText,
+  setSelectedDate,
+  setForecasts,
+  setLocation
+) => {
+  let endpoint = "https://cmd-shift-weather-app.onrender.com/forecast";
+
+  if (searchText) {
+    endpoint += `?city=${searchText}`;
+  }
+
+  return axios.get(endpoint).then((response) => {...});
+};
+```
+
+#### 8. Make `handleCitySearch()` available to the "Search" button in `<SearchForm />`
+
+Pass `handleCitySearch()` as `onSubmit` prop to `<SearchForm />` and validate it, set it as the `onClick` event handler for "Search" button:
+
+```jsx
+function SearchForm({ searchText, setSearchText, onSubmit }) {
+  const handleInputChange = (event) => setSearchText(event.target.value);
+
+  return (
+    <div className="search-form">
+      <input type="text" onChange={handleInputChange} value={searchText} />
+      <button type="submit" onClick={onSubmit}>
+        Search
+      </button>
+    </div>
+  );
+};
+
+export default SearchForm;
+
+```
+
+Once you have done this, you should be able to search for any city in the UK and see the latest weather forecast.
+
+## Recommended Reading
+
+* [Events](https://developer.mozilla.org/en-US/docs/Web/API/Event)

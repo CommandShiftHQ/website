@@ -1,0 +1,33 @@
+---
+title: "Detailed Forecast"
+---
+
+## Overview of the problem
+
+We have one last feature we want to add to our MVP Weather App, let's take a look at our user story:
+
+'***Users should be able to click on one of the summaries to view all of the forecasted information for that date***'
+
+With that user story in mind, can you think of what we will need to do to achieve this? Take a minute and see if you can think of what you will need to do before reading on. 
+
+## Requirements
+
+1. UI should display forecast for one day in more detail.
+2. All forecast summaries should have a "More details" button.
+3. The detailed forecast should change when user clicks on a "More details" button.
+
+## Technical task breakdown
+
+To complete the first requirement we need to do a few things (we will take care of point 2 and 3 later):
+
+1. Create a new component called `<ForecastDetails />`, this should take a single prop called `forecast`. 
+
+2. Make the new component `<ForecastDetails />` renders the remainder of the information received - aka formatted date, min and max temperatures, humidity, wind speed and direction.
+
+3. Write tests for this component.
+
+4. In the `<App />` component render `<ForecastDetails />` underneath `<ForecastSummaries />` and for now let's pass it the first forecast from the list (`forecasts[0]`) as a prop.
+
+5. Fix tests for `<App />` (a hint: check `validProps`, something might be missing there).
+
+This time there is no walkthrough, as we're sure you can build it yourself. 💪 It's very similar to `<ForecastSummary />`.

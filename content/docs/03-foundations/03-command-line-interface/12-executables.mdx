@@ -1,0 +1,92 @@
+---
+title: "11 - Executables"
+---
+
+Ok, so we went a bit deep into read and write permissions.
+
+What about the execute ones?
+
+1. Create a file in your Desktop called `hello.js`.
+2. Using the command line add some text to it: `echo "console.log('Hello World\!')" >> hello.js`.
+(There you go, a new command - **echo**).
+
+Now, in your terminal, you can run `node hello.js` and you should see the text "Hello World" printed to the terminal.
+
+*Let's deconstruct things.*
+
+When you call a terminal command like `ls`, or `cat`, these are small bits of code that live somewhere in your computer and were written beforehand for you. When you run the command, that code gets executed just like the code in your `hello.js` file did.
+
+So what happens if you try to run **hello.js** in the same way, by calling the file directly:
+
+`./hello.js`
+
+You should get a message saying:
+
+> permission denied: ./hello.js
+
+Can you guess why?
+The reason we get the permission denied error is that the file doesn't have the **executable** permission by default. *List the content of the directory where this file lives (should be Desktop) and check the permissions listed.*
+
+- Once you've checked it, try fixing this issue by changing its permission. Do you still remember how?
+
+If you try to execute the code again, you should see a different error, something like:
+
+> ./hello.js: line 1: syntax error near unexpected token 'Hello World'
+
+This error is because the terminal doesn't know that it's meant to use JavaScript/Node to understand and execute the file.
+From the computer's point of view, you asked it to run a program in the file hello.js but you didn't tell the computer what programming language it was. Was it JavaScript? Ruby? Python? Something else? The file does have a ".js" extension hinting that it might be JavaScript but the computer wouldn't make this assumption. The computer needs to be given a specific instruction.
+Without this information, the computer will just assume that the file is a **shell script** (**shell** is the programming language that your terminal runs).
+
+To fix this, we can use the gloriously named **shebang** (**#!**). We're not joking, this is the actual name.
+It is a statement you can add to the top of an executable file to tell the computer what tool to use when executing your script.
+
+We want the program to be executed by Node.
+
+We can find out where the Node executable is on your filesystem by typing `which node`.
+On our computer, it tells us that node is installed at `/usr/local/bin/node`, but it might be different on your own machine.
+All you need to do now is to open the file with your text editor (`code hello.js`) and add the node location right before the `console.log()` statement, preceded by the shebang. In our case:
+
+```
+#!/usr/local/bin/node
+console.log('Hello World!')
+```
+
+Once you've done this and saved the file, go back to your terminal and try running `./hello.js` again.
+
+You should see the "Hello World!" message appear in your terminal.
+
+# sudo - The Story of a Superuser
+
+Some actions on the computer will require admin privileges.
+
+The name of the **superuser** is **root**.
+
+If you list the content of `/private/etc` or `/bin` directory, where many of the system files are stored, you'll see that all of them are owned by **root**. If you actually pay attention to the content of `/bin`, you'll notice files with names of `cd`, `pwd`, `ls`, `mkdir` - *sounds familiar, right?*
+These are the very same executable files for the programs we've been learning about in this tutorial.
+Remember that there's always a reason for this to work the way they do and nothing happens out of magic, especially in programming!
+
+Back to our superuser, who **has read, write and execute permissions on all files** on the computer.
+This effectively means that they can do anything, which is also very dangerous. For example:
+
+- `rm -rf ./*`
+    - This command **deletes all of the files in your current directory**.
+- `rm -rf /*`
+    - This simple typo **deletes your entire hard drive**. Imagine.
+
+This is why you normally use the computer as a user with limited permissions and switch into superuser mode only when, and if, you really need to.
+
+To run a command as superuser, you prefix it with `sudo`. You will need to enter your password the first time you run sudo.
+
+* `whoami` will print the name of your user, as you know.
+* `sudo whoami` will print root.
+
+If you remove the read permission from all users on the `hello.js` file you created before:
+
+`chmod a-r ./hello.js`
+
+And then try to read using the less command, you should be prompted with a permission denied error like previously.
+But try to run:
+
+`sudo less ./hello.js`
+
+Powerful, right?

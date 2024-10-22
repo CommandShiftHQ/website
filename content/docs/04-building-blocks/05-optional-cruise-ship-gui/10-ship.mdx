@@ -1,0 +1,33 @@
+---
+title: "Ship"
+---
+
+# Ship
+
+We now want to bring a `Ship` into the equation.
+
+![Viewport](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/cruise-ships-gui%2Fship.png?alt=media&token=b0df26de-0a20-4595-a140-3f013a0d92f0)
+
+## Challenge
+
+Create a new css rule that targets elements with an id of `ship` and sets the background-image to the `ship.png` file. Instantiate a new `Ship` object in JavaScript and then add a new method to the controller that selects's a `#ship` div _and_ positions it under the `.port` element that corresponds to the ship's `currentPort`.
+
+## To complete this challenge, you will need to:
+
+- Create a new instance of `Ship` inside the inline JS in `index.html`, passing in your itinerary.
+- Create a new `div` with the id `ship` as a child of the `#viewport` div, and as a sibling of the `.ports` element.
+- In `style.css` add a new `#ship` ruleset. You want to use the `ship.png` background image, and specify a width and height that matches that image's dimensions. You should also specify a `position` of `absolute` as later on we will want to control our element's X/Y co-ordinates within the viewport.
+- Add a `renderShip` method to your `Controller.prototype`, which has a single parameter of `ship`.
+- Back in `index.html`, call `controller.renderShip` and pass in your `ship` from before.
+- In the `renderShip` method, find the index of the ship's `currentPort` inside of its `itinerary`. Use `document.querySelector` with an attribute selector to find a `.port` element that has a `portIndex` data attribute which corresponds to this index.
+- Prior to appending to the DOM, set the `top` and `left` CSS properties of your ship element to the [offsetTop](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetTop) and [offsetLeft](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetLeft) values for the port element.
+- Add or subtract from your `offsetLeft` and/or `offsetTop` values to position your ship so it's centered directly underneath the port.
+
+## Recommended Reading
+
+- [Attribute presence and value selectors](https://www.w3.org/TR/selectors/#attribute-representation)
+- [Attribute selectors](https://css-tricks.com/almanac/selectors/a/attribute/)
+- [offsetParent](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetParent)
+- [offsetTop](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetTop)
+- [offsetLeft](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetLeft)
+

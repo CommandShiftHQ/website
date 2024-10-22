@@ -1,0 +1,28 @@
+---
+title: "More functionality"
+---
+
+On the actions list in our requirements, we have:
+
+```
+Actions:
+	* Do not return password from API
+	* Want to be able to have list of all the books
+	* Want to be able to search by each of the fields above
+```
+
+## Task
+Go ahead and implement the functionality of *never* returning a password from a user:
+
+- This will apply to four controllers
+
+```
+1. GET /readers
+2. GET /readers/:id
+3. POST /readers
+4. PATCH /readers/:id
+```
+
+-  Don't forget to update/add to your tests so this new functionality is tested.
+
+- You can find our solution [here](https://github.com/MCRcodes/book-library-api/commit/238c41c6c774948bf29b845d39b984731d8f13a4)

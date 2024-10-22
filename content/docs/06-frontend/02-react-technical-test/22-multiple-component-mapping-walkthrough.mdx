@@ -1,0 +1,36 @@
+---
+title: "Multiple Component Mapping - Walkthrough"
+---
+
+Let’s take another look at our conditional render: 
+
+```jsx
+  if (!results.length) {
+    return <p>No results</p>;
+  } else {
+    return (
+      <>
+        <img src="a random single image" />
+      </>
+    );
+  }
+```
+Here we’re only rendering one image, but what if `state` is an array and we need multiple components?
+
+```jsx
+  if (!results.length) {
+    return <p>No results</p>;
+  } else {
+    return (
+      <>
+        {results.map((image) => (
+          <img className="card-image" src={image} alt="spaceImage" />
+        ))}
+      </>
+    );
+  }
+```
+
+Here we’re saying if `results` array (which is a state `searchResults` in `<App />` and it's passed to `<SearchResults />` as a prop) has a length, then take that prop and `map` over it. Take each element in within our `results` (if you check `getImages()` you'll see we've taken only `url` of images) and place it inside of the `img` where the `src` attribute is.
+
+You should now have a working app! Well done!

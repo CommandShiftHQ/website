@@ -1,0 +1,31 @@
+---
+title: "Ships have Itineraries that have Ports ;TLDR"
+---
+
+```
+As a tour representative,
+So I can decide which destinations passengers visit,
+I want a ship to take an itinerary which determines at which port it next docks.
+```
+
+We have to read the user story very carefully here to identify a new object `Itinerary` which has `ports`. It also appears the functionality of our `Ship`'s `dock` method will change - a ship should now dock at the next port on an `Itinerary` instance.
+
+## Challenge
+
+Create a new `Itinerary` object and refactor existing code to work with the new behaviour introduced by the above user story.
+
+## To complete this challenge, you will need to:
+
+- Discuss with your classmates how the domain model now looks.
+- Create a new test file, which should `describe` a new `Itinerary` object.
+- Create a new test spec to check the new `Itinerary` object can be instantiated. 
+- Write the code that makes this test pass.
+- Create a new test spec to check the new `Itinerary` object has a `ports` property. 
+- Write the code that makes this test pass.
+- Refactor the current tests and code for `Ship` so that:
+  * [ ] `Ship` has a `previousPort` property set to `null`.
+  * [ ] The `setSail` method sets a `previousPort` property on the ship to the current port.
+- Refactor the `Ship` test suite so a `Ship` takes an `Itinerary` object instead of a `Port` object. The `Itinerary` object will have 2 `Port` objects stored in an array on its `ports` property.
+- Refactor the `it can dock at a different port` test so that no argument is passed to `ship.dock`, and asserts the `currentPort` to be the next port in the `Itinerary` instance. The tests will break.
+- Write the code that makes the tests pass again.
+- Add, commit with a meaningful message, and push to GitHub.

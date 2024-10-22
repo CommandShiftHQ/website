@@ -1,0 +1,53 @@
+---
+title: "SearchResults Component - Walkthrough"
+---
+
+For this step, you should have created a `SearchResults.js` file and component that looks something like this:
+
+```jsx
+import React from "react";
+import "../styles/search-results.css";
+
+const SearchResults = () => {
+  return (
+    <>
+      <p>Search Results</p>
+      <img
+        className="card-image"
+        src="https://images.unsplash.com/photo-1522030299830-16b8d3d049fe?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80"
+        alt="space-image"
+      />
+    </>
+  );
+};
+
+export default SearchResults;
+```
+
+And our `App.js` should now look like this:
+
+```jsx
+import React, { useState } from "react";
+import "../styles/app.css";
+import Search from "./Search";
+import SearchResults from "./SearchResults";
+
+function App() {
+  const [searchResults, setSearchResults] = useState();
+  return (
+    <div className="app">
+      <img
+        className="nasa-logo"
+        src="https://cdn.cnn.com/cnnnext/dam/assets/200424060716-nasa-worm-logo.jpg"
+        alt="nasaLogo"
+      />
+      <Search setSearchResults={setSearchResults} />
+      <SearchResults />
+    </div>
+  );
+}
+
+export default App;
+```
+
+You’re on your own for the styling and testing! 

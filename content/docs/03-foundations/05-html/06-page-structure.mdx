@@ -1,0 +1,54 @@
+---
+title: "05 - Page Structure"
+---
+
+# Doctype
+
+In order to achieve a certain DOM - which resides in the browser - you'll have to create a HTML document which tends to follow a standardised structure.
+
+Let's look at the following example:
+
+![Page Structure](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/html_structure.png?alt=media&token=d3920bce-e800-48ca-9c72-6fd52cf71333)
+
+`<!DOCTYPE html>`
+
+All webpages should begin with this special declaration.
+The sole purpose of it is to tell the browser **which version of HTML the page is using**, although browsers usually display the page even if it's not included.
+Once you get to the CSS chapter and you learn about the Box Model, you'll realise that the use of a `DOCTYPE` can also **help the browser to render the page correctly**.
+By declaring it as it is in this example, the browser will be aware that the html we'll be serving is version 5.
+
+### <html></html>
+
+The opening `<html>` tag indicates that anything between it and its respective closing tag will be **HTML markup**.
+
+### <head></head>
+
+The `<head>` tag indicates that anything between it and its respective closing tag is **metadata** (data about data). **None of this info will be directly displayed in the page**.
+
+Notice that in this element, there's a child with the tag of `<title>`.
+Whatever its content is, it will represent the document title and will be **shown in the browser's page tab**.
+It's also the default label of the page when it's added to a user's favourites.
+
+
+**Note:** Titles are very **important for search engine optimisation (SEO)**, since they're used by search engine algorithms when listing pages in search results.
+
+### <body></body> 
+
+The `<body>` tag indicates that anything between it and its respective closing tag should be shown in the main browser window.
+
+# Practical
+
+By now, you should have your VS Code open with the `index.html`. If not, please refer to the Introduction chapter.
+
+1. Create the basic structure of the html file, which should have the following elements:
+    1. DOCTYPE
+    2. Html
+    3. Head
+        1. Title
+    4. Body
+2. Let's put your name as the title.
+3. Save the document.
+4. Back to your terminal, you can run `open index.html` (`xdg-open index.html` on Ubuntu) and a new browser/tab should open with the HTML file.
+5. Once you're happy with the result, add the file to the staging area, commit it with a meaningful message and push it to GitHub.
+
+It should be blank because no content was added to the body yet. However, look at the tab name - it should be yours!

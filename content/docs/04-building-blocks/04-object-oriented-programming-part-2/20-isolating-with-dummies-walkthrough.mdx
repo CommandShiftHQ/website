@@ -1,0 +1,48 @@
+---
+title: "Isolating with dummies - Walkthrough"
+---
+
+## Steps
+
+- Look for any places in the test suite where objects are passed into methods where those methods don't use the object. 
+- Replace them with dummies.
+- Run your tests again to ensure they still pass (might be better to run tests after every change).
+
+## Identifying a place in the test suite where a dummy could be used
+
+There are three tests where we could utilise dummies:
+
+```
+Port
+  can add a ship
+  can remove a ship
+
+Itinerary
+  can have ports
+```
+
+Have a look at these tests and see if you can see why and where test dummies could be incorporated. 
+
+## Replace them with dummies.
+
+We'll do one together - `can add a ship`:
+
+Change:
+
+```js
+const ship = {};
+```
+
+To:
+
+```js
+const ship = jest.fn();
+```
+
+You should be able to add dummies to the other two tests without the walkthrough.
+
+## Run your tests again to ensure they still pass
+
+(They should).
+
+## Add, commit with a meaningful message, and push to GitHub.

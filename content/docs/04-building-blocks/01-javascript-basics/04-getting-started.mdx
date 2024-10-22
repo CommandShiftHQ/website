@@ -1,0 +1,94 @@
+---
+title: "Getting Started"
+---
+
+Inside your cloned `javascript-basics` folder you should have the following folders:
+
+```
+src/
+__tests__/
+```
+
+`src/` is where you will be writing code in this week's exercise. 
+The `__tests__/` folder contains some code that we've written that will check your code works properly.
+In future weeks, you will write your own tests to ensure your code is doing what it's supposed to be.
+
+We have written the tests in a library called Jest. 
+
+Jest is a JavaScript testing framework - it allows us to write automated tests that:
+
+* describe how our code should behave
+* assert that it does behave in the desired way
+
+In your terminal, navigate to the `javascript-basics` folder that you cloned and run `npm test`. This command will run the test script defined in your package.json (under `scripts` and then `test`), which simply runs Jest. When we run Jest, it will execute the test code written in the` __tests__` directory. For now, you should see a message saying that all of the tests were skipped.
+
+Take a look at the files in the `__tests__` directory - you will see a few files in here, all ending with `.test.js`. Each of these correlate to a file in the `src` directory.
+
+For example `__tests__/strings.test.js` contains the tests for the functions defined in `src/strings.js`.
+
+Take a look at the `__tests__/strings.test.js`. At the top, we have a require statement.
+
+```
+const {
+  sayHello,
+  uppercase,
+  lowercase,
+  countCharacters,
+  firstCharacter,
+  firstCharacters
+} = require("../strings");
+```
+
+This imports the functions from our `src/strings.js` file into the test file, so that the tests can use the functions we have written in that file.
+
+Beneath the `require` statements are the actual tests.
+
+These are broken into `describe` blocks, which group the tests for each function together. 
+Each `describe` block contains some `it` blocks. Inside each `it` block we call (or invoke) a function and then we make an assertion (have an expectation) on what the function should return. 
+At the moment, the `it` blocks will actually be `xit` blocks... more on that shortly.
+
+For example:
+
+```
+describe('sayHello', () => {
+  it('returns "Hello world!" when passed "world"', () => {
+    expect(sayHello('world')).toEqual('Hello, world!');
+  });
+});
+```
+
+`describe('sayHello', () => { ... });` tells us that all of the code inside the block is concerned with testing the sayHello function.
+
+`it('returns "Hello world!" when passed "world"', () => { ... });` tells us what the return value of the function should be when passed a certain argument.
+
+`expect(sayHello('world')).toEqual('Hello, world!');` this line invokes the function with the string 'world as an argument, and make an assertion about the return value of this action - it should equal 'Hello, world!'.
+
+The reason all of the tests were skipped when we ran `npm test` before is because we used `xit` instead of `it`. Change the `xit` on the first test to an `it` and then run `npm test` in your terminal again. You should now see the test run, and fail - with the following error message:
+
+```
+Expected value to equal:
+      "Hello, world!"
+    Received:
+      undefined
+
+    Difference:
+      Comparing two different types of values. Expected string but received undefined.
+```
+
+This tells us that calling the `helloWorld` function with the string `'world'` returned `undefined`, but the test was expecting it to return the string `'Hello, world!'`
+
+Now take a look at `src/strings.js` and in particular at the `sayHello` function: 
+
+```js
+const sayHello = (string) => {
+  // your code here
+};
+```
+
+Can you see why we got the test result that we did?
+
+Your challenge will be to write some code in the `sayHello` function in `src/strings.js` that will make the test pass, and to do the same for all of the other functions in all of the other files.
+
+We will start with numbers...
+
+**The only change to code you should make in the `__tests__` folder is `xit` to `it`. All other code should be written in the `src` directory.**

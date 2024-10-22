@@ -1,0 +1,47 @@
+---
+title: "File Structure"
+---
+
+Now that you know a little bit more about components, let's plan the file structure.
+
+## What do we need?
+We need to think first what type of files or information we need:
+
+* The most obvious one are components. It would be great to store them in one place.
+* The next one probably would be styles as, at the end of the day, we want our application to replicate our design as close as possible, or even improve it later on. Feel free to do so! It's an excellent exercise for your styling skills.
+* Sometimes we might want reuse some logic across different components. We can call functions that will do this for us helpers.
+* It's important to test your application. Not only components, but also other functions.
+* Last but not least, we need some data for our application.
+
+This means that in our `src` directory we need 4 new directories: `components`, `styles`, `tests` and `data` (or `requests`, we will start by using a `data` directory, as we will need `requests` a bit later when we wire the App up to live data).
+
+## Move existing files
+Once we have these new folders we can move the existing files to the right directories - move `App.js`, `App.test.js`, `App.css`, and `index.css` to their correct folders. Make sure all paths are updated, otherwise the app will crash.
+
+## New structure
+Proposed file structure could then look like:
+
+```plaintext
+-> node_modules
+-> public
+-> src
+  -> components
+    App.js
+  -> data
+  -> styles
+    App.css
+    index.css
+  -> tests
+    App.test.js
+  index.js
+  setupTests.js
+.eslintrc.json
+.gitignore
+package.json
+package-lock.json
+README.md
+```
+
+The root of the `/src` folder now only contains `index.js` and the `setupTests.js`, which is a configuration file that powers our test suite.
+  
+💡 The relative import paths in the files we've just moved will most likely need updating! An easy way to do this is to follow the **Failed to compile** errors presented when we run our application via `npm start` or `yarn start`.

@@ -1,0 +1,56 @@
+---
+title: "Update State & Event Handlers ⭐️"
+---
+
+## Overview
+
+You now have a stateful `<App />` component, and instead of always rendering the details of the first forecast, you now render the selected forecast, based on whichever date is stored in the component state.
+
+The problem we have now is that our state always has the selected date from the first forecast, and we cannot update it.
+
+In this step, we are going to update the application state to change the selected date, and be able to render the full forecast details for any date we choose.
+
+The mechanism for selecting the date will be a button in the `<ForecastSummary />` component. Remember, we are rendering this component for each day of the forecast, so we will end up with a button for each day. Clicking that button on a particular date will set that date as the `selectedDate` in the `<App />` component's state.
+
+### Events
+
+To make the button respond to being clicked, we need to add an **event handler** to it. An event handler is just a function that gets triggered by an **event**. There are lots of different types of events - window events, such as **load**, mouse events (**hover**, **click**, **scroll**), keyboard events (**keyup**, **keydown**, **keypress**), plus loads more. Pretty much whenever anything happens to the DOM, particularly via user interactions, an event will be fired. We can use event handlers to tap into these events and respond to them. 
+
+To learn more about events read following docs:
+
+- [Event interface](https://developer.mozilla.org/en-US/docs/Web/API/Event)
+- [DOM Events List](https://developer.mozilla.org/en-US/docs/Web/Events)
+
+We want to respond to the event that gets triggered when our button gets clicked. We can register event handlers to DOM elements by adding an `on{Event}` attribute to the element. So to respond to clicks on our button, we need to add an `onClick` attribute to it. The value of this should be a function. For now, let's just make an anonymous function that logs a message to the console:
+
+```jsx
+<button onClick={() => console.log('Hello!')}>More details</button>
+```
+
+## Requirements
+
+Do you remember our requirements from "Detailed Forecast" step? 
+
+1. UI should display forecast for one day in more detail.
+2. All forecast summaries should have a "More details" button.
+3. The detailed forecast should change when user clicks on a "More details" button.
+
+This time we will work on numbers 2 and 3.
+
+## Technical task breakdown
+
+To complete this step, we need to do the following:
+
+1. Write a method `handleForecastSelect()` in the `<App />` component, which receives a `date` as a parameter and sets that date as the selected date in the component state.
+2. Add a "More details" button to the `<ForecastSummary />` component.
+3. Connect the function to the button, so that when we click the button, the function gets called with the date for that forecast.
+
+As always, make sure all snapshots are updated.
+
+💡 As we know, in JavaScript we can pass around functions just like we can pass around any other values, such as strings or numbers. This means we can also pass functions as props. We need to pass the `handleForecastSelect()` method from `<App />` down to into `<ForecastSummary />`, and we can do it in two steps:
+
+- In `<App />`, pass the `handleForecastSelect()` method into `<ForecastSummaries />` as a prop called `onForecastSelect`.
+
+- In `<ForecastSummaries />`, you now have access to a prop called `onForecastSelect`, which is a function with the ability to set state in the `<App />` component. Pass this prop down from `<ForecastSummaries />` to each individual `<ForecastSummary />` as a prop called `onSelect`.
+
+💡 This step might result in **ESlint error for unused variables** which will be fixed in the next step. There are ways to **temporarily** disable the rule, so you can see if in general your code works, as ESlist checks for a quality of the code, not if it runs. Google how to disable certain ESlint rules. **Searching for information and asking the right questions is an important skill in software development!** Remember **not to commit** disabling ESlint rule, we still want it to warn us when we write suboptimal code 😉 **Don't disable the rule for button type attribute!** It should be fixed within this step. If you google for the failing rule name (take it from error message) you should find the ways in which to solve it.

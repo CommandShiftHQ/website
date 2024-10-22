@@ -1,0 +1,82 @@
+---
+title: "What is Backend?"
+---
+
+We keep mentioning backend, APIs, databases....
+*Okay, but what do they really mean*, you may ask? 
+
+We think it's best if you first watch the following video which explains all of these concepts and a bit more. 
+When you're done, we will go through the same topics again together with a different example to make sure you get a couple of examples in and understand these concepts.
+
+https://www.youtube.com/watch?v=XBu54nfzxAQ
+
+[![What is backend](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/what-is-backend.png?alt=media&token=310ab78b-d3f8-4dbd-a17e-7e8b782ef238)](https://www.youtube.com/watch?v=XBu54nfzxAQ)
+
+# ⏫ Once again, from the top
+Imagine you landed on a big news website (such as the BBC or New York Times).
+
+As mentioned in the video, websites have a frontend and a backend. 
+
+- **Frontend**: all the visual elements of a webpage
+- **Backend**: the system behind the frontend that manages and saves the data.
+
+If we are to take the New York Times news website as an example, the backend is responsible for things like:
+
+- storing articles, images and videos
+- search in articles and retrieve relevant ones
+- managing user accounts registration, authentication and profiles
+- storing and filtering comments etc
+
+## 🌐 Clients send Requests, Servers send Responses
+
+Certain interactions from a user on a frontend will trigger an action to be sent to the backend. The user may perform these interactions using a website, a mobile application, voice or another program. These are all subtypes of `clients`. 
+
+Moreover the actions we talked about are known as `requests` coming from a client, and are sent to a `server` over the internet. The `server`'s job is to assess the request received, perform some actions (like validation, storing of the data) and send back an answer, also known as a `response`.
+
+## 🤝 Handling requests on the server with ExpressJS and Javascript
+
+By default, computers can't just handle messages (`requests`) from the internet. To do that, a program needs to be created and run using a *programming language* so that it can start a server. This is what will wait for and handle incoming requests. 
+
+We will use `Javascript` to build such a program, however, building a server from scratch requires a huge amount of effort and knowledge, so to make things easier we will also be using `nodejs` and the `ExpressJS` library, which allow us to focus on the high level concepts and reuse packages built by others. 
+
+These tools will help us build an `API` (Application Programming Interface).
+
+## 📥 Storing, Changing and Retrieving Data using Databases
+
+Data can mean anything, but in the context of our news websites, it can refer to: article text content and all its metadata (author, date and time published, tags), user comments, users and their profile information, photos, videos, audio (music, podcasts etc). 
+
+In order for it to be presented and available for the news website's visitors, the data needs to be stored somewhere, somehow. On our day to day life, most of us store our data in files (on our computers), however this can get messy and cluttered really easily. 
+
+Another way to store all of such data in a more structured way is in a database such as the one we will use, `PostgreSQL`. This data can be retrieved, saved and changed by our backend server or by us directly using a language called `SQL` (Structured Query Language). 
+
+**💡 Research Challenge:** What type of data is best stored in a database and what type of data is best stored in files? 
+
+## 🔄 Request - Response Cycle 
+
+*Let's look at an example of such an interaction and how everything comes together*
+While reading the news on New York Times (NYT) mobile app (the `client`), you decide to post a comment. After logging in, you type your comment and press "Submit" using the mobile app interface. The contents of your comment are sent alongside other metadata such as your user ID and the article relating to the comment in a `request`. 
+
+The request travels over the internet to the NYT `backend server` which will look at its contents and perform some actions (i.e. ensuring your message is safe for work, that you are logged in, that the article exists and storing your comment it in the database against your user profile). 
+
+The backend server will perform some handling logic and perhaps interact with the database. After that completes, the NYT backend server prepares a `response` with the outcome which is sent back to the `client` (the mobile app).
+
+## 💬 Clients communicate with Servers using APIs 
+
+Just as is the case with mail letters, where we need to ensure that the address and the contents of the letter we're sending away are legible and in a language that our receiver can understand (if we expect them to ever respond back, that is), the mobile app will send the `request` to the backend `server` a message in a format that is defined and understood by the `server`. This language and format is the `API`. Similarly, a backend server will interact with a database in a format and language that is understood by that database software (like `SQL`).
+
+# Recap
+We are almost at the end of this quick intro into the backend world. Let's recap some concepts we have just learned about and we'll be using throughout the module.
+
+- `Client`: A visual or audio interface used to perform actions (such as a website, a mobile app, a computer program or even voice - think voice assistants)
+- `Request`: A message sent over the internet, containing information submitted by the client (user content and metadata)
+- `Server`: A computer waiting to handle incoming requests, responsible for handling logic (accepting requests, rejecting them, validation, interaction with other servers)
+- `Database`: A subset type of a server that is specifically responsible for storing, retrieving and managing data.
+- `Response`: A message sent over the internet, containing information prepared by the server as a result of certain logic handling.
+- `API`: The `interface` or the `language` that a server defines so a client can interact with it.
+
+Just like most of us use a verbal and/or written language to communicate, we can consider the common language humans use the human "API". Similarly, computer servers need to define an API so others (humans or other computers) can communicate with them.
+
+## That was... a lot, but you've made it👏
+<img src="https://media.giphy.com/media/aLdiZJmmx4OVW/giphy.gif"/>
+
+It's time to get your hands dirty and prepare yourself for what's to come... by setting up some tools you will need.

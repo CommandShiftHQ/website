@@ -1,0 +1,187 @@
+---
+title: "11 - Fonts"
+---
+
+The properties that allow you to control the appearance of text can be split into two groups:
+
+- Those that directly affect the font and its appearance.
+- Those that would have the same effect on text no matter what font you were using.
+
+We can either use a font from the system or import an external one, from [Google Fonts](https://fonts.google.com/), for example, which will give you a script to add in the head of your html file.
+
+### Terminology
+
+The most common terminology you'll use around fonts are **serif**, **sans-serif** and **monospace** fonts.
+
+**Serif** fonts have *extra details (serifs) on the ends* of the main strokes of the letters. Known examples are **Georgia** and **Times New Roman**.
+
+**Sans-serif** have *straight ends to the letters*, which translates into a cleaner design. Know examples are **Arial** and **Helvetica**.
+
+**Monospace** has *every letter with exactly the same width*. Known examples are **Courier** and **Courier New**.
+
+When combining them, you should attempt to mix 2, and no more than 2, font-families. One should be given to headings and the other to your other text blocks. Google Fonts is great at suggesting great pairings for a chosen font. Have a look!
+
+### Properties
+
+We can change all sorts of different characteristics of our text elements.
+
+*font-family*
+
+Allows you to specify the **font that should be used** for any text inside of the chosen element:
+
+```css
+body {
+	font-family: Georgia, Times, serif;
+}
+```
+
+The first defined font - Georgia - is applied to all of the elements in your body tag. If, for some reason, it fails, Times is its **fallback**, with serif being the C-plan. *If a font name is made up of more than one word, it should be put in double quotes* (eg. "Courier New").
+
+*font-size*
+
+Allows you to specify a **size** for the font, which can be set into all sorts of different values (units page to come):
+
+```css
+h1 {
+	font-size: 12px;
+}
+
+h2 {
+	font-size: 1.1rem;
+}
+```
+
+*font-weight*
+
+Allows you to display text as **bold** (can be written as a number or a selection of predefined words):
+
+```css
+h1 {
+	font-weight: bold;
+}
+
+h2 {
+	font-weight: 400;
+}
+```
+
+*font-style*
+
+Allows you to display your text as **italic**, amongst other things:
+
+```css
+h1 {
+	font-style: italic;
+}
+```
+
+*text-transform*
+
+Allows you change the case(s) of each word to **uppercase**, **lowercase**, or **capitalise** (which causes the first letter of each word to appear capitalised), as well as a few other things:
+
+```css
+h1 {
+	text-transform: capitalize;
+}
+```
+
+*text-decoration*
+
+Allows you to do a mix of things:
+
+```css
+a {
+	text-decoration: none; /* Removes any decoration. */
+	text-decoration: underline; /* Adds a line underneath the text. */
+	text-decoration: overline; /* Adds a line over the text. */
+	text-decoration: line-through; /* Adds a line through words. */
+}
+```  
+> Pro-tip: use this one to remove the default behaviour that underlines links, if you don't want your links underlined!  
+
+
+*line-height*
+
+Allows you to set the **height of an entire line** of text, increasing or decreasing the vertical gap between lines:
+
+```css
+h1 {
+	line-height: 1.2rem;
+}
+```
+
+**Note**: If your line-height has the same height of your element, the text inside will be vertically centered.
+
+*letter-spacing vs. word-spacing*
+
+The former controls the space between each letter, while the latter the space between each word:
+
+```css
+h1 {
+	letter-spacing: 1px;
+}
+
+p {
+	word-spacing: 1rem;
+}
+```
+
+*text-align vs. vertical align*
+
+While the latter vertically aligns your text, the former will align it horizontally:
+
+```css
+h1 {
+	text-align: center; /* left, right, center, justify */
+}
+
+p {
+	vertical-align: middle; /* top, middle, bottom */
+}
+```  
+
+## Shall we have a go?  
+
+### tl;dr
+1. First let's try switch up the font using one thats already built in. Try the below value:    
+
+```css
+Arial, Helvetica, sans-serif;
+```
+
+If we put the rule onto the body element, it should change the font across the whole site. However, you should note that you should put this at the top of your css file. This way, if you want to override this for any other elements, like a heading for example, you won't be overruled.
+
+2. Now let's try and change the size of something. How about a `heading` element? Find one, target it, and change the size to 30px.  
+
+3. See if you can remove the underline from your links.  
+
+4. Pick some other rules and see if you can get them to work.  
+
+### walkthrough  
+1. Let's change the font of the body element - this should change the font for the whole site. We put this at the top of our CSS so we can change the fonts of other elements further down, and not be overruled. Try this:      
+
+```css
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+```  
+
+2. Let's try `font-size`. Find one of your heading elements. An `h2` or an `h3`. Try changing the size:      
+
+```css
+h3 {
+    font-size: 30px;
+}
+```  
+
+3. Remove the underline from your link. It is usually default behaviour on browsers to underline all links (anchor tags). If you don't want your links underlined, we can use `text-decoration` to do this. First we target all anchor tags, (or just the specific ones you want using a class or id), then add the property, like so:      
+
+```css
+a {
+    text-decoration: none;
+}
+```  
+
+4. Try some more yourself :)  
+
+Remember - if you struggle with any of these, ask your tutor to go through them on the next class.

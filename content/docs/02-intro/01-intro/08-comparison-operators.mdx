@@ -1,0 +1,106 @@
+---
+title: "Comparison operators"
+---
+
+This family of operators allow us to compare two values and evaluate their relationship. They *always* return a boolean. In effect, they allow us to ask 'yes/no' questions in our programs.
+
+## Learning Objectives
+
+- Understand the ways in which we can compare two values in JavaScript
+- Understand the types of values we can compare
+- Understand that comparisons will always evaluate to `true` or `false`
+
+## Equality (`===`)
+
+We might want to ask a question `'Is the number 8 equal to the number 9?'`. The answer to that question is no.
+
+To express this type of question in JavaScript, we can use the equality operator, which we have seen in a previous lesson:
+
+```js
+8 === 9;
+```
+
+This expression evaluates as `false`, which is the answer we would expect when asking `'Is the number 8 equal to the number 9?'`.
+
+This operator can be used to compare any type of value, not just numbers.
+
+There are actually two different equality operators in JavaScript. The triple equals sign (`===`) is actually called the **strict equality operator**. In most cases this is the one we will want to use. The double equals sign (`==`) is similar, but it does not check the type of the values. Try the following examples in your console:
+
+![equality operators](https://a.storyblok.com/f/79570/276x312/db43c72e6d/1.png)
+
+Here we are comparing the string `'8'` and the number `8`. Using the double equals operator, JavaScript tells us these values are the same! In general, you should always use the triple-equals operator, unless you have a good reason not to. When we refer to the equality operator in this course, that's the one that we will be referring to!
+
+### Example 1
+
+As a practical example, let's build a simple program where we validate a password inputted by a user.
+
+We can create a *correct* password by storing it in a variable, and then ask the user to input their own password using `prompt`:
+
+![prompt](https://a.storyblok.com/f/79570/890x318/fa845c55cc/01.png)
+
+We can then compare the two values using the equality operator:
+
+![prompt](https://a.storyblok.com/f/79570/898x386/05f6978ddb/02.png)
+
+In this example I entered `'PASSWORD'` into the prompt box, because this is different to the value stored in the `secretPassword` variable the comparison of the two values comes out as `false`.
+
+## Inequality (`!==`)
+
+This operator is similar to the equality operator, but it answers the questions of whether two values *are not equal*.
+
+When we ask the question `'Is 8 not equal to 9?`, we expect the answer to be yes - or `true`.
+
+Let's check it out in the console!
+
+![inequality operator](https://a.storyblok.com/f/79570/286x244/f6299059e9/2.png)
+
+Just like we thought.
+
+Like with the equality operator, there is also a non-strict version of the inequality operator (`!=`), but you should avoid using this.
+
+## Greater than (`>`), less than (`<`)
+
+When working with numbers, we might also want to see if one number is bigger or smaller than another.
+
+- **Is 8 greater than 9?**
+- **Is 8 less than 9?**
+
+We can express these questions in JavaScript using the `>` and `<` operators, which mean **greater than** and **less than** respectively.
+
+![greater less than operators](https://a.storyblok.com/f/79570/426x308/ac58730bca/3.png)
+
+So JavaScript can tell us that 8 is not greater than 9, and that it is less than 9.
+
+In these examples, the order of the values in the statement does matter. With the equality operator, `8 === 9;` and `9 === 8;` would both evaluate to the same thing (`false`).
+
+But with these operators, `8 > 9;` would evaluate to `false`, the opposite of `9 > 8;` (`true`)
+
+These operators are usually used with numbers but, they can be used with other data types too although you might get some unexpected results! Let's take a quick look at using these operators to compare two strings, the letters `'a'` and `'b'`:
+
+![string compare 1](https://a.storyblok.com/f/79570/290x240/1cf332d746/4.png)
+
+This might be what we expected - it would make sense to say that `'a'` is less than `'b'`, since it comes before it in the alphabet.
+
+Now what if we change the `'b'` to a capital `'B'`? It would make sense that we would get the same outcome, since `'a'` is still before `'B'` in the alphabet. Try it out:
+
+![string compare 2](https://a.storyblok.com/f/79570/286x314/cdf34ff17e/5.png)
+
+When comparing non-number values in this way, a lot more happens behind the scenes than meets the eye, and it can lead to unexpected results.
+
+But it also makes a bit of sense that string comparison is not just a case of sorting the strings alphabetically.
+
+For example, what would you expect if we asked `"Is the string 'Hello' greater than the string '!!@f436j'?"`.
+
+![string compare 3](https://a.storyblok.com/f/79570/436x244/e58239b9c4/6.png)
+
+The answer is `true`, but the reasons why are beyond the scope of this course. For now, you should just remember that when you expect a computer to think like a person, you can sometimes get unexpected results!
+
+## Greater than or equal to (`>=`), less than or equal to (`<=`)
+
+These two operators are similar to the previous two, but they behave differently when the values are the same.
+
+To see this, try the following examples to compare `>` and `>=`:
+
+![greater than operators](https://a.storyblok.com/f/79570/428x322/fc835a3544/7.png)
+
+`8` is not bigger than `8`, so the first statement returns `false`. However the second statement checks if they are the same or equal and since they are equal, the statement evaluates to true!

@@ -1,0 +1,129 @@
+---
+title: "Walkthrough: Error handling 💡"
+---
+
+## Solution
+
+#### 1. Add console error logs for all bad status codes.
+
+Documentation for the Weather App APIs lists 3 status codes: 200, 404, 500. We don't have to worry about 200 because it means that the request was successful, but the other two are problematic, so we need to account for them. 
+Axios gives us an easy way to catch errors using the `catch()` method, where `error` is a param.
+
+How do we log errors? One way here would be to use a cousin of `console.log()` - `console.error()`.
+
+Add `catch()` as the last method chained to `axios` request with `console.error()` logging out some message and the `error`:
+
+```jsx
+  axios
+    .get(endpoint)
+    .then((response) => {
+      setSelectedDate(response.data.forecasts[0].date);
+      setForecasts(response.data.forecasts);
+      setLocation(response.data.location);
+    })
+    .catch((error) => {
+      const { status } = error.response;
+      if (status === 404) {
+        console.error("Location is not valid", error);
+      }
+      if (status === 500) {
+        console.error("Server error", error);
+      }
+    });
+```
+
+You might notice ESlint warnings in the console:
+
+```plaintext
+Line 27:9:  Unexpected console statement  no-console
+```
+
+In general, we shouldn't leave `console`s in our code, so it's good that we have this rule. However, if you want to log errors, using `console` is justified. You can disable the rule for this file only by adding the following line to the top of the file:
+
+```js
+/* eslint-disable-next-line no-console */
+```
+
+#### 2. Create an `errorMessage` state variable in `<App />` and pass it to `<LocationDetails />` as a prop.
+
+We could say our work is done here, but is it really? A developer will check the console for errors, but the user will have no idea what's wrong, which is a pretty bad user experience. It would be nice to display the appropriate message in the UI.
+
+That's another case for using state (in `<App />`).
+
+- first create state:
+
+```jsx
+const [errorMessage, setErrorMessage] = useState("");
+``` 
+
+- then pass it to `<LocationDetails />`:
+
+```jsx
+<LocationDetails
+  city={location.city}
+  country={location.country}
+  errorMessage={errorMessage}
+/>
+```
+
+#### 3. Modify `<LocationDetails />` to conditionally display it in the UI.
+
+Let's make some use of this message. `<LocationDetails />` currently displays city and country. What if there is no city or country? Is there a point of displaying an almost empty `<h1>`? Not really. Instead, when an error occurs, we can replace it with an error message:
+
+```jsx
+const LocationDetails = (props) => {
+  const { city, country, errorMessage } = props;
+  return errorMessage ? (
+    <h1>{errorMessage}</h1>
+  ) : (
+    <h1 className="location-details">{`${city}, ${country}`}</h1>
+  );
+};
+```
+
+#### 4. Validate `errorMessage` in `<LocationDetails />`.
+
+No magic here, apart from the fact that the `errorMessage` is optional, so it doesn't have to be "required". In this case we need to list it in the 'defaultProps' object:
+
+```jsx
+LocationDetails.defaultProps = {
+  errorMessage: "",
+};
+
+```
+
+#### 5. Pass `setErrorMessage` to `getForecast()` and set error message for 404 and 500 status codes.
+
+ESLint is most likely logging an error for "unused vars", as we haven't used `setErrorMessage()` at all, and we're not showing any errors in the UI. Where do you think we should use it? Probably where the error occurs - in `getForecast()`:
+
+```js
+if (status === 404) {
+  setErrorMessage("No such town or city, try again!");
+  console.error("Location is not valid", error);
+}
+if (status === 500) {
+  setErrorMessage("Oops, server error, try again later.");
+  console.error("Server error", error);
+}
+```
+
+Please think about the difference in messages we present to the user and those we are logging in the console for developers to debug. Can you tell why they're not the same, and why are they phrased in certain ways? Have a discussion with other students and tutors at your next session!
+
+#### 6. Add conditional rendering for `<ForecastSummaries />` and `<ForecastDetails />` whenever an error message should be displayed.
+
+We could say our work is done now, but we can still make some improvements. We can hide `<ForecastSummaries />` and `<ForecastDetails />` when an error occurs. As there is no location, the user see any forecasts, right?
+You can modify `<App />` with a snippet that will look something like this:
+
+```js
+{!errorMessage && (
+  <>
+    <ForecastSummaries
+      forecasts={forecasts}
+      onForecastSelect={handleForecastSelect}
+    />
+    {selectedForecast && <ForecastDetails forecast={selectedForecast} />}
+  </>
+)}
+```
+
+Do you know what `<></>` is? This is the `<Fragment />` component that comes with React. It's used to wrap nodes which are siblings, so that React can render them, in place of adding an extra `<div>`. The JSX syntax will be correct, but you won't see an additional node in the DOM. Have a read about it in the [React Fragments docs](https://reactjs.org/docs/fragments.html).

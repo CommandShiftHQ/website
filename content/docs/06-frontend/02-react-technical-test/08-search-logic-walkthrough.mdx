@@ -1,0 +1,34 @@
+---
+title: "Search Logic - Walkthrough"
+---
+
+So we've updated our `Search.js` component with an event handler, a form, and a button. Here's what it should look like: 
+
+```jsx
+import React, { useState } from "react";
+import "../styles/search.css";
+
+const Search = () => {
+  const [value, setValue] = useState();
+
+  return (
+    <>
+      <form className="search-form">
+        <input
+          className="search-input"
+          type="text"
+          onChange={(e) => setValue(e.target.value)}
+        />
+        <button className="search-btn" type="submit">
+          Go!
+        </button>      
+      </form>
+    </>
+  );
+};
+
+export default Search;
+```
+
+This is only a small amendment to our component but we will come back soon to make some more changes.
+

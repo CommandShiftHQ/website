@@ -1,0 +1,148 @@
+---
+title: "Walkthrough: Location Details 💡"
+---
+
+## Solution
+
+#### 1. Import static data and pass it to `<App />` as a prop.
+
+Copy the contents of the [external `forecast.json`](https://s3.eu-west-2.amazonaws.com/mcrcodes/weather/forecast.json) file into a new file `src/data/forecast.json`. Then, import that into your `index.js` file. Add the following code near the top of `index.js`, under the other imports:
+
+```js
+import forecast from './data/forecast.json';
+```
+
+Since we only need the location data for this step, we are only loading that by using object destructuring.
+
+Then pass that data into `<App />` as props:
+
+```html
+<App location={forecast.location} />
+```
+
+We will make use of the location prop being passed down to the <App /> later but for now, you should have an `index.js` file that looks something like this:
+
+```jsx
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./styles/index.css";
+import App from "./components/App";
+import forecast from "./data/forecast.json";
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(
+  <React.StrictMode>
+    <App location={forecast.location} />
+  </React.StrictMode>,
+);
+```
+
+#### 2. Create a new file `LocationDetails.js` in your components directory.
+
+The first step of the challenge is to create a file `src/components/LocationDetails.js`.
+
+#### 3. Create a component called `<LocationDetails />` with `<h1>` tag displaying city and country.
+
+Firstly, you will need to import React into the file - this is done in the same way we've already seen in the other files at the top of the file:
+
+```jsx
+import React from 'react';
+```
+
+Remember, that a React component is just a JavaScript function, which receives `props`, and returns some JSX. In our case, we want to render a `<h1>` element with the appropriate class name.
+
+We said this component would take 2 props (`city` and `country`) to match our component design. We want to render these inside of the component:
+
+```jsx
+function LocationDetails(props) {
+  const { city, country } = props;
+  return <h1>{`${city}, ${country}`}</h1>;
+};
+```
+
+💡 Note that in React if an element has no child elements, it should be self-closing (as opposed to having an opening and closing tag, like `<div></div>`). The example below is not related to our Weather App design, but should give you an idea how to do it in the future:
+
+```jsx
+function MyComponent(props) {
+  const { customClassName } = props;
+  return <div className={customClassName} />;
+}
+```
+
+Finally, you need to export the `<LocationDetails />` component from the file. At the very bottom of the file, add the following:
+
+```jsx
+export default LocationDetails; 
+```
+
+#### 4. Import the `<LocationDetails />` component into `App.js`.
+
+Now you are ready to use it in your App component. 
+To do this, you need to import it into `App.js`. After the other imports in that file, add the line:
+
+```jsx
+import LocationDetails from './LocationDetails';
+```
+
+#### 5. Update the `<App />` component, so that it renders `<LocationDetails />` using JSX.
+
+Now change `<App />` to look like this:
+
+```jsx
+function App() {
+  return (
+    <div className="App">
+      <LocationDetails />
+    </div>
+  );
+};
+```
+
+#### 6. Pass `props.location.city` and `props.location.country` from `<App />` into `<LocationDetails />`.
+
+If you check your app in your browser, you should see "undefined, undefined"! If you check the DOM in dev tools, you should see that your `h1` element HAS been rendered. If you then check the console tab, you should see a warning, thats says `city` and `country` are required, but their value is `undefined`.
+
+To fix this, we need to pass those props in from `<App />`. The data we want to pass in is in the location data from the JSON file, and we have made that available to `<App />` as the `location` prop.
+
+So, using the props on `<App />`, we can pass that data into `<LocationDetails />`:
+
+```jsx
+function App(props) {
+  return (
+    <div className="App">
+      <LocationDetails city={props.location.city} country={props.location.country} />
+    </div>
+  );
+};
+```
+
+With JSX if our props start to get quite long like this, it is possible to split it onto multiple lines for improved readability:
+
+```jsx
+function App(props) {
+  const { location } = props;
+  return (
+    <div className="App">
+      <LocationDetails city={location.city} country={location.country} />
+    </div>
+  );
+};
+```
+
+If you want to improve readability even further you can first deconstruct props in the function params, then deconstruct `location` for a second time in the function block:
+
+```jsx
+function App({ location }) {
+  const {city, country} = location;
+  return (
+    <LocationDetails
+      city={city}
+      country={country}
+    />
+  );
+};
+```
+
+🤔 At the moment, it might seem pretty pointless to have the app structured like this - just rendering a single component - but as the app grows, it will become more apparent why we are structuring it this way. The App component will act as a layout, and a central place for managing our application data. It delegates responsibility for displaying that data to the other components.
+ 
+Once you've done that, you are done! Check the browser, and you should see the city details being rendered - if you update them in the JSON file, it should update in the browser.
