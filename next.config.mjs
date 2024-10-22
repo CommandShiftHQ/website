@@ -21,6 +21,10 @@ const config = {
         port: '',
         pathname: '/mcrcodes/**',
       },
+      {
+        protocol: 'https',
+        hostname: '**.googleusercontent.com',
+      }
     ],
   },
   experimental: {
