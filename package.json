@@ -12,12 +12,14 @@
     "@builder.io/dev-tools": "^1.1.20",
     "@builder.io/react": "^5.0.4",
     "@builder.io/sdk": "^3.0.2",
+    "@uidotdev/usehooks": "^2.4.1",
     "fumadocs-core": "13.4.10",
     "fumadocs-mdx": "10.0.2",
     "fumadocs-ui": "13.4.10",
     "next": "^14.2.8",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-script-loader-hoc": "^1.2.2",
     "tailwind-merge": "^2.5.4"
   },
   "devDependencies": {

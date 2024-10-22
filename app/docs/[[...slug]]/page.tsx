@@ -8,6 +8,7 @@ import {
 } from 'fumadocs-ui/page';
 import { notFound } from 'next/navigation';
 import defaultMdxComponents from 'fumadocs-ui/mdx';
+import CodePen from '@/components/code-pen/CodePen';
 
 export default async function Page({
   params,
@@ -24,7 +25,7 @@ export default async function Page({
       <DocsTitle>{page.data.title}</DocsTitle>
       <DocsDescription>{page.data.description}</DocsDescription>
       <DocsBody>
-        <MDX components={{ ...defaultMdxComponents }} />
+        <MDX components={{ ...defaultMdxComponents, CodePen }} />
       </DocsBody>
     </DocsPage>
   );
