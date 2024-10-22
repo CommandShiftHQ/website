@@ -36,11 +36,21 @@ const config = {
       {
         protocol: 'https',
         hostname: 'www.hostinger.com'
+      },
+      {
+        protocol: 'https',
+        hostname: 'github.com'
       }
     ],
   },
   experimental: {
     serverComponentsExternalPackages: ["isolated-vm"],
+  },
+  experimental: {
+    swcPlugins: [
+      // Add any specific SWC plugins if needed
+    ],
+    runtime: 'experimental-edge', // Enables experimental JavaScript engine
   },
 };
 
