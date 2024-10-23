@@ -40,6 +40,18 @@ const config = {
       {
         protocol: 'https',
         hostname: 'github.com'
+      },
+      {
+        protocol: 'https',
+        hostname: 'a.storyblok.com'
+      },
+      {
+        protocol: 'https',
+        hostname: 'ubuntucommunity.s3.dualstack.us-east-2.amazonaws.com'
+      },
+      {
+        protocol: 'https',
+        hostname: 'mcrcodes.s3.eu-west-2.amazonaws.com'
       }
     ],
   },
