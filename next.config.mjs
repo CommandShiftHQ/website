@@ -46,12 +46,6 @@ const config = {
   experimental: {
     serverComponentsExternalPackages: ["isolated-vm"],
   },
-  experimental: {
-    swcPlugins: [
-      // Add any specific SWC plugins if needed
-    ],
-    runtime: 'experimental-edge', // Enables experimental JavaScript engine
-  },
 };
 
 export default withMDX(withBuilderDevTools(config));
