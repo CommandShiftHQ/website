@@ -22,7 +22,7 @@ It means something else is using that port. To solve this problem open `docker-c
 
 Visit [http://localhost:4000/api-docs](http://localhost:4000/api-docs) in your browser to view the API documentation - keep this tab open as we'll be referencing it later:
 
-![Swagger](https://s3.eu-west-2.amazonaws.com/mcrcodes/course/surreal-estate/swagger.png)
+![Swagger](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/course%2Fapi-integration%2Fswagger.png?alt=media&token=f5027687-162d-41d1-8aec-00b75e591415)
 
 ** Note **
 There is a chance your API might be running on a different port to `4000`. In order to check in which port your API is running, head to the terminal tab where docker compose is running and look for the line below, where `<PORT NUMBER>` is the port where the API is running:
@@ -38,15 +38,15 @@ If you've completed the backend module you will be familiar with Postman and how
 
 Open Postman. On the landing screen click the 'X' to close the modal:
 
-![Postman Landing](https://s3.eu-west-2.amazonaws.com/mcrcodes/course/surreal-estate/postman_landing.png)
+![Postman Landing](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/course%2Fapi-integration%2Fpostman_landing.png?alt=media&token=4397a2c6-afec-4fee-9886-a780602531d2)
 
 We want to create a new property listing, so head back to [your API documentation](http://localhost:4000/api-docs). We have the following endpoints:
 
-![Endpoints](https://s3.eu-west-2.amazonaws.com/mcrcodes/course/surreal-estate/endpoints.png)
+![Endpoints](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/course%2Fapi-integration%2Fendpoints.png?alt=media&token=0e12b331-85d4-4cd5-95f2-d968233acb7b)
 
 Click on the POST endpoint:
 
-![POST endpoint](https://s3.eu-west-2.amazonaws.com/mcrcodes/course/surreal-estate/post.png)
+![POST endpoint](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/course%2Fapi-integration%2Fpost.png?alt=media&token=e4525c6b-2f7a-4677-b9bd-956a2b02658d)
 
 Here you can see the fields that a property listing can have and the types associated with those fields:
 
@@ -65,33 +65,33 @@ Here you can see the fields that a property listing can have and the types assoc
 
 We can see here that a property listing can have a title, type, city and email, which are all strings, and bedrooms, bathroom and price, which are all numbers. We can use Postman or JavaScript to send a JSON object matching the above interface to the endpoint `/PropertyListing`. However, we first need to know what the _base URL_ is - that is the URL we prepend to the endpoint. You can find that at the top of the documentation:
 
-![Base URL](https://s3.eu-west-2.amazonaws.com/mcrcodes/course/surreal-estate/baseurl.png)
+![Base URL](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/course%2Fapi-integration%2Fbaseurl.png?alt=media&token=9add3e18-03b8-473d-93f8-4c79e8308e00)
 
 So our full request URL will be `http://localhost:4000/api/v1/PropertyListing`, and we will be making a POST request.
 
 Lets head back to Postman:
 
-![Postman](https://s3.eu-west-2.amazonaws.com/mcrcodes/course/surreal-estate/postman.png)
+![Postman](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/course%2Fapi-integration%2Fpostman.png?alt=media&token=12bf7f69-895d-4757-a225-48c84ed75895)
 
 At the top you have the HTTP request type dropdown and an address bar to create a new request:
 
-![Request Bar](https://s3.eu-west-2.amazonaws.com/mcrcodes/course/surreal-estate/requestbar.png)
+![Request Bar](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/course%2Fapi-integration%2Frequestbar.png?alt=media&token=65d0f296-0e42-4857-98e6-cc0b366761f9)
 
 Choose POST from the dropdown, and enter your request URL. Don't click Send just yet - we still have to specify the data we want to send across.
 
 Below the request bar, select the `Body` tab:
 
-![Body](https://s3.eu-west-2.amazonaws.com/mcrcodes/course/surreal-estate/body.png)
+![Body](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/course%2Fapi-integration%2Fbody.png?alt=media&token=039f6619-e231-4b21-8f9e-74cc9132d84a)
 
 We want to send raw data (essentially text) so choose the `raw` radio button. A dropdown should appear on the right with a selected option of `Text`. Change it to `JSON (application/json)`:
 
-![JSON](https://s3.eu-west-2.amazonaws.com/mcrcodes/course/surreal-estate/json.png)
+![JSON](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/course%2Fapi-integration%2Fjson.png?alt=media&token=c279e273-58f9-443a-9ff6-333d66b66da6)
 
 You should now be familiar with JSON - it stands for JavaScript Object Notation, and it's essentially a JavaScript object represented as a string that can be sent to and retrieved from servers.
 
 Now take the fields object from earlier and copy it into the editor:
 
-![Editor](https://s3.eu-west-2.amazonaws.com/mcrcodes/course/surreal-estate/editor.png)
+![Editor](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/course%2Fapi-integration%2Feditor.png?alt=media&token=b425e0a3-7973-488a-b8f2-9aa257f9e043)
 
 Remove the `_id` field - ID fields traditionally get created by the API  so we don't need to worry about specifying this. 
 
@@ -99,7 +99,7 @@ Change the values of your other fields (ensuring you use the correct type) and t
 
 You should see a successful response (indicated by `201 Created`) below:
 
-![Response](https://s3.eu-west-2.amazonaws.com/mcrcodes/course/surreal-estate/response.png)
+![Response](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/course%2Fapi-integration%2Fresponse.png?alt=media&token=3a0c3ff6-2ee6-499e-8a85-474ea801604c)
 
 Notice how this response has an `_id` field despite us not specifying one.
 
