@@ -10,11 +10,12 @@ import { notFound } from 'next/navigation';
 import defaultMdxComponents from 'fumadocs-ui/mdx';
 import CodePen from '@/components/code-pen/CodePen';
 
-export default async function Page({
-  params,
-}: {
-  params: { slug?: string[] };
+type Params = Promise<{ slug?: string[] }>
+
+export default async function Page(props: {
+  params: Params
 }) {
+  const params = await props.params;
   const page = source.getPage(params.slug);
   if (!page) notFound();
 
