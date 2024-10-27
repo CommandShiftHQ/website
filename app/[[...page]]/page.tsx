@@ -1,14 +1,12 @@
 import { builder } from "@builder.io/sdk";
 import { RenderBuilderContent } from "../../components/builder";
 import Footer from "@/components/footer/Footer";
+import { InferGetStaticPropsType } from "next";
+import { getStaticProps } from "next/dist/build/templates/pages";
 
 builder.init(process.env.NEXT_PUBLIC_BUILDER_API_KEY!);
 
-interface PageProps {
-  params: {
-    page: any;
-  };
-}
+interface PageProps extends InferGetStaticPropsType<typeof getStaticProps> {}
 
 export default async function Page(props: PageProps) {
   await import('isolated-vm');
