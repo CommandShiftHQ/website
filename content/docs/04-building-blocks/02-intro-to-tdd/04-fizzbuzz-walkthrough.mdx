@@ -6,29 +6,29 @@ Inside the root folder of your local `diy-kata` repository, type `code .` to ope
 
 Take a look in `__tests__/kata1.fizzBuzz.test.js`:
 
-![Test](https://s3.eu-west-2.amazonaws.com/mcrcodes/course/fizzbuzz/test.png)
+![Test](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/course%2Ffizzbuzz%2Ftest.png?alt=media&token=9911a523-f344-4754-9428-e2c686f0c7b7)
 
 This is the code for your tests (where you will write your expectations and assertions).
 
 And now take a look in `src/kata1.fizzBuzz.js`:
 
-![Source File](https://s3.eu-west-2.amazonaws.com/mcrcodes/course/fizzbuzz/source_file.png)
+![Source File](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/course%2Ffizzbuzz%2Fsource_file.png?alt=media&token=b8b33f80-0a16-4549-9b02-9219d5367488)
 
 This is the code for your function (where you'll write the code that passes the tests - don't do it yet though!).
 
 Let's start with the first expectation:
 
-![Fizz](https://s3.eu-west-2.amazonaws.com/mcrcodes/course/fizzbuzz/fizz.png)
+![Fizz](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/course%2Ffizzbuzz%2Ffizz.png?alt=media&token=7c52aa8c-ddaf-4bc9-8e64-44d0e660d034)
 
 How might we approach this? When we invoke our function with an argument of `3`, the test should `expect` the return value `toBe` `Fizz`. Let's see how that translates in code:
 
-![Fizz Test](https://s3.eu-west-2.amazonaws.com/mcrcodes/course/fizzbuzz/fizz_test.png)
+![Fizz Test](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/course%2Ffizzbuzz%2Ffizz_test.png?alt=media&token=bafaa3a0-c435-4cbe-9167-f6231b54fe7e)
 
 You could easily read too deeply into what's going on here, but actually it reads quite nicely: `expect the result of fizzBuzz (with 3 passed as an argument) to be a string of 'Fizz'`.
 
 There's no need in this case to assign the result of `fizzBuzz` to a variable either. Because JavaScript gives precedence to values wrapped in parentheses, we can simply do:
 
-![Fizz Test Refactored](https://s3.eu-west-2.amazonaws.com/mcrcodes/course/fizzbuzz/fizz_test_refactored.png)
+![Fizz Test Refactored](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/course%2Ffizzbuzz%2Ffizz_test_refactored.png?alt=media&token=218e2a38-693d-4f91-9ee8-b0dbf48ede1e)
 
 The `3` gets evaluated first (to `3`). Then `fizzBuzz(3)` gets evaluated next (when we write the code, it should evaluate to `Fizz`), and then `Fizz` (inside `toBe()`) gets evaluated to `Fizz`.
 
@@ -36,69 +36,69 @@ Now imagine these evaluations have taken place. What's actually happening when o
 
 Okay, enough explaining! Let's run our test suite:
 
-![Terminal: Tests](https://s3.eu-west-2.amazonaws.com/mcrcodes/course/fizzbuzz/fizz_test_suite.png)
+![Terminal: Tests](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/course%2Ffizzbuzz%2Ffizz_test_suite.png?alt=media&token=0c03f23c-90cc-4ce1-864a-096ccc45c5b3)
 
 Start from the top. You'll notice 3 of the tests are passing - don't be fooled! They're passing because there are no expectations or assertions inside the test blocks, which means the test is allowed to execute from start to finish (and thus passes).
 
 However, our first test *_is_* failing. Let's go in closer:
 
-![Received and Expected](https://s3.eu-west-2.amazonaws.com/mcrcodes/course/fizzbuzz/expected_received.png)
+![Received and Expected](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/course%2Ffizzbuzz%2Fexpected_received.png?alt=media&token=5abe021e-eed7-4b44-8447-239fd3a682ab)
 
 It's telling us that our `fizzBuzz(3)` has returned `undefined` so the test has received `undefined` when it expected `'Fizz'` and therefore it fails. Now we can write the code to pass the test!
 
 Let's go back to `src/kata1.fizzBuzz.js`:
 
-![Source File](https://s3.eu-west-2.amazonaws.com/mcrcodes/course/fizzbuzz/source_file.png)
+![Source File](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/course%2Ffizzbuzz%2Fsource_file.png?alt=media&token=b8b33f80-0a16-4549-9b02-9219d5367488)
 
 All we are concerned about at this moment in time is making our test pass _without any further modification to the test itself_. Our test received `undefined` and it wanted `Fizz`, so lets give it a Valentines treat :cupid: :
 
-![Fizz Pass Code](https://s3.eu-west-2.amazonaws.com/mcrcodes/course/fizzbuzz/fizz_pass.png)
+![Fizz Pass Code](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/course%2Ffizzbuzz%2Ffizz_pass.png?alt=media&token=9f516743-5e54-4af3-af6e-746f65da717c)
 
 Now you've written some code, why not run your tests again?:
 
-![Passing Tests](https://s3.eu-west-2.amazonaws.com/mcrcodes/course/fizzbuzz/passing_tests.png)
+![Passing Tests](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/course%2Ffizzbuzz%2Fpassing_tests.png?alt=media&token=795a17a3-86c8-44cb-b956-a06700f240de)
 
 Great, our first test passes. Our other 3 do as well though, which is really misleading. Wouldn't it be great if we could have them specced out like we do currently, but without them getting in the way? Fortunately we can, by swapping out the `it` method for `xit` on test specs we want to ignore (I like to think of it as `x`ing (crossing) them out:
 
-![xit](https://s3.eu-west-2.amazonaws.com/mcrcodes/course/fizzbuzz/xit.png)
+![xit](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/course%2Ffizzbuzz%2Fxit.png?alt=media&token=917d911a-79cc-48c3-9f8a-347eb7fa920f)
 
 Run your tests again:
 
-![Ignored Tests](https://s3.eu-west-2.amazonaws.com/mcrcodes/course/fizzbuzz/ignored_tests.png)
+![Ignored Tests](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/course%2Ffizzbuzz%2Fignored_tests.png?alt=media&token=5b43181f-1462-4f5e-8770-cc97ba6153bc)
 
 Much better. Just remember that every time you jump onto a new spec, you'll need to change the `xit` back to `it` or it will be ignored. 
 
 Lets add an expectation and assertion for our next spec `returns Buzz when passed a multiple of 5`:
 
-![Buzz Test](https://s3.eu-west-2.amazonaws.com/mcrcodes/course/fizzbuzz/buzz_test.png)
+![Buzz Test](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/course%2Ffizzbuzz%2Fbuzz_test.png?alt=media&token=465b3109-f9dc-402a-b08d-bc42a0eef239)
 
 It should fail with:
 
-![Buzz Test Fail](https://s3.eu-west-2.amazonaws.com/mcrcodes/course/fizzbuzz/buzz_test_fail.png)
+![Buzz Test Fail](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/course%2Ffizzbuzz%2Fbuzz_test_fail.png?alt=media&token=0ce33790-cba0-4bee-bf32-b4c8b9e65302)
 
 Of course it doesn't work - `fizzBuzz` always returns `Fizz` in its current state. Lets add a little more logic to our function expression:
 
-![Buzz Code](https://s3.eu-west-2.amazonaws.com/mcrcodes/course/fizzbuzz/buzz_code.png)
+![Buzz Code](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/course%2Ffizzbuzz%2Fbuzz_code.png?alt=media&token=232d2c60-828c-45e5-b482-dadfcee5c309)
 
 We say that if `5` goes into `number` with a remainder of `0` then we'll `return` out of our function early with `'Buzz'`. 
 
 Both tests should now pass:
 
-![Passing Fizz and Buzz](https://s3.eu-west-2.amazonaws.com/mcrcodes/course/fizzbuzz/fizz_buzz_pass.png)
+![Passing Fizz and Buzz](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/course%2Ffizzbuzz%2Ffizz_buzz_pass.png?alt=media&token=bf00a4f3-2480-4c02-aeed-6667dac117e6)
 
 Okay, again for `returns FizzBuzz when passed a multiple of 3 and 5`:
 
-![FizzBuzz Test](https://s3.eu-west-2.amazonaws.com/mcrcodes/course/fizzbuzz/fizzbuzz_test.png)
+![FizzBuzz Test](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/course%2Ffizzbuzz%2Ffizzbuzz_test.png?alt=media&token=0c2080bf-36e4-454b-a071-f4908cfc9702)
 
 Notice we have three expectations. This is often good practice to do to ensure your units (functions / methods) are tested with a variation of inputs.
 
 Run the tests:
 
-![FizzBuzz Fail](https://s3.eu-west-2.amazonaws.com/mcrcodes/course/fizzbuzz/fizzbuzz_fail.png) 
+![FizzBuzz Fail](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/course%2Ffizzbuzz%2Ffizzbuzz_fail.png?alt=media&token=13893d87-629b-405d-a243-55fd20e6404b) 
 
 Now the code to pass:
 
-![FizzBuzz Pass](https://s3.eu-west-2.amazonaws.com/mcrcodes/course/fizzbuzz/fizzbuzz_pass.png)
+![FizzBuzz Pass](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/course%2Ffizzbuzz%2Ffizzbuzz_pass.png?alt=media&token=11333f10-e002-442f-88a4-3ea0328e3f51)
 
 Your tests should pass. 
 
@@ -110,19 +110,19 @@ Okay, last one: `returns the number when it isn't a multiple of 3 or 5`.
 
 Test:
 
-![Number Test](https://s3.eu-west-2.amazonaws.com/mcrcodes/course/fizzbuzz/number_test.png)
+![Number Test](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/course%2Ffizzbuzz%2Fnumber_test.png?alt=media&token=c336c103-db6e-4f29-a35f-37c95bd57cb7)
 
 Code:
 
-![Number Code](https://s3.eu-west-2.amazonaws.com/mcrcodes/course/fizzbuzz/number_code.png)
+![Number Code](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/course%2Ffizzbuzz%2Fnumber_code.png?alt=media&token=1cc42d82-57bf-4dce-9751-ef6ef66947a5)
 
 Whoomph! There It Is :musical_note: :
 
-![All tests passing](https://s3.eu-west-2.amazonaws.com/mcrcodes/course/fizzbuzz/all_passing.png)
+![All tests passing](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/course%2Ffizzbuzz%2Fall_passing.png?alt=media&token=27ea135e-340e-495c-aea7-3a152da8379e)
 
 Now I'm confident all of the tests are passing I'm going to go in for a cheeky refactor in the knowledge that if I break the code, the tests will fail. I've noticed an opportunity to DRY (Don't Repeat Yourself) the code up and to make it more readable:
 
-![Refactor](https://s3.eu-west-2.amazonaws.com/mcrcodes/course/fizzbuzz/cheeky_refactor.png)
+![Refactor](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/course%2Ffizzbuzz%2Fcheeky_refactor.png?alt=media&token=5fcbd994-e83a-4b18-b04d-831cfdb308f7)
 
 And... :white_check_mark: :white_check_mark: :white_check_mark: :white_check_mark:
 
