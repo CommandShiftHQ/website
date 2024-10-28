@@ -36,7 +36,8 @@ export async function generateStaticParams() {
   return source.generateParams();
 }
 
-export function generateMetadata({ params }: { params: { slug?: string[] } }) {
+export async function generateMetadata(props: { params: Params }) {
+  const params = await props.params;
   const page = source.getPage(params.slug);
   if (!page) notFound();
 
