@@ -4,7 +4,7 @@ title: "Sorting by Price"
 
 Just as it's the APIs job to query our results, it's also its job to sort them as we specify. This is done with `?sort={"<field_to_sort_by>":1}` (1 is sort ascending, -1 is sort descending). 
 
-![Sort by price](https://s3.eu-west-2.amazonaws.com/mcrcodes/course/surreal-estate/price.png)
+![Sort by price](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/course%2Fsurreal%2Fprice.png?alt=media&token=62e8080b-b9b4-4b99-9135-6ada6faefef2)
 
 There's one small spanner in the works for this one...if you link to `?sort={"price":1}` then you can't link to a city. We therefore need to find a way to combine the query parameters so we have a query string like: `?query={"city":"Exeter"}&sort={"price": 1}`. 
 
