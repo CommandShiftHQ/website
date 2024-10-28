@@ -1,0 +1,109 @@
+---
+title: "Text"
+---
+
+Ok, now that we've learned about page structure, it's time to start creating some content for our page.
+
+
+# Headings
+
+HTML has **six levels** of headings. If you recall from the previous example, we had 1 heading (`h1`), but we could have gone up to `h6`.
+
+`<h1>` is used for **main headings**. It's important that your page displays **one**, and only one, h1 element (**SEO impact**, once again).
+
+`<h2>` is used for subheadings.
+
+If there are further sections under the subheadings, then `<h3>` should be used and so on.
+
+Your browser will interpret display headings with different sizes, with the `h1` being the largest and `h6` the smallest.
+
+
+# Paragraphs
+
+We've also visited these ones already.
+Just as a recap, the paragraph content must be encapsulated between its opening and closing tags.
+
+By default, a browser will show each paragraph on a new line with some space between it and any subsequent ones.
+
+```
+<p>This is the first paragraph!</p>
+<p>This is the second paragraph!</p>
+```
+
+
+# Bold & Italic
+
+**Bold** is represented by `<b></b>` and all of its content will appear bold.
+Visually, we could use these tags in **keywords** of a paragraph, for example.
+
+By association, `<i></i>` will display its content in **italic**.
+It tends to represent a section of text that would be said in a different way from surrounding content - **technical terms**, **foreign words**, **thoughts**.
+
+
+# Superscript & Subscript
+
+**Superscript** is represented by `<sup></sup>` and it can be used in things such as **suffixes of dates or mathematical concepts**.
+
+For example, the code `X<sup>2</sup>` will render as "X<sup>2</sup>".
+
+**Subscript** works as the opposite and is represented by `<sub></sub>`. It's ideal for **foot notes or chemical elements**.
+
+For example, if you wanted to write the chemical element "H<sub>2</sub>O" you would write `H<sub>2</sub>O`.
+
+
+# Whitespace
+
+When we start learning about HTML, we tend to space-out elements in the markup that we would like to see spaced out when displayed.
+However, when the browser is reading your markup, if it comes across two or more spaces next to each other, it only displays one space. 
+If the browser comes across a line break, it treats this as a single space too which is known as white space collapsing.
+
+The advantage is that you can use proper indentation which helps your code to be read easily without worrying about its impact on the display.
+
+In the same document you have been working on, type inside the body tag:
+
+```
+<p>There are no spaces here.</p>
+<p>There are         some spaces here.</p>
+<p>There are definitely loads of                                spaces here.</p>
+```
+
+Save the document and open it in the browser. Interesting, right?
+
+Before you proceed, don't forget to delete these paragraphs.
+
+
+# LineBreaks & Horizontal Rules
+
+Now you might be asking how you could add a line break or a couple of line breaks.
+
+Well, if you want to add a line break, all you have to do is to use the `<br />` element, which is also a self-closing one.
+
+Try:
+
+```
+<p>This is the first paragraph.</p>
+<p>This is the second paragraph.</p>
+<br />
+<p>This is the third paragraph, which is a bit distant from its siblings.</p>
+```
+
+There's also an element called a "horizontal rule" which creates a horizontal line as well as line break.
+Try adding `<hr />`, another self-closing element, between the first a second paragraphs.
+
+Save the document and have a look. Once you're able to see both the line-breaks and horizontal rules, let's advance to the practical.
+
+# Practical
+
+1. Delete the previous work, leaving the body tag empty.
+2. Add a `h1` element that contains your name.
+3. Add a `h2` element that contains either a slogan, or some meaningful text that introduces you as a junior developer.
+4. Introduce a line break and a horizontal line since we're about to start a new section.
+5. Add a `h3` element with the text "About Me".
+6. Below this `h3` element, add 2 paragraphs, one that tells the reader who you are and another that demonstrates how you got into code.
+7. Once you're happy with the result, add the file to the staging area, commit it with a meaningful message and push it to GitHub.
+
+Ours looks like this:
+
+<CodePen id="WNXmJvX" title="HTML - text" />
+
+Once you have done this, proceed to the next page.

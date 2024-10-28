@@ -1,0 +1,194 @@
+---
+title: "Challenge: Student Roster"
+---
+
+We're so excited to welcome you to Command Shift. So you can get to know your fellow peers, you're going to be practising your newly-acquired Git skills. Your task is to share some information about yourself on our [student roster](https://github.com/CommandShiftHQ/student-roster).
+
+## Setup
+
+Have a look around the [repo on GitHub](https://github.com/CommandShiftHQ/student-roster).
+
+You should see a list of one or more files and folders (if you are the first one to complete the challenge you may just see README.md). If you scroll down the page, you should see a document headed 'Student Roster'. This is generated from the contents of the README.md file, which acts as an entry point. You will be adding your own profile to this page so you and your cohort can get to know one another!
+
+Firstly, **you'll need to request access to the student-roster repository** if it hasn't been granted to you already. You can do this by asking on your cohort's Slack channel. Before you do this make sure you have signed up to GitHub and can provide a tutor with your GitHub username.
+
+Once you've been granted access to the repository, you'll need to open up your Terminal and change directory into your Projects folder:
+
+```
+cd ~/Projects
+```
+
+Now, it's time to clone down a local copy of the remote repository so you can add your own profile:
+
+```
+git clone https://github.com/CommandShiftHQ/student-roster.git
+```
+
+Once you have successfully cloned the repo, you can then proceed to open the directory with your code editor:
+
+```
+cd student-roster
+code .
+```
+
+If this doesn't work, then open VSCode, click `File -> Open` and open the directory you've just cloned.
+Be sure to ask a tutor to help you get the above command running once you get the chance.
+
+## Getting our feet wet
+
+Each cohort will have its own folder in the repository and in that folder each student will have created their own .md file. E.g:
+
+```
+├── february2019
+│   └── harold.md
+│   └── sofia.md
+├── example-cohort
+│   └── example.md
+├── august2018
+│   └── satti.md
+│   └── rhonda.md
+└── README.md
+```
+
+You should at a bare minimum have a README.md file, and an example-cohort folder containing an example.md file. If there isn't a folder for your cohort or you are on our Software Engineer FlexiTrack course then please go ahead and create one (full month name followed by 4 digit year with no space, as per examples above, or if you are on Software Engineer FlexiTrack, please create a folder called **flexitrack**).
+
+Next, you'll need to copy the `example.md` file from the example-cohort folder into your cohort directory and rename it to your `<firstname>-<lastinitial>.md`.
+
+Open the file you've just copied, and start filling in the Name, Likes, Dislikes and Favourite Quotes sections. Once you're happy with the file, you can save it using `File -> Save`.
+
+**NOTE: The information on this repository is openly available. Please be careful with what you share and don't feel inclined to use your real credentials.**
+
+## Adding a link to your profile from the README.md
+
+Now that you created your profile file, you'll need to add a link to `README.md`.
+
+Open `README.md` file within your code editor. Pay attention to the lines:
+
+```
+## Example Cohort
+
+- [Example Student](example-cohort/example.md)
+```
+
+Use this as a guideline to add your own profile (and cohort if nobody has added it yet). You'll need to change example-cohort to your cohort's folder name, and example.md to the name of the file you previously created for your profile.
+
+Do also change the bit in square brackets `[]`, instead of *Example* put your name within the brackets instead.
+
+E.g:
+`[Ersel Aker](/may2018/ersel-a.md)`
+
+Now, save the file and jump back to your Terminal screen.
+
+## Committing your changes.
+
+To push your changes to `GitHub`, you'll need to stage your changes in the Terminal by doing:
+
+`git add .`
+
+This command will tell git to stage all changes made to all files within the directory and any subdirectories.
+
+Next, you'll need to `commit` your changes and add a message which will appear on the change history of the project.
+
+`git commit -m 'introduced myself - Ersel A'`
+
+Feel free to customise your commit message. The message is the section within single quotes followed by the `-m` flag. You can type anything for your message.
+
+## Pushing Your Changes to GitHub
+
+Now, you can push all your changes up to GitHub.
+
+Try running `git push` in your terminal.
+
+If you're not the first one to reach this stage of the tutorial. You'll see a message similar to the below in your terminal.
+```
+To github.com:CommandShiftHQ/student-roster.git
+ ! [rejected]        main -> main (fetch first)
+error: failed to push some refs to 'git@github.com:CommandShiftHQ/student-roster.git'
+hint: Updates were rejected because the remote contains work that you do
+hint: not have locally. This is usually caused by another repository pushing
+hint: to the same ref. You may want to first integrate the remote changes
+hint: (e.g., 'git pull ...') before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+```
+
+Don't worry this is nothing to be scared of. Let's investigate the message in detail. Pay attention to the line:
+
+```
+! [rejected]        main -> main (fetch first)
+```
+
+This line tells us that GitHub has rejected our push request.
+
+Now, pay attention to the first few lines starting with the _hint:_ keyword.
+
+```
+
+hint: Updates were rejected because the remote contains work that you do
+hint: not have locally. This is usually caused by another repository pushing
+```
+
+In simple English, *git* is telling us that the remote repository (repo hosted on GitHub) has some changes that we do not have on our local branch (on our machine). So before we can push our changes to GitHub, we'll need to pull down the remote changes and make sure our changes are also working.
+
+In order to get the latest changes from GitHub, you can run the command:
+
+`git pull`
+
+After running the above command, you should get a message similar to below:
+
+```
+From GitHub.com:CommandShiftHQ/student-roster
+   f32d916..e6b27d7  main     -> origin/main
+Auto-merging README.md
+CONFLICT (content): Merge conflict in README.md
+Automatic merge failed; fix conflicts and then commit the result.
+```
+
+So you've successfully pulled the latest changes. However, there is one catch! One of your peers was faster than you and they have already changed the `README.md` file. This is known as a `merge conflict`. This happens when 2 developers change the same file and their changes exist around the same part of the file. When a merge conflict happens, Git tries to resolve the problem automatically, but if both developers changed the same line(s) it will ask developers to resolve it manually.
+
+Take a close look at the merge conflict message, Git reports that it tried to auto-merge the changes made to `README.md` but it failed. It is asking the developer to fix conflicts and re-commit the result.
+
+```
+Auto-merging README.md
+CONFLICT (content): Merge conflict in README.md
+Automatic merge failed; fix conflicts and then commit the result.
+``` 
+
+Ok, let's resolve this merge conflict now. Open README.md file within Visual Studio Code Editor.
+
+You'll see that a portion of the code file is highlighted. Changes you see in the light green colour at the top are the changes made to the file by you. Changes you see in the light blue colour at the bottom are the changes made by your classmate.
+
+![Merge Conflict Image](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/course%2Fmerge_conflict.png?alt=media&token=287f79c6-26e6-4581-bf80-c5131bcc7452)
+
+VSCode makes your life easier by giving you some quick fix actions such as:
+- Accept current change
+- Accept incoming change
+- Accept both changes
+
+- First option will only include the changes made by you and ignore the changes made by your peer(s).
+- Second option will only include the changes made by your peer(s) and discard your own changes.
+- Third option will include changes made by you and also your peer(s).
+
+Click on the third option `Accept both changes` and save the file.
+
+Now, you can stage your changes once again by doing `git add .`
+
+Finish fixing the _merge conflict_ by doing `git merge --continue --no-edit`
+
+The last command completes the process of merging latest changes.
+
+Now, we are all good to update the remote branch. Push your changes by doing `git push`. You'll see a message similar to below.
+
+```
+Counting objects: 6, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (6/6), done.
+Writing objects: 100% (6/6), 702 bytes | 702.00 KiB/s, done.
+Total 6 (delta 2), reused 0 (delta 0)
+remote: Resolving deltas: 100% (2/2), completed with 1 local object.
+To github.com:CommandShiftHQ/student-roster.git
+   e6b27d7..e4affda  main -> main
+```
+
+This might all seem complex but just as with anything in life practise makes perfect - it does all click eventually!
+
+Congratulations, you've shared your information with your peers and also resolved your first merge conflict as a developer!

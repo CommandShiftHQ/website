@@ -5,3 +5,11 @@
 body {
   @apply font-body antialiased;
 }
+
+button[aria-controls^="radix-"] {
+  text-align: left;
+}
+
+button[aria-controls^="radix-"] > svg, a.\[\&_svg\]\:size-4 > svg {
+  min-width: 1rem;
+}

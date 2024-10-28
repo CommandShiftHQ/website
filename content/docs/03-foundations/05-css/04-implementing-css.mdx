@@ -1,0 +1,124 @@
+---
+title: "Implementing CSS"
+---
+
+CSS can be implemented in your projects in three different ways:
+
+- Internal Stylesheet
+- Inline Style Attribute
+- External Stylesheet
+
+Even though we'll be looking at how to implement it in all of them, it is highly recommended that you do it with external stylesheets. Ideally, you want to separate your HTML, CSS and JavaScript, as much as possible.
+
+### Internal Stylesheet
+
+As you can see in the example below, all you need to do is to write your css between <style> and </style> tags:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Document</title>
+    </head>
+    
+    <body>
+
+    <style>
+        h1 {
+        color: red;
+        }
+    </style>
+
+    <h1>Hello World</h1>
+
+    </body>
+</html>
+```
+
+### Inline Style Attribute
+
+We can also write some css by using an element style attribute (you should be familiar with attributes, by now). The applied styling will be unique to the element where it is used. The example below will reflect the same output seen at the beginning of the chapter:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Document</title>
+    </head>
+    <body>
+        <h1 style="color: red;">Hello World</h1>
+    </body>
+</html>
+```
+
+### External Stylesheet (Highly Recommended)
+
+The <head></head> section of your HTML, as seen before, can be used to attach a couple of links, which import all sorts of different things. One of those things is an external css stylesheet. As you can see in the example below, you would have a file called styles.css, which then gets imported into the head of the element:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+	    <link rel="stylesheet" type="text/css" href="styles.css">
+        <title>Document</title>
+    </head>
+    <body>
+        <h1>Hello World</h1>
+    </body>
+</html>
+```
+
+Note that this particular link, also has a rel and a type attributes, whose values should be set as in this example.
+
+---
+
+##Let's try this out!
+
+###Head over to VS Code. First lets try to implement an **internal** style sheet:
+
+1. In the body of your html, add a `<style>` tag (don't forget to close it!).  
+2. Inside your tags, place the following code:      
+
+```css
+h1 {
+	color: red;
+}
+```  
+3. Save your file, and open it in the browser to take a look at your handy work!
+
+**Remember, we are intentionally misspelling the word colour as color here!**
+
+>Pro - tip: You can easily open your file in the browser by dragging the tab from your vs code window over to the browser window.
+Alternatively, if you like the easy life, try searching for and installing the VS Code extension ‘Open in Browser’
+Ask in the next class if you want more info about VS Code extensions!
+
+Once you have your internal style sheet working, comment out the code or delete it, so your `h1` tag goes back to being black.
+
+###Now lets try **inline** styles:  
+
+1. Find your `h1` tag in your HTML.  
+2. Add the styles as described above into the tag.  
+It should look something like this -  
+`<h1 style="color: red;">Your text here</h1>`  
+3. Save your file and refresh your page over in the browser. Can you see the changes?
+
+Alright, delete or comment out your inline styles.  
+
+### Lets try one last implementation - **external** stylesheet.
+
+1. First, let's make a new file. Either in the terminal, or over in the file tree in VS Code, create a new file called `styles.css`. This should be in the same directory alongside your html file.
+2. Now let's link to that file in the head section of our html using the external style sheet method above.
+This should look something like this -   
+`<link rel="stylesheet" type="text/css" href="styles.css">` 
+3. Save your HTML file and head over to your css file. Add the code from earlier      
+
+```css
+h1 {  
+	color: red;  
+}
+```  
+
+4. Save your file and head over to the browser to refresh and see your `h1` change colour.
+
+Nice work! Let's keep the external stylesheet implementation going forward.  
+**Don’t forget, if you get stuck or can’t get something working, you can ask your tutors in class to go through these with you!**

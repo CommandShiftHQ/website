@@ -1,0 +1,57 @@
+---
+title: "Images"
+---
+
+Nowadays, and with the huge number of design opportunities that CSS confers to web applications, we are at  a point where graphic design and web design are converging.
+More than providing content in the form of text, you'll grab the user's attention with stunning images.
+As everyone says, a picture can say a thousand words.
+Have a look at famous brands' homepages and check how much imagery they use.
+
+Images can be used to set the tone for a web application in less time than it takes to read a description.
+
+A good resource for free (and absolutely amazing) images is [Unsplash](https://unsplash.com/). All of its repository is royalty free, so you can use this even in your future projects.
+
+
+# Storing Images
+
+As mentioned before, bigger projects require a strong structure, otherwise it will become nearly impossible to manage all the different files.
+You might even add sub-directories to this **/images** folder, so you can group buttons, logos, icons.
+
+
+# Adding Images
+
+Let's recall what we mentioned right at the beginning of this module and look at how to add an image in HTML:
+
+`<img src="/images/me.png" alt="John Doe Photo">`
+
+So, images are added with the `<img>` tag, which is a self-closing one.
+They tend to have at least `src` and `alt` as attributes, where the first one indicates the **path** (which can be a **relative** one) to the image, and the latter acts as a **fallback** in case the image doesn't load and for use with screen readers. *Omitting the alt attribute might have negative impact on your website's SEO*, so don't forget about it.
+
+The height and width of these images could be also attributes, but we'll leave it to when you reach CSS since we should try to avoid inline stylings as much as possible.
+
+
+# Figure & Figure Caption
+
+If you think about graphical design, images often come with captions.
+HTML5 introduced 2 new elements that allows you to easily achieve the same result: `<figure>` and `<figcaption>`. 
+The first will contain images and the latter the caption, so they're associated, accessibility-wise.
+
+```
+<figure>
+	<img src="images/eiffelTower.jpg" alt="Photograph of the Eiffel Tower">
+	<br />
+	<figcaption>
+		The Eiffel Tower is a wrought-iron lattice tower on the Champ de Mars in Paris, France.
+	</figcaption>
+</figure>
+```
+
+Before these elements were created, we couldn't associate some text with a specific image.
+You should have all your images inside of respective figures, if their sole purpose is illustration, and not iconography.
+
+
+# Practical:
+
+1. On your main page, add a personal photo that identifies you, right in the header.
+2. In your "About Me" section, add a couple of images that tell a story about you - use captions with them.
+3. Once you're happy with the result, add the project files to the staging area, commit it with a meaningful message and push it to GitHub.

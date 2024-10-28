@@ -1,0 +1,218 @@
+---
+title: "Forms"
+---
+
+HTML forms are interesting pieces of work.
+They're the only elements that will **capture information from the user** who is visiting your webpage.
+
+Forms can be used in all sorts of ways, as you'll find out throughout this course.
+
+The best known form on the web is probably the search box that sits right in the middle of Google's homepage and you've probably used it a gazillion times, by now, right? That's how important they are.
+
+# How do they work
+
+Basically, a user fills in a form and then presses a button, which submits the information to the server.
+The name of each form control is sent to the server along with the value entered or selected.
+The server will then process this information and send a new page back to the browser, which notifies the user that the information was received.
+This can be in the form of a "Thank you!" or a pure search results page (in cases where the form is of the search type).
+
+
+# Form Controls
+
+There are several types of form controls that you can use to collect information from visitors.
+
+### Adding Text:
+
+```
+<input type="text" name="username">
+<input type="password" name="password">
+<input type="email" name="email">
+<input type="url" name="url">
+<input type="search" name="search">
+<input type="date" name="date">
+```
+
+***
+
+:bulb: Note the input tags above don't have self closing tags. [These are optional **for some elements** in HTML5](https://blog.teamtreehouse.com/to-close-or-not-to-close-tags-in-html5). 
+
+***
+
+The input element is used to create several different form controls.
+The value of the attribute `type` determines which kind of input we're creating.
+If set to password, it creates a text box that acts just like a single-line text input, except the characters are blocked out.
+
+For inputs of the type email, url or date, if the browser supports HTML5 validation, it will check if the user has provided information in the right format. 
+For search inputs, some browsers will add a cross to clear the field, which is a usability improvement.
+
+`<textarea name="comments" placeholder="Enter your comments…."></textarea>`
+
+Text Area elements are used to create multi-line text inputs. 
+Notice that, unlike other input elements, it has a closing tag. 
+The placeholder attribute is the text that will be displayed in this field on page loading, but disappears once you start typing your own.
+
+The name attribute is an identifier for the server. 
+In the first input example, the server will receive the username associated with the respective field, identified by the name.
+
+
+### Making Choices:
+
+**Radio Buttons** are used when a user must select one of a number of options:
+
+```
+<input type="radio" name="genre" value="rock" checked="checked"> Rock
+<input type="radio" name="genre" value="pop"> Pop
+<input type="radio" name="genre" value="jazz"> Jazz
+```
+
+![Rendered Radio Buttons](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/images%2F1cab173fc74098c972cd612811236ca1392a63a04043eb4c8c529d734e0e.png?alt=media&token=a7365d1a-1a2f-49a6-bc25-d8c621e14d6e)
+
+
+So, the type will tell the browser that it's a radio button. 
+The name will be its identifier for the server and the value will tell the server your choice, when combined with the attribute checked.
+If the user selected the second option instead, then this would be the only one with the checked attribute.
+**One of the options must be checked by default when you write your form.**
+
+
+**Checkboxes** are used to select one or more options, as well as unselecting them.
+
+```
+<input type="checkbox" name="streaming-service" value="netflix"> Netflix
+<input type="checkbox" name="streaming-service" value="prime-video"> Prime Video
+<input type="checkbox" name="streaming-service" value="disney-plus"> Disney Plus
+```
+
+![Rendered checkboxes](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/images%2Ff18f5e632c7d80e48e961ea0a6d63733907364de4d2a69717bcd3257360b.png?alt=media&token=522fa662-cd70-487e-9754-554348ee21ad)
+
+
+These inputs will create checkboxes.
+The value of each checkbox is sent to the server, but whichever is written in front of the input, will translate into what's displayed.
+It should be the identifier of the available option. 
+The checked attribute here is optional, but can be used if you want to select one by default.
+
+
+**Dropdown Lists** have the same functionality as the radio buttons, but tend to be used when the list of options is quite large.
+
+```
+<select name="device">
+	<option value="iphone" selected>iPhone</option>
+	<option value="samsung">Samsung</option>
+	<option value="onePlus">OnePlus</option>
+</select>
+```
+
+![Rendered select](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/images%2Fa112063e42323835b2ad77990e75b9283a198ac60245bba4f802655b9e46.png?alt=media&token=84117aae-6dd3-4f7e-b210-6fa29a5532b8)
+
+The select element is indicative of a dropdown list. 
+The options are self-explanatory.
+The only thing to ensure is that they have an attribute value set, so it can be sent to the server, and some text, that identifies the option, between the opening and closing tags.
+The selected attribute can be used to indicate the option that should be selected when the page loads.
+
+
+When deciding whether to use radio buttons and dropdown lists,  think about the options you want to present.
+If users need to see all options at a glance, use radio buttons.
+If the list is very long (like a list of countries), use a dropdown.
+
+
+### Uploading Files:
+
+If you want to allow users to upload a file, you'll also use an input element of the type file:
+
+`<input type="file" name="user-photo" value="pop">`
+
+![Rendered file input](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/images%2F62897cf631310faa0a45bf11a728364cf896cdd31219f4d5b1a75ad69200.png?alt=media&token=b2a2c8d2-7045-46b6-b7a9-2c34ef30efae)
+
+This will create a box that looks like a text input followed by a **Browse/Choose File** button.
+In some browsers, it will be followed by a text of `"No file selected."` until you upload one.
+When the user clicks on the Browse button, a window opens up that allows them to select a file from their computer.
+
+One thing to consider is to add an attribute of `method="post"` to your `<form>` tag, as you’ll see in the structure of a form example below.
+
+
+### Submitting Forms:
+
+A form needs to have a submit button so it gets sent to the server:
+
+`<input type="submit" name="submit" value="Submit">`
+
+In this case, whatever text you give as the value will be displayed in the button.
+Different browsers will show these buttons in different ways and tend to fit the visual presentation of the browser.
+
+
+### Hidden Controls
+
+`<input type="hidden" name="bookmark" value="lyrics">`
+
+These types of input are useful if you want to send some extra information to the server without necessarily displaying this information on your webpage, or getting some user input.
+Let's say you want to send the previous page the user was on before your form (for advertising analytics) then, you would use a hidden input as you don't want the user to see or change it.
+
+> **Note:** While the value is not displayed to the user in the page's content, it is visible (and can be edited) using any browser's developer tools or "View Source" functionality. Do not use hidden inputs as a form of security!
+
+
+### Labelling
+
+When introducing form controls, the code can be kept simple by labelling each field. This can be done in two ways: wrapped around both the text description and the input, or separate from the form control but with the for attribute that indicates which form control the label belongs to.
+The value of `for` needs to be the same as the value of `id` of the respective input.
+
+**Case 1:**
+
+```
+<label>
+	Name:
+	<input type="text" name="name">
+</label>
+```
+
+**Case 2:**
+
+```
+<input id="age" type="text" name="age">
+<label for="age">Age:</label>
+```
+
+
+### Fieldset
+
+You can also group related form controls together inside the fieldset element, which is very helpful in very long forms.
+Most browsers will show the fields with a line around the edge to show how they are related.
+You can also include a `<legend>` element that will come directly after the opening tag of fieldset.
+This element will contain a caption which helps identify the purpose of that group of form controls.
+
+```
+<fieldset>
+	<legend>Personal Details:</legend>
+	<label>
+		Name:
+		<input type="text" name="name">
+	</label>
+	<label>
+		Age:
+		<input type="text" name="age">
+	</label>
+</fieldset>
+```
+
+Give it a try and see how it looks!
+
+
+### Structure
+
+This is an example of some of the form controls together in a form:
+
+<CodePen id="abVRagG" title="Order form" />
+
+# Practical
+
+Well, this was a long one, wasn't it?
+
+Forms are really important since they bring so much interactivity and allow us - developers - to learn about the users.
+
+For the final practical exercise, let's build your contact-me page:
+
+1. In your `contact.html` page, give it a nice heading, followed by a paragraph that invites users to contact you.
+2. Create a form to gather information about the user's name and email.
+3. Add an extra field where the visitor can select the reason for contacting you.
+4. Add an extra field for actual text.
+5. Once you're happy with the result, add the project files to the staging area, commit it with a meaningful message and push it to GitHub.
+
+Take your time because forms are easy to mess up!

@@ -1,0 +1,56 @@
+---
+title: "Layout - Display"
+---
+
+Now that you're aware of the box model, you should also bear in mind that every HTML element has some inherent properties attached to it, with one of them being the **display**.
+
+The display property **represents how each of the boxes should behave in the page's workflow**. **The default value for all elements is inline**, however some browsers reset some of them to block (eg. a `<div>` element is set to `display: block`, whilst a `<span>` element is set to `display: inline`).
+
+```css
+.box {
+	display: inline | block | inline-block | none;
+}
+```
+
+The example above holds some of the values you could potentially assign to this property, but there are a couple more, which we'll explore in detail in the next few chapters.
+
+**Inline** elements **do not generate a line-break before or after themselves**. In the normal flow of the page, the next element will be in the same line, as long as there's enough space and no other properties stating otherwise. You won't be able to adjust the height and width of these elements, they'll take as much space as needed.
+
+**Block** elements **generate line breaks before and after themselves**. You can **adjust the ratio (height and width)** of these elements as you please.
+
+**Inline-block** elements will be a combination of both. They **won't generate line-breaks** but they will allow you to **tweak their ratio**.
+
+Finally, you can also set it to **None** if you don't want the element to be displayed, which is quite a common behaviour when you have, for example, elements to be displayed over a mouse click only.  
+
+---  
+
+### Let's see how this works  
+
+1. First let's create some elements to play with:      
+
+```html
+<div class="div-element">one</div>
+<div class="div-element">two</div>
+<div class="div-element">three</div>
+<span class="span-element">one</span>
+<span class="span-element">two</span>
+<span class="span-element">three</span>
+```  
+2. Then let's set some css rules so we can see what we are dealing with.      
+
+```css
+.div-element {
+   height: 100px;
+   width: 100px;
+   color: white;
+   background-color: red;
+}
+.span-element {
+   height: 100px;
+   width: 100px;
+   color: white;
+   background-color: blue;
+}
+```  
+3. What's the first thing we notice? The red elements are stacked vertically and the blue elements are one after the other in a row. We can also see that our span elements have not taken the width and height we have specified. That's because inline elements don't have a width or a height. If we want our elements to be in a row, but take a width and height, we could try changing them to inline-block.  
+4. Try adding a display property to the span elements and change it to `inline-block`. See what happens?

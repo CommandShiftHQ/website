@@ -1,0 +1,67 @@
+---
+title: "Tracking Changes"
+---
+
+Tracking changes is the whole point of git, but in order to understand how they're processed, you must understand what the **Working Tree** and the **Staging Area** are.
+
+## Learning Objectives
+
+- Understand what the **Working Tree** is
+- Understand what the **Staging Area** is
+
+The **Working Tree** is the repo where git is initialised, with all of its files and subdirectories. Think about it as a box, where you store everything related to your project. You can check your working tree with:
+
+```
+git status
+```
+
+Which shows all of your untracked files. Even though git is initialised, and it's tracking your changes, you still need an extra step to fully use its capabilities.
+
+You can add specific files to what we call the staging area, by running the command:
+
+```
+git add fileName
+```
+
+Or you can add them all at once:
+
+```
+git add .
+```
+
+If you add a file to the staging area by mistake, you can always remove it with:
+
+```
+git reset fileName
+```
+
+Once you have some files in the **staging area**, you'll have to **commit** them. 
+Your commit should also have a commit message which states the changes you made to the file, so anyone reviewing the code or using it after you understands what this commit is about. You can do so by running:
+
+```
+git commit -m "Your commit message goes in here."
+```
+
+Finally, you want to push those committed files to your remote repo. The first thing to do is to check if the remote one is connected to your local one:
+
+```
+git remote -v
+```
+
+If it is connected then your output should look something like:
+
+![Example git remote output](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/images%2F86e73794956b5aab3eb933ce0f648f1d09b0b0594e69a9a445f29eeb8be8.png?alt=media&token=34a5a525-bdd1-4b5a-b97a-5474f22eddd2)
+
+If not, you can connect them with:
+
+```
+git remote add origin urlPath
+```
+
+![adding a remote](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/images%2F7dbddc101565914efde2a29b9b96b3300d81a8b12aa17a9d611e3eeaa15f.png?alt=media&token=7a6d2695-dcb8-4f37-b0b2-ec01c53b1504)
+
+All you need to do is:
+
+```
+git push -u origin main
+```

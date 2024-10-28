@@ -1,0 +1,43 @@
+---
+title: "Initialising Git"
+---
+
+You'll often hear us talking about **repositories** (or repos). 
+A repository is the place where all of your project files are stored. 
+Repos can be available **locally** (in your computer) or **remotely** (in servers like Github).
+
+*Not all repos have git initialised, since not all of your computer folders need to have their changes tracked.*
+
+***
+
+:warning:
+
+**Remember**, these steps are intended to give you some light theory into Git and the various commands. We don't recommend trying these commands out at this stage, but if you *really* want to then we'd encourage you to create a dummy folder and to initialise a Git repository / experiment with the different commands inside there.
+
+***
+
+In order to initialise Git in a repository and start tracking your changes, move inside of the repo (project folder) you want to track and run the following command in your terminal:
+
+```
+git init
+```
+
+![git init](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/images%2Fee02f3e96c584fd322a7aed421e1801808de64d02f13b0e78aafd9c70135.png?alt=media&token=5ca04b60-c562-4a0a-b581-51f26683b520)
+
+If you want to check if a repo is being tracked, you can do so by:
+
+```
+git status
+```
+
+![git status](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/images%2F24673ec3c43a727c11ce43f5e9cb8579313f99627ccd2ea5d750bf093ecf.png?alt=media&token=4a8a3799-193e-460e-9440-220bf443124d)
+
+Or if you list the content of the repo, and if it is initialised, you should see a .git folder.
+
+![ls -la](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/images%2Fb18c6baed7a304c6a4cf8f45f5602d60c906c9635d1d8190ed549907bda5.png?alt=media&token=7bf94b93-d1b5-4946-913e-35c16c62b086)
+
+If you wish to stop tracking:
+
+```
+rm -rf .git
+```

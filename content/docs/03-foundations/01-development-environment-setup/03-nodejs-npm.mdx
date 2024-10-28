@@ -1,0 +1,108 @@
+---
+title: "Node.js & npm"
+---
+
+Next, we'll install node.js and npm.
+
+## Node.js
+
+**Node.js** is an open-source (which means that its software is available for free), cross-platform JavaScript runtime environment that you'll use to execute JavaScript code server-side.
+
+This basically means that it's software used to **run JavaScript on your computer**. This is one of the tools that you'll use to run the programs that you write.
+
+**Node.js** has other uses and benefits. We'll discuss them in more detail as the course goes on.
+
+_You can also run JavaScript in a web browser like Chrome - more on that later in the course!_
+
+## npm (Node Package Manager)
+
+**Npm is JavaScript's package manager.** It's a tool used by software developers to share code, so that other people can use it in their applications.
+
+Developers write open source code which gets bundled up into what's called a **module**. The module is then added to npm's **registry** (a database of all the modules available). As we will explore in the Building Blocks module, we can then use these modules in our own applications.
+
+Modules provide all sorts of useful features. We can use them to add plug-and-play features to our software, to test our code, to process data more easily, and all sorts of other things.
+
+## Installation
+
+We'll install both Node.js and npm using **Node Version Manager (nvm)** - a simple program that allows us to install and manage multiple versions of Node.js:
+
+1. Start by checking if **Curl** is installed on your computer. Curl is a tool used to download resources (such as data and software) from servers. We're going to use it to download nvm.
+
+   Curl is pre-installed in MacOS so it's very unlikely that you'll need to install it if you're using a Mac. However some Linux distributions don't include Curl, so we'll check and install it if necessary.
+
+   - To check if Curl is installed, run:
+
+     `curl -V`
+
+     (V must be capitalised)
+
+   - If Curl is already installed, the terminal will return the word `curl` followed by a version number and some other information. Proceed to step 2.
+   - If Curl is not installed, the terminal will tell you that the `curl` command was not found. If that happens, run this command in the terminal to install `curl`:
+
+     `sudo apt install curl`
+
+     Partway through the installation you may be asked `Do you want to continue?` If this happens, type `y` and press Enter on your keyboard to continue the installation.
+
+     Once installation is complete, run `curl -V` (again, make sure V is capitalised). The terminal should return the word `curl` followed by the version number and some other information. Now you can proceed to step 2.
+
+2. In your terminal, run:
+
+   `curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash`
+
+3. Then install the latest long term support (LTS) Node.js version:
+
+   `nvm install --lts`.
+
+After running step 3, if you get the error `nvm: command not found` or `zsh: command not found: nvm`, see the [Troubleshooting](#troubleshooting) section below.
+
+If you don't get an error then you're ready to test the installation. Go to the [Testing the Installation](#testing-the-installation) section at the bottom of the page.
+
+## Troubleshooting
+
+Here are some things you can try if you get an error after running step 3:
+
+### In **Ubuntu**
+
+- Close your current terminal and open a new one, then try step 3 again.
+
+- If that doesn't work:
+  - Run: `source ~/.bashrc`
+  - Then try step 3 again
+
+### In **macOS**
+
+For macOS users, there are a couple of errors you could see after running step 3:
+
+- If you get the error `zsh: command not found: nvm`, follow the [**Steps for zsh**](#steps-for-zsh) below.
+- If instead you get the error `nvm: command not found`, follow the [**Steps for bash**](#steps-for-bash) below.
+
+  _If you're wondering why there are two different errors with different troubleshooting steps, it's because there are various different pieces of software you can use to run a command line on your computer (just like there are various different programs you can use to edit text documents, browse the internet etc). These types of software are called **Shells**. Different versions of macOS come with different shells, called **bash** and **zsh**. The error message you see depends on which of these shells you have installed. Bash and zsh are both excellent shells so don't worry about which one you have right now. Later we'll teach you how to install different shells - but you can do everything you need to perfectly well with either of these shells._
+
+#### **Steps for zsh**
+
+- Your system may not have a `.zshrc` file. This file stores the `nvm` command, so that you can use it in the terminal.<br/>Create the file by running `touch ~/.zshrc` in the terminal.<br/>Then repeat the installation steps.
+
+- You might also need to restart your terminal, then run the installation steps again.
+
+- If the above doesn't fix the problem, open your `.zshrc` file by running `open -a TextEdit ~/.zshrc` in the terminal, and add the following line of code to the file: <br /><br />
+  `source ~/.nvm/nvm.sh`
+  <br /><br />Save the file and close it, then repeat the installation steps. You may also need to restart your terminal before trying the installation steps again.
+
+#### **Steps for .bash**
+
+- Your system may not have a `.bash_profile` file. This file stores the `nvm` command, so that you can use it in the terminal.<br/>Create the file by running `touch ~/.bash_profile` in the terminal.<br/>Then run the installation steps again.
+
+- You might also need to restart your terminal, then run the installation steps again.
+
+- If this doesn't work, run `source ~/.bash_profile`, then run the installation steps again. You may also need to restart your terminal before trying the installation steps again.
+
+### Testing the Installation
+
+To check that everything is installed correctly:
+
+1. Run `node -v`, which should give you the currently installed node version.
+2. Run `npm -v`, which will do the same but for npm.
+
+The output should look something like this (the version numbers may differ):
+
+![Example output](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/images%2Fa8b1e6e2565547a14ce539a6b2c8bf46070b7414d9e2925c653e46ba0a86.png?alt=media&token=33830ded-b77c-4c21-a07b-091791036739)

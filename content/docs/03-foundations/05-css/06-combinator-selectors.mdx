@@ -1,0 +1,126 @@
+---
+title: "Combinator Selectors"
+---
+
+#####Quick note - this is an advanced selector!
+
+Combinators allow us to select elements by specifying their relationship with their parents or sibling elements (remember the DOM tree?).
+
+Let's look at the following HTML example:
+
+```html
+<div class=”my-class”>
+	<h2>About Me</h2>
+	<p>Hey, I’m Miguel!</p>
+	<img src=”./assets/images/miguel.png” alt=”Profile Photo”>
+</div>
+```
+
+We can then target **descendant** elements, by **spacing them** out before the `{}`. In the example below, we select the elements with the `my-class` class and grab the `h2` elements that are children of this element:
+
+```css
+.my-class h2 {
+	color: blue;
+};
+```
+
+The **direct child** elements, using **>**:
+
+```css
+.my-class > p {
+	color: grey;
+};
+```
+
+Direct child means that as long as the `p` element is a child of `.my-class`, and not a grand-child, for example, then the rules should be applied.
+
+The **adjacent sibling** (immediately following), using **+**. In the example below, we are targeting the image that comes immediately after the paragraph. If there's another element between them, the rule will fail.
+
+```css
+p + img {
+	height: 140px;
+};
+```
+
+And the **general sibling**, using **~**. If you have a scenario like the one described before, these could be useful. In the example below, we're targeting the image, that is a sibling of the `h2` element, even though the paragraph is between them:
+
+```css
+h2 ~ img {
+	width: 100px;
+};
+```  
+
+---  
+
+##Ok let’s give this one a go.  
+
+We will try to implement the following:
+Descendant, direct child, adjacent child, and general child.  
+
+###tl;dr  
+
+If you don’t already have a suitable block of html, create one.  
+Let’s make an About Me section with a **wrapper div**, containing a **subtitle**, some **paragraph elements**, and an **image element**. Add a nested div inside as well with some paragraph elements inside (a hint of what this might look like is in the walkthrough below). 
+Don’t forget to add a class and an id we can use to target some siblings and children.  
+Try and use the class or id of one element, to target another.  
+Try each selector mentioned above and see what happens.
+
+###Walkthrough;  
+
+1. Let's create an about me section. It should look something like this:      
+
+```html
+<div id=“about-me”>
+	<h3>About Me</h3>
+	<img class=“profile-pic” src=“https://picsum.photos/200/300” alt=“a picture of me” />
+	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur dui quam, efficitur sit amet tortor.</p>
+	<p>Praesent at neque ut nibh porttitor consectetur vel at nulla. Phasellus id dignissim ipsum. Donec.</p>
+	<div>
+		<p>Third paragraph</p>
+	</div>
+
+</div>
+```
+
+> Pro-tip! [Picsum Photos](https://picsum.photos/) is a good tool to grab a random placeholder image. You can put the link they provide in the src attribute of an image tag and every time it renders, it will have a different image in it!  
+> Also, you can find lots of lorem ipsum generators online, OR you can use VSCode itself to generate some dummy text. VS Code has something called [Emmett Snippets](https://code.visualstudio.com/docs/editor/emmet) built into it, and it allows you to use shortcuts to grab snippets of code. We can use this to generate an HTML boilerplate, or try typing ‘lorem’ in an html file. You should see a drop down and when you hit enter, it will insert some dummy text!
+
+2. Let's try and target any `p` elements that are the **descendants** of the first `div`.
+First let’s target the `div` using the ID (a hash symbol - #)      
+
+```css
+#about-me {}  
+```
+
+Then we target the descendant `p`’s by putting a space and p      
+
+```css
+#about-me p {}  
+```
+
+Save and refresh and see what the effect is in the browser. Are all the `p` elements included?  
+
+3. Let's try direct child. First target the `div` again, and then this time let's use the greater than symbol >.      
+
+```css
+#about-me > p {}  
+```
+
+Try the paragraph element. What happens? Is it different to the first example? Try a few of the other elements and see what happens.  
+
+4. Let's try and target only the paragraph element that is the **immediate sibling** of the image element  
+First we target the image using the class (a full stop)      
+
+```css
+.profile-pic {}  
+```
+
+Then we grab the immediate sibling of this by using the addition sign      
+
+```css
+.profile-pic + p {}  
+```
+
+Save and refresh and see what’s happened!
+  
+5. Now try the **general sibling** selector on your own. Experiment with the different elements and see if you can understand how they all work.

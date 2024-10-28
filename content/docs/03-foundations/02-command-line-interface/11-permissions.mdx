@@ -1,0 +1,58 @@
+---
+title: "Permissions"
+---
+
+Do you remember when we used the `ls -l` command for the first time?
+Do you remember seeing something along the lines of: `-rwx--r--`?
+
+Well, let's learn about it.
+
+Every file and directory on your computer has a set of 3 permissions controlling what can be done to it by different people:
+- **Read (r)**
+- **Write (w)**
+- **Execute (x)**
+
+The *read* permission allows a file to be read. When applied to a directory, it allows you to list a directory's content.
+The *write* permission allows you to write to a file, or, in the case of a directory, it allows creating, deleting and renaming of its content.
+The *execute* permission allows you to execute a file.
+
+The permissions are broken into 3 classes:
+- **User**
+- **Group**
+- **Others**
+
+The *user* determines the permissions that the owner of the file has.
+Every file on a Unix-like system has **one**, and only one, **user** as an **owner**. In your terminal, it should appear in the 3rd column, and you'll realise that you're the owner of most of them.
+Note: You can find your username by typing `whoami` in your terminal.
+
+The *group* determines the permissions that apply to a group of users.
+replace: Any user can belong to one or more groups, but doesn’t have to. For example, *if there are several users who access the computer only remotely, they may be organised into a special group that has limited privileges*.
+
+The *others* are those users who don’t fall into any of the 2 classes above.
+
+In Unix operating systems (e.g. macOS/Ubuntu), the **permissions are not inherited**, so if a directory has a `read` permission, it doesn't imply that the files in it are readable as well. 
+
+So, looking at our previous indication: `-rwxr--r--`.
+The first character can either be a `d` or a `-`. d stands for directory, whereas hyphen means it's a file.
+The next 3 characters are the read, write and execute permissions for the user class. In this case, `rwx` means that the user has permissions to all of the 3.
+This is followed by the `rwx` of the group, and finally the set for the others. In this example, both the group and others only have permission to read (which is noted by the hyphens instead of the respective characters).
+
+# Changing Permissions
+
+The permissions on a file can be edited using the `chmod` command.
+
+1. Move into your Desktop.
+2. Create a file called `hello.txt`.
+3. List all the content and verify its permissions.
+4. Give the group class a write permission on the file with `chmod g+w hello.txt`.
+5. List the content again and check if something has changed in the permissions.
+
+Breaking this down:
+
+- `g` stands for group (`u` - user, `o` - others, `a` - all).
+- `+` means we're adding permissions (`-` to remove them).
+- `w` stands for write (`r` - read, `x` for execute).
+
+You can also combine several permissions. Can you guess what this is doing:
+
+`chmod a-rx hello.txt`

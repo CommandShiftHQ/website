@@ -1,0 +1,24 @@
+---
+title: "Branching"
+---
+
+**Branches** are the key piece of git. They allow us all to work in the same project, and same files, at the same time.
+The main branch of your project is often called **master** or **main** (we changed the config earlier, so ours should be main).
+
+Every time you want to add a new feature to your project, or even fix an existing one, you should create a new branch:
+
+```
+git switch -c branchName
+```
+This is the preferred way to create a branch, it can also be done with the `checkout` command (though this is being deprecated):
+
+```
+git checkout -b branchName
+```
+
+This new branch, will be an exact copy of your main one. Once created, you can change your code freely, which then gets pushed, code reviewed and finally merged.
+
+The below images can be used as a visualisation of what happens to the Git repo when you create and merge a branch:
+
+![creating a new branch](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/images%2F29708f6f0a6282dc53f482bdb6c2bb7588ae98fad34c8f354b8922dcc30470f7.png?alt=media&token=ea5dd74b-1cf8-4965-b6dc-fa14a112ff4f)
+![merging branch](https://firebasestorage.googleapis.com/v0/b/avocado-on-toast.appspot.com/o/images%2F5ab537a359fd513f342242047c6203551b82ac5c7ba494c92ec080b1e991d7c4.png?alt=media&token=db85f93d-cbe0-45d7-8cb3-c443068a9ab1)

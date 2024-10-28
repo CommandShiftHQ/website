@@ -1,0 +1,114 @@
+---
+title: "Links"
+---
+
+Let's now talk about the defining feature of the web - links.
+
+**Links** are why you can move from one page to another.
+
+# Writing Links
+
+Links are created using the `<a>` element. Users can click on anything between the opening and closing anchor tags.
+In order to specify the page we want to link to, we use the `href` attribute:
+
+`<a href="https://platform.manchestercodes.com/" target="_blank">Manchester Codes Platform</a>`
+
+- Where possible, the link text should explain to the visitors where they'll be taken to if they click on it (avoid, at all costs, "Click here" situations).
+- Link text is important for more common users since they're part of your application map, but they're absolute **fundamental for screen readers**.
+- The second attribute - `target` - is entirely optional, but when present and set to `_blank`, if the link is clicked, it will open in a new tab instead of just loading the new page.
+
+# Internal & External Links
+
+The value of the `href` attribute can vary depending on the type of link you want to create.
+
+Do you want to link it to another website? Well, the example above is the one to go for.
+
+Do you want to link to another page of your own application? Sure thing. In your portfolio, if you want to move from `index.html` to the `contact-me.html` page:
+
+`<a href="./contact-me.html">Contact Me</a>`
+
+What about if you want to create a link to a section on the same page? Like, one that when clicked scrolls the page to the exact spot?
+Yep, that is also possible.
+
+All you need to do is to give the element we want to link to an attribute of `id`, and use that `id` as a value to the `href` of your anchor:
+
+```
+<a href="#about-me">About Me</a>
+
+…
+
+<section id="about-me">
+```
+
+(Notice the **#** before the `id` in the `href` attribute. The hash indicates that what's in front of it is an id. You'll learn more about it in the CSS lectures.)
+
+
+# Directory Structure & Relative URLs
+
+On larger projects, it's a good idea to organise your code by placing the different pages inside their own folder/directory. The same applies to images.
+
+In this case, if you create a couple more pages, your portfolio's project will have a structure like:
+
+```
+/portfolio
+	/images
+		me.png
+	index.html
+	/pages
+		contact-me.html
+		projects.html
+```
+
+Can you decipher the structure above? So:
+
+- For this project, /portfolio represents your root.
+- The root has 2 subdirectories and an `index.html` file.
+- One of the subdirectories is called images and has 1 image which could be a photo of yours.
+- The other subdirectory is called pages and holds 2 more html documents for different pages of your portfolio.
+
+The relationship between the files and folders of your portfolio is described using the same terminology of the DOM tree.
+
+If we look at **/portfolio** as being the parent, then **/images**, `index.html` and **/pages** are its children.
+
+`contact-me.html` and `projects.html` are the children of **/pages**, but also the grandchildren of **/portfolio**.
+
+Every page and every image on a website has a **URL**, which stands for **Uniform Resource Locator**, that is made up of the domain name followed by the path to the very same page or image.
+
+If the domain name is `johndoe.dev`, then, your landing page would have the url of `johndoe.dev/index.html` and if the user then clicks on your "Contact Me" link, the url will change to: `johndoe.dev/pages/contact-me.html`.
+
+`/pages/contact-me.html` is the **relative path** in your project that is used to locate the page.
+
+For relative paths:
+
+- `./` represents the same folder of the current file.
+- `../` represents the parent folder of the current file.
+- `../../` represents the grandparent folder of the current file.
+- `/pages` (eg.) will represent a child of the current directory.
+
+**Note:** servers are usually setup to return `index.html` unless specified otherwise, which is why we're using this file name.
+
+
+# Email Links
+
+You can also create a link that starts up the user's email software and addresses an email to a specified email address. 
+The value of href should be composed of the keyword `mailto` and respective email, separated by a colon:
+
+`<a href="mailto:johndoe@dev.com">Email Me</a>`
+
+
+# Practical
+
+Ok, let's spice things up a bit;
+
+1. In your project's root create 2 new folders - one called images and another called pages.
+2. Inside pages, create 2 new html files - `contact.html` and `projects.html`. (Bonus points if you've done this using your terminal! You should know how-to by now.)
+3. Inside images, add your photo, which we'll use later on this module.
+4. Back to your `index.html`, add a navigation to the header (using the proper markup) and create 2 links - one to each of the new pages. Don't forget to consider the relative path. Ensure that when clicked, they'll open in a new page.
+5. Let's go a bit further and for each new page, add the basic HTML structure, with a title per page, and a heading that is indicative of which page you're visiting. Leave the rest empty for now.
+6. Once you're happy with the result, add the project files to the staging area, commit it with a meaningful message and push it to GitHub.
+
+The goal is to ensure that when you click on the link to the contact page, it opens a new tab that shows you Contact Me as the heading. Same for the projects page.
+
+Once you've achieved this, proceed.
+
+If you're struggling, let us know!

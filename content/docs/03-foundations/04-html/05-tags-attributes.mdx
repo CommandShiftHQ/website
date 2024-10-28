@@ -1,0 +1,43 @@
+---
+title: "Tags & Attributes"
+---
+
+Every DOM element has a **type**, which semantically **should denote its purpose** and provide some default layout, style and display properties.
+
+# Tags
+
+Elements have what we call **tags**. In most of them, you'll see an *opening tag* and a *closing tag*. In some particular cases, which we'll see in this module, the element only has an opening one.
+
+Let's look at the example below:
+
+`<p>Welcome to this chapter!</p>`
+
+
+Let's deconstruct the first one:
+- `<p>` is the opening tag.
+- **"Welcome to this chapter!"** is the actual text that gets rendered in your webpage.
+- `</p>` is the closing tag.
+
+As you might have spotted, one of the differences between an opening and a closing tag is the forward slash (`/`) symbol, right before the indication of the tag's type (which in this case is `p` - as short for **paragraph**).
+The characters in the brackets (`<>`) indicate the **tag's purpose**.
+
+Even though, the terms "tag" and "element" are often used interchangeably, strictly speaking, the **element comprises both opening and closing tags and any content that lies between them**.
+
+Understanding and using the different terms properly will be something we'll push you to do in order to be able to talk about code confidently.
+
+Let's now look closely at the second example:
+
+`<img src="./cool-alpaca.png" alt="Cool Alpaca" />`
+
+Can you spot the difference?
+This different tag - which will render an image, as you might have guessed - is a **self-closing tag**, which means **it doesn't have a separate closing tag**.
+
+Also, remember when we said that `/` was one of the differences between opening and closing tags?
+That's because, as you can see by looking at the example 2, opening/self-closing tags can - and most often will - hold some **attributes**.
+
+# Attributes
+
+Attributes will provide **additional information** about the contents of an element. They're made up of two parts: a **name** and a **value**, **separated by an equals sign**.
+In the example above, `src` is an attribute of `img` that points towards **where to find the image file**, while `alt` is another attribute that holds some **text that only gets displayed if there's an issue while rendering the image**. You'll get to experiment with this later.
+
+The majority of attributes can only be used on certain elements, but a few are shared between different ones. Also, most attribute values are either pre-defined or follow a stipulated format. You'll learn more about these as you keep using them.

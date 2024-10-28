@@ -1,0 +1,44 @@
+---
+title: "Attribute Selectors"
+---
+
+We can also target specific elements by the attributes they contain. We can do that as:
+
+```css
+selector[attribute="value"] {}
+```
+
+Let's say you have the following HTML:
+
+```html
+<div>
+	<a href="facebook.com" data-anchor="social">Facebook</a>
+	<a href="instagram.com" data-anchor="social">Instagram</a>
+	<a href="#top" data-anchor="innerLink">
+</div>
+```
+
+You could target the first 2 links, which are for social media, with:
+
+```css
+a[data-anchor="social"] {}
+```
+
+Attributes can also be used with some logical operations. Have a look at the [documentation](https://developer.mozilla.org/en-US/docs/Web/CSS/Attribute_selectors) to find out.
+
+
+---
+
+##Let's have a quick go. 
+
+1. If we remember, an attribute is something we can place inside our element tag for lot's of different reasons. An example of an attribute we already have in our code block, is the `href` attribute in our anchor tags. Try adding a url to your href, and see if you can use the above method to target the link.  
+
+Remember, if you struggle to get this to work, bring it to class and we can go through it together!
+
+### Some more practice:
+
+We've reached the end of selectors! It is a lot, but the more you familiarise yourself on how to use them, the cleaner and more efficient your CSS techniques will be. Let's get some practice in.
+
+[CSS Diner](https://flukeout.github.io/)
+
+This game comprises 32 levels where you'll always be presented with a CSS Editor and its respective HTML Viewer. The goal is for you to understand the html structure, with all of its elements, ids, classes, and then write only the respective CSS selector to complete the level. For example, in the first exercise, you're asked to "Select the plates", so by looking at the HTML, we can target the simple element `plate`. Each level will be a bit more complex but you'll get to practice all of the selector types we've studied.

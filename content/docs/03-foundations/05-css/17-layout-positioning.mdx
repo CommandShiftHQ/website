@@ -1,0 +1,70 @@
+---
+title: "Layout - Positioning"
+---
+
+The **position** property specifies the method you'll use to move the selected element in your layout.
+
+### Static
+
+It **follows the flow of the page**, hence it's never affected by other properties. This means that every block-level element will appear on a new line, causing each item to appear further down the page than the previous one. This is the **default** behaviour.
+
+```css
+.about-me {
+	position: static
+}
+```
+
+### Relative & Absolute
+
+When the position is set to **relative**, the element **can be moved across the page**. The position of **surrounding elements will not be affected**. However, when the position of an element is set to **absolute**, the **position of the element is relative to its parent**. Confused?
+
+Let's look at this snippet:
+
+```css
+.parentElement {
+	position: relative;
+}
+
+.childElement {
+	position: absolute;
+	top: 10px;
+	left: 10px;
+}
+```
+
+The parent element has its position set to relative, while the child is absolute. This translates into giving you the ability to move the child inside the parent's container. If the parent's position wasn't set to relative, the child would then find which element upper in the tree is set to relative and move inside of that container (all the way up in the DOM tree until it reaches the body element).
+
+Notice how once we decided that the child element would be positioned absolute, we can then define how much offset it will be from the **top/bottom/right/left** border of the container.
+
+### Fixed
+
+**Fixed** is a **form of absolute positioning** that positions the element in relation to the browser window, instead of the container element. It will probably become one of your go-to options if you want to create an element that will **not be affected by the page scrolling**.
+
+```css
+.fixedHeader {
+	position: fixed;
+}
+```
+
+### Sticky
+
+The approach is similar to what fixed does. However, **sticky** elements **still occupy their space in the page**, so imagine your element is positioned in the middle of the page, you'll be able to scroll all the way until you reach that position, and then the element moves with your scrolling.
+
+```css
+.stickySidebar {
+	position: sticky;
+}
+```
+
+---
+
+### Practice:
+
+[Exercise - Positioning](https://codepen.io/pen/?template=YzQWPKV)
+
+You'll find that this example resembles a website's navigation. The only weird thing about it (and even that is debatable) is that the anchor links are all on the left.
+
+- Can you use positioning to justify them to the right?
+- What if you want to center them?
+
+Once again, take your time to experiment with the properties. The main goal is for you to get comfortable with them and understand what are the different approaches you can take.
